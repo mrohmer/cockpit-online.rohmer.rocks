@@ -39,6 +39,7 @@
   const cancelLoad = () => timeout && clearTimeout(timeout);
   const scheduleLoad = (name: string, delay = 1000) => {
     if (mounted) {
+      console.log(delay)
       timeout = setTimeout(() => load(name), delay) as number;
     }
   }
@@ -51,7 +52,7 @@
       data = response.data as Race;
       await addSession(name);
 
-      scheduleLoad(name);
+      scheduleLoad(name, !data.running ? 5000 : undefined);
     } catch (e) {
       console.log(e);
       data = undefined;
