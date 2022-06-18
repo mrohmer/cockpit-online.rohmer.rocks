@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    @apply relative box-border;
+}
+
+input, [contenteditable="true"], textarea {
+    @apply bg-transparent outline-none focus:outline-none;
+}
+@media (prefers-color-scheme: dark) {
+    input[type="date"]{
+        color-scheme: dark;
+    }
+}
+
+.border-primary {
+    border-color: var(--color-primary);
+}
+.border-secondary {
+    border-color: var(--color-secondary);
+}
