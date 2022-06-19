@@ -17,4 +17,5 @@ export interface Slot {
     lap?: number;
   }
   remainingGas?: number;
+  penalty?: 'unknown'|'pit';
 }

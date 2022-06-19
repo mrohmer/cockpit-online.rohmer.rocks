@@ -8,6 +8,10 @@ const STATUS_MAP: Record<Race['status'], string> = {
   starting: 'sc',
   stopped: 'red',
 }
+const PENALTY_MAP: Record<Required<Slot>['penalty'], string> = {
+  unknown: '/strafe.png',
+  pit: '/boxenstrafe.png',
+}
 
 const parseInteger = (value: string | undefined): number | undefined => value?.trim() ? parseInt(value) : undefined;
 const parseFloatingPoint = (value: string | undefined): number | undefined => value?.trim() ? parseFloat(value.replace(',', '.')) : undefined;
@@ -60,6 +64,8 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
     lapsToGo: parseInteger(response[`restrunden(${Number(id)})`]),
     position: parseInteger(response[`position(${Number(id)})`]),
     remainingGas: parseRemainingGas(response[`tankbar(${Number(id)})`]),
+    penalty: Object.entries(PENALTY_MAP)
+      .find(([, image]) => response[`bestrafung(${Number(id)})`]?.includes(image))?.[0] as Slot['penalty'],
   }
 }
 const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, response: ApiResponse): Race => {

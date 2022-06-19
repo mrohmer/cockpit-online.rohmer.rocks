@@ -19,8 +19,17 @@
             <div class="w-8 font-normal text-center mr-1">
                 {isHeader ? 'Pos' : slot.position ?? ''}
             </div>
-            <StandingsValue header="Fahrer" {isHeader} class="flex-1 mx-1 truncate min-w-[50px]" textAlign="left">
-                {slot?.name ?? ''}
+            <StandingsValue header="Fahrer" {isHeader} class="flex-1 mx-1 min-w-[50px] overflow-x-visible" textAlign="left">
+                <div class="truncate">{slot?.name ?? ''}</div>
+                {#if slot?.penalty}
+                    <div class="text-red-700 dark:text-red-500 whitespace-nowrap">
+                        {#if slot.penalty === 'pit'}
+                            Boxenstrafe aktiv!
+                        {:else}
+                            Strafe aktiv!
+                        {/if}
+                    </div>
+                {/if}
             </StandingsValue>
             <StandingsValue header="Runde" {isHeader} class="w-[3.75rem]">
                 <div>
