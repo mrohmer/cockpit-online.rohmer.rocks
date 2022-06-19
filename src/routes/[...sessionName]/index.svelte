@@ -6,6 +6,7 @@
   import axios from 'axios';
   import {db} from '$lib/db';
   import Content from '$lib/components/Content.svelte';
+  import Standings from "$lib/components/standings/Standings.svelte";
 
   let timeout: number;
   let data: Race;
@@ -105,37 +106,8 @@
             </div>
         </Content>
     </div>
-    <Content class="py-2">
-        <div>
-            {#each data.slots as slot}
-                <div class="flex items-center my-1 text-xl">
-                    <div class="w-5 font-normal text-center mr-2">
-                        {slot.position}
-                    </div>
-                    <div class="flex-1 mx-2 truncate min-w-[50px]">
-                        {slot.name}
-                    </div>
-                    <div class="w-20 mx-2 text-right">
-                        {#if slot.lastLap?.time}
-                            {slot.lastLap.time}s
-                        {:else}
-                            ---
-                        {/if}
-                    </div>
-                    <div class="w-32 text-center">
-                        {#if slot.remainingGas}
-                            <div class="absolute left-0 top-0 h-full opacity-50 bg-green-700 bg-red-700"
-                                 style="width: {(slot.remainingGas * 100).toFixed(0)}%"
-                                 class:bg-red-700={slot.remainingGas < 0.2}
-                            ></div>
-                            <div>
-                                {(slot.remainingGas * 100).toFixed(0)}%
-                            </div>
-                        {/if}
-                    </div>
-                </div>
-            {/each}
-        </div>
+    <Content class="py-2 pr-0">
+        <Standings slots={data.slots} />
     </Content>
 {:else if notFound }
     <div class="text-center p-5">
