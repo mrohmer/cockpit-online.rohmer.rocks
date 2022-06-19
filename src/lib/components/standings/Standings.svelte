@@ -3,13 +3,15 @@
   import StandingsRow from "./StandingsRow.svelte";
 
   export let slots: Slot[] = [];
+
+  $: hasImageCol = slots?.some(slot => !!slot.image) ?? false;
 </script>
 
 <div class="overflow-x-auto">
     <div class="min-w-[500px]">
-        <StandingsRow type="header"/>
+        <StandingsRow type="header" {hasImageCol}/>
         {#each slots as slot}
-            <StandingsRow {slot}/>
+            <StandingsRow {slot} {hasImageCol}/>
         {/each}
     </div>
 </div>

@@ -2,7 +2,6 @@
   import type {Race} from '$lib/models/race';
   import {onMount} from 'svelte';
   import {page} from '$app/stores';
-  import type {AxiosError} from 'axios';
   import axios from 'axios';
   import {db} from '$lib/db';
   import Content from '$lib/components/Content.svelte';

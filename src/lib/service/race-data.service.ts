@@ -15,19 +15,23 @@ const PENALTY_MAP: Record<Required<Slot>['penalty'], string> = {
 
 const parseInteger = (value: string | undefined): number | undefined => value?.trim() ? parseInt(value) : undefined;
 const parseFloatingPoint = (value: string | undefined): number | undefined => value?.trim() ? parseFloat(value.replace(',', '.')) : undefined;
-const parseImage = (value: string) => {
+const parseImage = (sessionName: string, slotId: string, type: 'car'|'driver', value: string) => {
   if (!value?.trim()) {
     return undefined;
   }
 
-  const result = /src='(?<src>[a-zA-Z\d-./]*)'/.exec(value.trim());
-  return result?.groups?.src;
+  const result = /src='(?<src>[a-zA-Z\d\-\/()]*).(?<extension>[a-zA-Z]*)\?t=[0-9]*'/.exec(value.trim());
+
+  if (!result?.groups?.extension) {
+    return undefined;
+  }
+
+  return `/api/${sessionName}/image/${slotId}/${result.groups.extension}/${type}.webp`;
 };
 const parseRemainingGas = (value: string): number | undefined => {
   if (!value?.trim()) {
     return undefined;
   }
-
 
   const result = /width='(?<width>[\d.]*)%'/.exec(value.trim());
   const float = parseFloatingPoint(result?.groups?.width);
@@ -49,7 +53,7 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
   };
   const car: Slot['car'] = {
     name: response[`fahrzeug(${Number(id)})`],
-    image: parseImage(response[`fahrzeugbild(${Number(id)})`])
+    image: parseImage(sessionName, id, 'car', response[`fahrzeugbild(${Number(id)})`])
   }
 
   return {
@@ -58,7 +62,7 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
     car: car.image || car.name ? car : undefined,
     lastLap: lastLap.time ? lastLap : undefined,
     fastestLap: fastestLap.lap || fastestLap.time ? fastestLap : undefined,
-    image: parseImage(response[`fahrerbild(${Number(id)})`]),
+    image: parseImage(sessionName, id, 'driver', response[`fahrerbild(${Number(id)})`]),
     inPit: !response[`pitin(${Number(id)})`]?.includes('blank.png'),
     lap: parseInteger(response[`runde(${Number(id)})`]),
     lapsToGo: parseInteger(response[`restrunden(${Number(id)})`]),

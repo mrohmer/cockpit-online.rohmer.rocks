@@ -4,6 +4,7 @@
 
   export let slot: Slot;
   export let type: 'header' | 'row' = 'row';
+  export let hasImageCol = false;
 
   let width: number;
 
@@ -16,10 +17,26 @@
          class:h-14={!isHeader}
          bind:clientWidth={width}>
         <div class="flex items-top h-full">
-            <div class="w-8 font-normal text-center mr-1">
+            <div class="w-8 font-normal text-center mr-1"
+                 class:my-2={!isHeader}
+                 class:text-2xl={!isHeader}
+                 class:leading-10={!isHeader}
+            >
                 {isHeader ? 'Pos' : slot.position ?? ''}
             </div>
-            <StandingsValue header="Fahrer" {isHeader} class="flex-1 mx-1 min-w-[50px] overflow-x-visible" textAlign="left">
+            {#if hasImageCol}
+                <div class="my-1 w-12 min-w-[2.5rem] mr-2"
+                     class:h-12={!isHeader}
+                >
+                    {#if slot?.image}
+                        <div class="h-full w-full bg-center bg-no-repeat bg-contain"
+                             style="background-image: url('{slot.image}')">
+                        </div>
+                    {/if}
+                </div>
+            {/if}
+            <StandingsValue header="Fahrer" {isHeader} class="flex-1 mx-1 min-w-[5rem] overflow-x-visible"
+                            textAlign="left">
                 <div class="truncate">{slot?.name ?? ''}</div>
                 {#if slot?.penalty}
                     <div class="text-red-700 dark:text-red-500 whitespace-nowrap">
