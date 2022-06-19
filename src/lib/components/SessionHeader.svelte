@@ -10,6 +10,7 @@
     export let mode: Race['mode'];
     export let time: Race['time'];
     export let lapsToGo: Race['lapsToGo'];
+    export let backLink = '/';
 </script>
 
 <div class="bg-gray-200 dark:bg-black py-2">
@@ -23,7 +24,7 @@
          class:animate-pulse={status === 'starting'}
     ></div>
     <Content class="flex items-center">
-        <a href="/" on:click={(event) => dispatch('clickBackLink', event)} class="block p-2 -ml-3">
+        <a href={backLink} on:click={(event) => dispatch('clickBackLink', event)} class="block p-2 -ml-3">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="rotate-90">
                 <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" class="dark:fill-white"/>
             </svg>

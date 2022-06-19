@@ -5,6 +5,7 @@
   import Content from '$lib/components/Content.svelte';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {Loader} from '../_load';
+  import {cleanSessionName} from "$lib/utils/clean-session-name.js";
 
   let timeout: number;
   let data: Race;
@@ -49,6 +50,7 @@
     }
   }
   $: slot = data?.slots.find(slot => slot.id === $page?.params?.slotId);
+  $: sessionName = $page.params?.sessionName ?? '';
 </script>
 
 <svelte:head>
@@ -57,7 +59,7 @@
     {/if}
 </svelte:head>
 {#if data && slot}
-    <SessionHeader {...data} on:clickBackLink={handleBackLinkClick}/>
+    <SessionHeader {...data} backLink="/{cleanSessionName(sessionName)}" on:clickBackLink={handleBackLinkClick}/>
     <Content class="py-4">
         <div class="flex mb-4 items-center">
             {#if slot.image}
