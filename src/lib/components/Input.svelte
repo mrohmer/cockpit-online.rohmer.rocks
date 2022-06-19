@@ -18,19 +18,25 @@
 
 <svelte:options accessors={true}/>
 
-<div class="border rounded border-primary flex overflow-hidden py-1 mb-3 {klass}" class:pr-8={$$slots.icon}>
-    <label for={id} class="px-4 block h-10 leading-10 w-fit opacity-80">
+<style lang="postcss">
+    .input {
+        @apply w-full px-4 h-10 leading-10 text-left;
+    }
+</style>
+
+<div class="border rounded border-primary py-1 mb-3 {klass}" class:pr-8={$$slots.icon}>
+    <label for={id} class="absolute -top-2 left-3 text-xs px-1 block w-fit bg-white dark:bg-zinc-900">
         <slot/>
     </label>
     {#if type === 'text'}
         <input bind:this={inputEl} type="text" {name} {id} {min} {max} {required} {autofocus}
-               class="flex-1 h-10 leading-10 text-left" bind:value on:change on:input/>
+               class="input" bind:value on:change on:input/>
     {:else if type === 'date'}
         <input bind:this={inputEl} type="date" {name} {id} {min} {max} {required}
-               class="flex-1 h-10 leading-10 text-left" bind:value on:change on:input/>
+               class="input" bind:value on:change on:input/>
     {:else if type === 'number'}
         <input bind:this={inputEl} type="number" {name} {id} {min} {max} {required}
-               class="flex-1 h-10 leading-10 text-left" bind:value on:change on:input/>
+               class="input" bind:value on:change on:input/>
     {/if}
 
     {#if $$slots.icon}

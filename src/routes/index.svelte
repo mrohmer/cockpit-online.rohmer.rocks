@@ -52,13 +52,20 @@
                     </svg>
                 </button>
             </Input>
+            <div class="text-[10px] opacity-50 -mt-2">
+                Zu finden in der URL von Cokpit XP. Alles nach der Domain online.cockpit-xp.de.
+            </div>
         </form>
         {#if $sessions?.length}
-            {#each $sessions as session}
-                <a href="/{session.name}" class="block border-t border-gray-400 py-2">
-                    {session.name}
-                </a>
-            {/each}
+            <div class="mt-5">
+                <div class="text-xs pt-1 opacity-70">Letzte Sessions</div>
+                {#each $sessions as session, i}
+                    <a href="/{session.name}" class="block border-gray-400 py-2"
+                        class:border-t={i > 0}>
+                        {session.name}
+                    </a>
+                {/each}
+            </div>
         {/if}
     </div>
 </Content>
