@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
+	import Content from "$lib/components/Content.svelte";
 </script>
 
 <svelte:head>
@@ -16,9 +17,15 @@
 
 <slot />
 
-<div class="mt-4">
-	<PoweredBy name="Matthias Rohmer"
-						 url="https://matthias.rohmer.rocks"
-						 technologies={['svelte', 'netlify']}
-						 sourceCodeUrl="https://github.com/mrohmer/haekeln.rohmer.rocks" />
-</div>
+<Content class="mt-2">
+	<div class="text-center text-xs opacity-70">
+		Daten bereitgestellt von <a href="https://online.cockpit-xp.de" target="_blank" rel="noopener nofollow" class="text-primary">online.cockpit-xp.de</a>.<br>
+		Dies ist eine Überarbeitung des UIs für private Zwecke.
+	</div>
+	<div class="-mt-12">
+		<PoweredBy name="Matthias Rohmer"
+				   url="https://matthias.rohmer.rocks"
+				   technologies={['Cockpit-XP Online', 'svelte', 'netlify']}
+				   sourceCodeUrl="https://github.com/mrohmer/haekeln.rohmer.rocks" />
+	</div>
+</Content>
