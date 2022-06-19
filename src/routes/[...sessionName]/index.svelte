@@ -53,7 +53,7 @@
       data = response.data as Race;
       await addSession(name);
 
-      scheduleLoad(name, !data.running ? 5000 : undefined);
+      scheduleLoad(name, data.status === 'stopped' ? 5000 : undefined);
     } catch (e) {
       console.log(e);
       data = undefined;
@@ -80,6 +80,15 @@
 </svelte:head>
 {#if data}
     <div class="bg-gray-200 dark:bg-black py-2">
+        <div class="absolute inset-0"
+             class:bg-green-400={data.status === 'running'}
+             class:dark:bg-green-700={data.status === 'running'}
+             class:bg-red-500={data.status === 'stopped'}
+             class:dark:bg-red-700={data.status === 'stopped'}
+             class:bg-yellow-200={data.status === 'starting'}
+             class:dark:bg-yellow-500={data.status === 'starting'}
+             class:animate-pulse={data.status === 'starting'}
+        ></div>
         <Content class="flex items-center">
             <a href="/" class="block p-2 -ml-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="rotate-90">

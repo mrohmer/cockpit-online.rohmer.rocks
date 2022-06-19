@@ -3,6 +3,12 @@ import type {Race} from '../models/race';
 import type {ApiResponse} from '../models/api-response';
 import type {Slot} from '../models/slot';
 
+const STATUS_MAP: Record<Race['status'], string> = {
+  running: 'green',
+  starting: 'sc',
+  stopped: 'red',
+}
+
 const parseInteger = (value: string | undefined): number | undefined => value?.trim() ? parseInt(value) : undefined;
 const parseFloatingPoint = (value: string | undefined): number | undefined => value?.trim() ? parseFloat(value.replace(',', '.')) : undefined;
 const parseImage = (value: string) => {
@@ -65,11 +71,16 @@ const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, r
     .sort(({position: a}, {position: b}) => Math.sign((a ?? 0) - (b ?? 0)))
   ;
 
+  const status = Object
+    .entries(STATUS_MAP)
+    .find(([, color]) => response['rennmodus(0)']?.includes(`ampel-${color}`))
+    ?.[0] as Race['status'];
+
   return {
     name: response['eventname(0)'],
     lapsToGo: parseInteger(response['sollrennrunden(0)']),
     mode: response['rennmodus(0)'],
-    running: ['gelb', 'gruen'].some(color => response['rennmodus(0)']?.includes(`ampel-${color}`)),
+    status: status ?? 'stopped',
     slots,
     time: response['rennzeit(0)'],
   };

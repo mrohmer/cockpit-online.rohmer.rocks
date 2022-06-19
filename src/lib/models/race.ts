@@ -4,7 +4,7 @@ export interface Race {
   slots: Slot[];
   name: string;
   mode: string;
-  running: boolean;
+  status: 'running'|'stopped'|'starting';
   time?: string;
   lapsToGo?: number;
 }
