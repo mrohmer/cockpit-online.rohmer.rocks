@@ -6,10 +6,10 @@
 
 <svelte:head>
 	<title>Carrera-Live</title>
-	<meta name="description" content="Live Data from Carrera & so.">
+	<meta name="description" content="Live Data powered by Carrera-XP">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<meta name="theme-color" content="#AA2F67" />
-	<link rel="manifest" href="manifest.json" />
+	<link rel="manifest" href="/manifest.json" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-title" content="Carrera-Live" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />

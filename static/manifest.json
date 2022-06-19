@@ -1,0 +1,10 @@
+{
+  "start_url": "/",
+  "display": "fullscreen",
+  "name": "Carrera-Live",
+  "scope": "/",
+  "lang": "de",
+  "description": "Live Data powered by Carrera-XP",
+  "theme_color": "#ef4765",
+  "background_color": "#fff"
+}
