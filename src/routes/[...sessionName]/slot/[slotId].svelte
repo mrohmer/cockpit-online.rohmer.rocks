@@ -50,6 +50,7 @@
     }
   }
   $: slot = data?.slots.find(slot => slot.id === $page?.params?.slotId);
+  $: position = (data?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
   $: sessionName = $page.params?.sessionName ?? '';
 </script>
 
@@ -78,6 +79,18 @@
             {/if}
         </div>
 
+        <div class="flex h-12">
+            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
+                Position
+            </div>
+            <div class="flex-1 h-full font-normal leading-10 py-1 text-xl">
+                {#if position}
+                    {position}
+                {:else}
+                    🤷
+                {/if}
+            </div>
+        </div>
         <div class="flex h-12">
             <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
                 Runde
