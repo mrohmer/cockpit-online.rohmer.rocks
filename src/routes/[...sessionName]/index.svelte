@@ -15,6 +15,8 @@
   let notFound = false;
   let unknownError = false;
 
+  let backLink = '/';
+
   onMount(() => {
     mounted = true;
     return () => (mounted = false)
@@ -71,6 +73,11 @@
       load($page.params.sessionName);
     }
   }
+  $: {
+    if (mounted && document.referrer?.includes('rohmer.rocks') && new URL(document.referrer).host !== window.location.host) {
+      backLink = document.referrer
+    }
+  }
 </script>
 
 <svelte:head>
@@ -90,7 +97,7 @@
              class:animate-pulse={data.status === 'starting'}
         ></div>
         <Content class="flex items-center">
-            <a href="/" class="block p-2 -ml-3">
+            <a href={backLink} class="block p-2 -ml-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="rotate-90">
                     <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" class="dark:fill-white"/>
                 </svg>
@@ -123,7 +130,7 @@
         <div class="mb-1">
             Session nicht gefunden 🤷
         </div>
-        <a href="/" class="text-primary">
+        <a href={backLink} class="text-primary">
             zurück
         </a>
     </div>
@@ -132,7 +139,7 @@
         <div class="mb-1">
             Irgendetwas lief schief 🙈
         </div>
-        <a href="/" class="text-primary">
+        <a href={backLink} class="text-primary">
             zurück
         </a>
     </div>
