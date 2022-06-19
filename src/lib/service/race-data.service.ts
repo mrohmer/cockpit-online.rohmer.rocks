@@ -44,6 +44,8 @@ const parseRemainingGas = (value: string): number | undefined => {
 };
 
 const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot => {
+  const slotId = response[`id(${Number(id)})`]
+
   const lastLap: Slot['lastLap'] = {
     time: parseFloatingPoint(response[`rundenzeit(${Number(id)})`]),
   };
@@ -53,16 +55,16 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
   };
   const car: Slot['car'] = {
     name: response[`fahrzeug(${Number(id)})`],
-    image: parseImage(sessionName, id, 'car', response[`fahrzeugbild(${Number(id)})`])
+    image: parseImage(sessionName, slotId, 'car', response[`fahrzeugbild(${Number(id)})`])
   }
 
   return {
-    id,
+    id: slotId,
     name: response[`fahrer(${Number(id)})`]!,
     car: car.image || car.name ? car : undefined,
     lastLap: lastLap.time ? lastLap : undefined,
     fastestLap: fastestLap.lap || fastestLap.time ? fastestLap : undefined,
-    image: parseImage(sessionName, id, 'driver', response[`fahrerbild(${Number(id)})`]),
+    image: parseImage(sessionName, slotId, 'driver', response[`fahrerbild(${Number(id)})`]),
     inPit: !response[`pitin(${Number(id)})`]?.includes('blank.png'),
     lap: parseInteger(response[`runde(${Number(id)})`]),
     lapsToGo: parseInteger(response[`restrunden(${Number(id)})`]),
