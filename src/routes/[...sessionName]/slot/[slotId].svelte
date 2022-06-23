@@ -5,7 +5,7 @@
   import Content from '$lib/components/Content.svelte';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {Loader} from '../_load';
-  import {cleanSessionName} from "$lib/utils/clean-session-name.js";
+  import {cleanSessionName} from "$lib/utils/clean-session-name";
 
   let timeout: number;
   let data: Race;
