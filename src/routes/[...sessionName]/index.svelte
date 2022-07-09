@@ -58,7 +58,7 @@
 </svelte:head>
 {#if data}
     <SessionHeader {...data} on:clickBackLink={handleBackLinkClick} />
-    <Content class="py-2 pr-0">
+    <Content class="py-2 px-0">
         <Standings sessionName={$page.params.sessionName} slots={data.slots} />
     </Content>
 {:else if notFound }

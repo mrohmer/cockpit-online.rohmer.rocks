@@ -1,6 +1,8 @@
 <script lang="ts">
-  import type {Slot} from '../../models/slot';
+  import type {Slot} from '../../../models/slot';
   import StandingsValue from "./StandingsValue.svelte";
+  import Image from "../common/Image.svelte";
+  import RemainingGas from "../common/RemainingGas.svelte";
 
   export let slot: Slot;
   export let type: 'header' | 'row' = 'row';
@@ -12,7 +14,7 @@
   $: isSmall = width < 450;
 </script>
 {#if slot || isHeader}
-    <div class="text-xl pr-3 mb-2"
+    <div class="text-xl mb-2"
          class:font-normal={isHeader}
          class:h-14={!isHeader}
          bind:clientWidth={width}>
@@ -28,11 +30,7 @@
                 <div class="my-1 w-12 min-w-[2.5rem] mr-2"
                      class:h-12={!isHeader}
                 >
-                    {#if slot?.image}
-                        <div class="h-full w-full bg-center bg-no-repeat bg-contain"
-                             style="background-image: url('{slot.image}')">
-                        </div>
-                    {/if}
+                    <Image image={slot?.image} />
                 </div>
             {/if}
             <StandingsValue header="Fahrer" {isHeader} class="flex-1 mx-1 min-w-[5rem] overflow-x-visible"
@@ -81,23 +79,7 @@
 
             </StandingsValue>
             <StandingsValue header="Tankstand" {isHeader} class="w-32 h-full">
-                {#if slot?.inPit || slot?.remainingGas}
-                    <div class="absolute left-0 top-0 h-full bg-green-700"
-                         style="width: {((slot.remainingGas ?? +slot.inPit) * 100).toFixed(0)}%"
-                         class:bg-secondary={slot.inPit}
-                         class:animate-pulse={slot.inPit}
-                         class:opacity-50={!slot.inPit}
-                         class:bg-green-700={!slot.inPit && slot.remainingGas >= 0.2}
-                         class:bg-red-700={!slot.inPit && slot.remainingGas < 0.2}
-                    ></div>
-                    <div class="py-2 leading-10">
-                        {#if slot.inPit}
-                            in Pit
-                        {:else if slot.remainingGas}
-                            {(slot.remainingGas * 100).toFixed(0)}%
-                        {/if}
-                    </div>
-                {/if}
+                <RemainingGas {...(slot ?? {})}/>
             </StandingsValue>
         </div>
     </div>

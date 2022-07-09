@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type {Slot} from '../../models/slot';
-
   export let header: string;
   export let isHeader = false;
 

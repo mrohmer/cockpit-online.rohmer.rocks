@@ -1,21 +1,22 @@
 <script lang="ts">
   import type {Slot} from '../../models/slot';
-  import StandingsRow from "./StandingsRow.svelte";
-  import {cleanSessionName} from "../../utils/clean-session-name.js";
+  import StandingsDesktop from "./desktop/Standings.svelte";
+  import StandingsMobile from "./mobile/Standings.svelte";
 
   export let slots: Slot[] = [];
   export let sessionName: string;
 
-  $: hasImageCol = slots?.some(slot => !!slot.image) ?? false;
+  let width: number;
+
+  $: isDesktop = !width || width >= 500
 </script>
 
 <div class="overflow-x-auto">
-    <div class="min-w-[500px]">
-        <StandingsRow type="header" {hasImageCol}/>
-        {#each slots as slot}
-            <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block">
-                <StandingsRow {slot} {hasImageCol}/>
-            </a>
-        {/each}
+    <div bind:clientWidth={width}>
+        {#if isDesktop}
+            <StandingsDesktop {sessionName} {slots} />
+        {:else}
+            <StandingsMobile {sessionName} {slots} />
+        {/if}
     </div>
 </div>
