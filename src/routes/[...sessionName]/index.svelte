@@ -6,6 +6,7 @@
   import Standings from "$lib/components/standings/Standings.svelte";
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {Loader} from './_load';
+  import Loading from "../../lib/components/Loading.svelte";
 
   let timeout: number;
   let data: Race;
@@ -80,5 +81,5 @@
         </a>
     </div>
 {:else }
-    lädt...
+    <Loading />
 {/if}
