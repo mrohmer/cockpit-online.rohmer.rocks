@@ -30,6 +30,7 @@
 		"axios": "^0.27.2",
 		"dexie": "^3.2.2",
 		"sharp": "^0.30.6",
-		"workbox-precaching": "^6.2.4"
+		"workbox-precaching": "^6.2.4",
+		"workbox-recipes": "^6.5.3"
 	}
 }
