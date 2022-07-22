@@ -17,8 +17,12 @@ export class Loader {
     this.timeout && clearTimeout(this.timeout);
   }
 
-  private scheduleLoad(name: string, delay = 1000) {
+  private isDataSaveEnabled() {
+    return 'connection' in navigator && (navigator.connection as any).saveData === true;
+  }
+  private scheduleLoad(name: string, delay: number) {
     if (this.isMounted()) {
+      delay = this.isDataSaveEnabled() ? delay * 3 : delay;
       this.timeout = setTimeout(() => this.load(name), delay) as any as number;
     }
   }
@@ -32,7 +36,7 @@ export class Loader {
       this.setData(data);
       await addSession(name);
 
-      this.scheduleLoad(name, data.status === 'stopped' ? 5000 : undefined);
+      this.scheduleLoad(name, data.status === 'stopped' ? 5000 : 1000);
     } catch (e: any) {
       this.setData(undefined);
       this.setError(e?.request?.status ?? 500);
