@@ -22,8 +22,8 @@
         notFound = undefined;
         unknownError = undefined;
       } else {
-        notFound = status === 404;
-        unknownError = status !== 404;
+        notFound = [502, 404].includes(status);
+        unknownError = !notFound && status !== 200;
       }
     },
     () => mounted,
