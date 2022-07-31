@@ -1,5 +1,6 @@
 <script lang="ts">
     import RemainingGasNotification from "./RemainingGasNotification.svelte";
+    import {notificationPermission} from "../../../stores/permission.js";
 
     export let inPit = false;
     export let remainingGas: number;
@@ -24,9 +25,11 @@
                     {(remainingGas * 100).toFixed(0)}%
                 {/if}
             </div>
-            <div class="">
-                <RemainingGasNotification state={subscribed} on:subscribe on:unsubscribe />
-            </div>
+            {#if $notificationPermission !== 'denied'}
+                <div>
+                    <RemainingGasNotification state={subscribed} on:subscribe on:unsubscribe/>
+                </div>
+            {/if}
         </div>
     </div>
 {/if}

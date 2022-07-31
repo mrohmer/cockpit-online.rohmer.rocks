@@ -7,6 +7,7 @@
   import type {RemainingGasSubscription} from '../../models/remaining-gas-subscription';
   import {db} from '../../db';
   import {liveQuery} from 'dexie';
+  import {notificationPermission} from '../../stores/permission';
 
   export let slots: Slot[] = [];
   export let sessionName: string;
@@ -21,13 +22,21 @@
     return () => (mounted = false);
   });
 
-  const handleSubscribeToRemainingGas = ({detail: {slotId}}) => db.transaction('rw?', db.remainingGasSubscriptions, async () => {
-    const subscription = await db.remainingGasSubscriptions.where({sessionName, slotId}).first();
-
-    if (!subscription) {
-      await db.remainingGasSubscriptions.add({sessionName, slotId});
+  const handleSubscribeToRemainingGas = async ({detail: {slotId}}) => {
+    const state = await notificationPermission.query();
+    if (state === 'prompt') {
+      await notificationPermission.request();
     }
-  });
+
+    // even if it's still not granted, save it to the db so we can show the prompt again later 🤷
+    await db.transaction('rw?', db.remainingGasSubscriptions, async () => {
+      const subscription = await db.remainingGasSubscriptions.where({sessionName, slotId}).first();
+
+      if (!subscription) {
+        await db.remainingGasSubscriptions.add({sessionName, slotId});
+      }
+    });
+  }
   const handleUnsubscribeFromRemainingGas = ({detail: {slotId}}) => db.transaction('rw?', db.remainingGasSubscriptions, async () => {
     const subscription = await db.remainingGasSubscriptions.where({sessionName, slotId}).first();
 
