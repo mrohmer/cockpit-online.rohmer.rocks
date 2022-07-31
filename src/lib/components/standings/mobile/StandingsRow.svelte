@@ -2,11 +2,15 @@
   import type {Slot} from '../../../models/slot';
   import Image from "../common/Image.svelte";
   import RemainingGas from "../common/RemainingGas.svelte";
+  import {createEventDispatcher} from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   export let slot: Slot;
   export let hasImageCol: boolean = false;
 
   export let width: number;
+  export let subscribedForRemainingGas: boolean = false;
 
   $: size = width >= 400 ? 'normal' : (width >= 330 ? 'small' : 'tiny');
 </script>
@@ -57,14 +61,14 @@
         </div>
         {#if size !== 'tiny'}
             <div class="flex-1 ml-1 h-14">
-                <RemainingGas {...slot}/>
+                <RemainingGas {...slot} subscribed={subscribedForRemainingGas} on:subscribe={() => dispatch('subscribeRemainingGas')} on:unsubscribe={() => dispatch('unsubscribeRemainingGas')} />
             </div>
         {/if}
     </div>
     {#if size === 'tiny'}
         <div class="flex mb-2 pl-9">
             <div class="flex-1 ml-1">
-                <RemainingGas {...slot}/>
+                <RemainingGas {...slot} subscribed={subscribedForRemainingGas} on:subscribe={() => dispatch('subscribeRemainingGas')} on:unsubscribe={() => dispatch('unsubscribeRemainingGas')} />
             </div>
         </div>
     {/if}

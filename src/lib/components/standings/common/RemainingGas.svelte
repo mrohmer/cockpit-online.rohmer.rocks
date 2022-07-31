@@ -1,6 +1,9 @@
 <script lang="ts">
+    import RemainingGasNotification from "./RemainingGasNotification.svelte";
+
     export let inPit = false;
     export let remainingGas: number;
+    export let subscribed = false;
 </script>
 
 {#if inPit || remainingGas}
@@ -13,12 +16,17 @@
          class:bg-red-700={!inPit && remainingGas < 0.2}
     ></div>
     <div class="flex flex-col justify-center h-full">
-        <div class="text-center">
-            {#if inPit}
-                in Pit
-            {:else if remainingGas}
-                {(remainingGas * 100).toFixed(0)}%
-            {/if}
+        <div class="flex">
+            <div class="flex-1 text-center">
+                {#if inPit}
+                    in Pit
+                {:else if remainingGas}
+                    {(remainingGas * 100).toFixed(0)}%
+                {/if}
+            </div>
+            <div class="">
+                <RemainingGasNotification state={subscribed} on:subscribe on:unsubscribe />
+            </div>
         </div>
     </div>
 {/if}

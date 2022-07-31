@@ -3,10 +3,14 @@
   import StandingsValue from "./StandingsValue.svelte";
   import Image from "../common/Image.svelte";
   import RemainingGas from "../common/RemainingGas.svelte";
+  import {createEventDispatcher} from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   export let slot: Slot;
   export let type: 'header' | 'row' = 'row';
   export let hasImageCol = false;
+  export let subscribedForRemainingGas: boolean = false;
 
   let width: number;
 
@@ -79,7 +83,7 @@
 
             </StandingsValue>
             <StandingsValue header="Tankstand" {isHeader} class="w-32 h-full">
-                <RemainingGas {...(slot ?? {})}/>
+                <RemainingGas {...(slot ?? {})} subscribed={subscribedForRemainingGas} on:subscribe={() => dispatch('subscribeRemainingGas')} on:unsubscribe={() => dispatch('unsubscribeRemainingGas')} />
             </StandingsValue>
         </div>
     </div>

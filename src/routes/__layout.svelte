@@ -2,6 +2,26 @@
 	import '../app.css';
 	import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
 	import Content from "$lib/components/Content.svelte";
+	import {onMount} from 'svelte';
+
+	const registerPeriodicSync = async (registration: any) => {
+		try {
+			await registration.periodicSync.register('update-sessions', {
+				minInterval: 3000,
+			});
+		} catch {
+			console.log('Periodic Sync could not be registered!');
+		}
+	}
+	const registerServiceWorker = async () => {
+		if ('serviceWorker' in navigator) {
+			const registration = await navigator.serviceWorker.register('/service-worker.js');
+			await registerPeriodicSync(registration);
+		}
+	}
+	onMount(async () => {
+		await registerServiceWorker();
+	});
 </script>
 
 <svelte:head>
