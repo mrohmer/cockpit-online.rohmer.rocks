@@ -81,7 +81,7 @@ export class SubscriptionPlugin implements WorkboxPlugin {
       }
 
     } catch (e) {
-      console.error(e);
+      console.error('🤔', e);
     }
     return response;
   }
