@@ -2,6 +2,7 @@ import { build, files } from '$service-worker';
 import {registerRoute, setDefaultHandler, setCatchHandler} from 'workbox-routing';
 import {NetworkFirst, CacheFirst} from 'workbox-strategies';
 import {warmStrategyCache} from 'workbox-recipes';
+import {SubscriptionPlugin} from '$lib/plugins/subscription-plugin';
 
 const INDEX_URL = '/';
 const FALLBACK_SESSION_URL = '/session';
@@ -13,7 +14,14 @@ const urls = [
   ...build,
   ...files,
 ];
-const strategy = new NetworkFirst();
+
+const subscriptions = new SubscriptionPlugin((self as any).registration);
+
+const strategy = new NetworkFirst({
+  plugins: [
+    subscriptions,
+  ]
+});
 warmStrategyCache({
   urls,
   strategy,
@@ -43,4 +51,12 @@ setCatchHandler(async ({request, event}) => {
   return Response.error();
 });
 
-skipWaiting();
+(self as any).skipWaiting();
+self.addEventListener('notificationclick', ((event: Record<'notification', Notification> & any) => {
+  event.waitUntil((async () => {
+    if (await subscriptions.canHandleNotificationClick(event.notification.tag)) {
+      return subscriptions.handleNotificationClick(event.notification.tag);
+    }
+    return Promise.resolve();
+  }) as any);
+}) as any);
