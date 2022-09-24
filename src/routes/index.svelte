@@ -11,7 +11,6 @@
   import Input from "../lib/components/Input.svelte";
   import { goto } from '$app/navigation';
 
-
   let mounted = false;
   let sessions: Observable<Session[]>;
   let hasNotifications: Observable<boolean>;
@@ -26,7 +25,10 @@
     return goto(`/${sessionName.trim().replace(/^\/*/, '')}`);
   }
 
-  onMount(() => mounted = true);
+  onMount(() => {
+    mounted = true;
+
+  });
 
   $: {
     if (mounted) {

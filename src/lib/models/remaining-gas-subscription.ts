@@ -4,5 +4,6 @@ export interface RemainingGasSubscription {
   slotId: string;
   driverName?: string;
   lastNotifiedOnValue?: number;
+  created: Date;
 }
 

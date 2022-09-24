@@ -33,7 +33,7 @@
       const subscription = await db.remainingGasSubscriptions.where({sessionName, slotId}).first();
 
       if (!subscription) {
-        await db.remainingGasSubscriptions.add({sessionName, slotId, driverName});
+        await db.remainingGasSubscriptions.add({sessionName, slotId, driverName, created: new Date()});
       }
     });
   }
