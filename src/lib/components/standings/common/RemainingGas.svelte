@@ -27,7 +27,7 @@
             </div>
             {#if $notificationPermission !== 'denied'}
                 <div>
-                    <RemainingGasNotification state={subscribed} on:subscribe on:unsubscribe/>
+                    <RemainingGasNotification state={subscribed} hasNotification={remainingGas < 0.2} on:subscribe on:unsubscribe/>
                 </div>
             {/if}
         </div>

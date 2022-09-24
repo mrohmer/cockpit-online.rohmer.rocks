@@ -6,6 +6,9 @@
     @apply relative box-border;
 }
 
+a {
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+}
 input, [contenteditable="true"], textarea {
     @apply bg-transparent outline-none focus:outline-none;
 }
