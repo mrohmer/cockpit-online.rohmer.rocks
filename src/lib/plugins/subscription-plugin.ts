@@ -108,8 +108,6 @@ export class SubscriptionPlugin implements WorkboxPlugin {
     const slotsToUnnotify = slotsAndSubscriptions
       .filter(([{remainingGas}]) => !(remainingGas !== undefined && remainingGas <= this.GAS_THRESHOLD));
 
-    console.log('slotsToNotify', slotsToNotify);
-    console.log('slotsToUnnotify', slotsToUnnotify);
     return Promise.all([
       this.createAndUpdateNotifications(sessionName, slotsToNotify),
       this.removeNotifications(sessionName, slotsToUnnotify)

@@ -9,8 +9,8 @@
 			await registration.periodicSync.register('update-sessions', {
 				minInterval: 3000,
 			});
-		} catch {
-			console.log('Periodic Sync could not be registered!');
+		} catch (e) {
+			console.log('Periodic Sync could not be registered!', e);
 		}
 	}
 	const registerServiceWorker = async () => {
