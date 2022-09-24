@@ -20,7 +20,7 @@
         <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block">
             <StandingsRow {slot} {hasImageCol}
                           subscribedForRemainingGas={remainingGasSubscriptions?.some(({slotId}) => slot.id === slotId)}
-                          on:subscribeRemainingGas={() => dispatch('subscribeRemainingGas', { slotId: slot.id })}
+                          on:subscribeRemainingGas={() => dispatch('subscribeRemainingGas', { slotId: slot.id, driverName: slot.name })}
                           on:unsubscribeRemainingGas={() => dispatch('unsubscribeRemainingGas', { slotId: slot.id })}  />
         </a>
     {/each}

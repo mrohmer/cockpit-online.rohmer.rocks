@@ -22,7 +22,7 @@
     return () => (mounted = false);
   });
 
-  const handleSubscribeToRemainingGas = async ({detail: {slotId}}) => {
+  const handleSubscribeToRemainingGas = async ({detail: {slotId, driverName}}) => {
     const state = await notificationPermission.query();
     if (state === 'prompt') {
       await notificationPermission.request();
@@ -33,7 +33,7 @@
       const subscription = await db.remainingGasSubscriptions.where({sessionName, slotId}).first();
 
       if (!subscription) {
-        await db.remainingGasSubscriptions.add({sessionName, slotId});
+        await db.remainingGasSubscriptions.add({sessionName, slotId, driverName});
       }
     });
   }

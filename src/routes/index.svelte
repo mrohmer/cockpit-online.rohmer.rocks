@@ -14,6 +14,7 @@
 
   let mounted = false;
   let sessions: Observable<Session[]>;
+  let hasNotifications: Observable<boolean>;
 
   let sessionName: string;
 
@@ -31,6 +32,12 @@
     if (mounted) {
       sessions = liveQuery(
         () => db.sessions.toArray()
+      )
+      hasNotifications = liveQuery(
+        async () => {
+          const count = await db.remainingGasSubscriptions.count();
+          return count > 0;
+        }
       )
     }
   }
@@ -69,6 +76,11 @@
                     </a>
                 {/each}
             </div>
+        {/if}
+        {#if $hasNotifications}
+            <a class="mt-5" href="/notifications">
+                <div class="text-xs pt-1 opacity-70">Manage deine Benachrichtigungen</div>
+            </a>
         {/if}
     </div>
 </Content>
