@@ -60,3 +60,11 @@ self.addEventListener('notificationclick', ((event: Record<'notification', Notif
     return Promise.resolve();
   }) as any);
 }) as any);
+self.addEventListener('periodicsync', ((event: Record<'tag', string> & any) => {
+  event.waitUntil((async () => {
+    if (await subscriptions.canHandlePeriodicSync(event.tag)) {
+      return subscriptions.handlePeriodicSync();
+    }
+    return Promise.resolve();
+  }) as any);
+}) as any);

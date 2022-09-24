@@ -4,9 +4,13 @@ import type {Race} from '../models/race';
 import {notificationPermission} from '../stores/permission';
 import type {RemainingGasSubscription} from '../models/remaining-gas-subscription';
 import type {Slot} from '../models/slot';
+import ms from 'ms';
+import {RaceDataLoader} from '../loader/race-data.loader';
 
 export class SubscriptionPlugin implements WorkboxPlugin {
   private readonly GAS_THRESHOLD = 0.2;
+  private lastFetch: Record<string, Date> = {};
+  private loader?: RaceDataLoader;
 
   constructor(public serviceWorker: ServiceWorkerRegistration) {
   }
@@ -54,8 +58,6 @@ export class SubscriptionPlugin implements WorkboxPlugin {
       )
     ;
 
-    console.log('slotsAndSubscriptions', slotsAndSubscriptions);
-
     await Promise.all([
       this.updateSubscriptions(slotsAndSubscriptions),
       this.processNotifications(sessionName, slotsAndSubscriptions),
@@ -67,9 +69,9 @@ export class SubscriptionPlugin implements WorkboxPlugin {
       const sessionName = this.getSessionName(new URL(request.url));
 
       if (sessionName) {
+        this.lastFetch[sessionName] = new Date();
         await this.notifySlots(sessionName, response);
       }
-
     } catch (e) {
       console.error('🤔', e);
     }
@@ -82,6 +84,28 @@ export class SubscriptionPlugin implements WorkboxPlugin {
 
   async handleNotificationClick(notification: Notification): Promise<void> {
 
+  }
+  async canHandlePeriodicSync(tag: string): Promise<boolean> {
+    return tag === 'update-sessions';
+  }
+  async handlePeriodicSync() {
+    const subscriptions = await db.remainingGasSubscriptions.toArray();
+    const sessionsToFetch = Array.from(
+      new Set(subscriptions.map(({sessionName}) => sessionName)).values()
+    )
+      .filter(sessionName => !this.lastFetch[sessionName] || this.lastFetch[sessionName] < new Date(+new Date() - ms('7 sec')))
+
+    if (!sessionsToFetch.length) {
+      return;
+    }
+
+    if (!this.loader) {
+      this.loader = new RaceDataLoader();
+    }
+
+    await Promise.allSettled(
+      sessionsToFetch.map(name => this.loader!.load(name))
+    );
   }
 
   private showNotification(slot: Slot, sessionName: string): Promise<void> {
