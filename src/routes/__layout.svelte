@@ -2,36 +2,43 @@
   import '../app.css';
   import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
   import Content from "$lib/components/Content.svelte";
-  import {onMount} from 'svelte';
+  import {onMount, setContext} from 'svelte';
+  import {writable} from 'svelte/store';
+  import {liveQuery, Observable} from 'dexie';
+  import {db} from '../lib/db';
+  import {PeriodicSync, registerPeriodicSync, unregisterPeriodicSync} from '../lib/utils/register-periodic-sync';
+  import ms from 'ms';
 
-  const registerPeriodicSync = async (registration: any) => {
-    try {
-      const status = await navigator.permissions.query({
-        name: 'periodic-background-sync',
-      } as any);
+  const registration = writable();
+  let hasNotifications: Observable<boolean>;
 
-      if (status.state === 'granted') {
-        await registration.periodicSync.register('update-sessions', {
-          minInterval: 3000,
-        });
-        console.log('Periodic Sync registered!')
-      } else {
-        console.log('Periodic Sync is not allowed!')
-      }
-    } catch (e) {
-      console.error('Periodic Sync could not be registered!', e);
-    }
-  }
+  setContext('serviceWorker', {
+    registration,
+  })
+
   const registerServiceWorker = async () => {
     if ('serviceWorker' in navigator) {
-      const registration = await navigator.serviceWorker.register('/service-worker.js');
-      if ('periodicSync' in registration) ;
-      await registerPeriodicSync(registration);
+      registration.set(await navigator.serviceWorker.register('/service-worker.js'));
     }
   }
   onMount(async () => {
     await registerServiceWorker();
+
+    hasNotifications = liveQuery(async () => {
+      const count = await db.remainingGasSubscriptions.count();
+      return count > 0;
+    })
   });
+
+  $: {
+    if (hasNotifications && $registration) {
+      if ($hasNotifications) {
+        await registerPeriodicSync($registration, PeriodicSync.UPDATE_SESSIONS, ms('3 sec'));
+      } else {
+        await unregisterPeriodicSync($registration, PeriodicSync.UPDATE_SESSIONS);
+      }
+    }
+  }
 </script>
 
 <svelte:head>

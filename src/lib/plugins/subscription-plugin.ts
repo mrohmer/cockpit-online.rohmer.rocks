@@ -6,6 +6,7 @@ import type {RemainingGasSubscription} from '../models/remaining-gas-subscriptio
 import type {Slot} from '../models/slot';
 import ms from 'ms';
 import {RaceDataLoader} from '../loader/race-data.loader';
+import {PeriodicSync, unregisterPeriodicSync} from '../utils/register-periodic-sync';
 
 export class SubscriptionPlugin implements WorkboxPlugin {
   private readonly GAS_THRESHOLD = 0.2;
@@ -86,10 +87,16 @@ export class SubscriptionPlugin implements WorkboxPlugin {
 
   }
   async canHandlePeriodicSync(tag: string): Promise<boolean> {
-    return tag === 'update-sessions';
+    return tag === PeriodicSync.UPDATE_SESSIONS;
   }
   async handlePeriodicSync() {
     const subscriptions = await db.remainingGasSubscriptions.toArray();
+
+    if (!subscriptions?.length) {
+      await unregisterPeriodicSync((this.serviceWorker as any).registration, PeriodicSync.UPDATE_SESSIONS);
+      return;
+    }
+
     const sessionsToFetch = Array.from(
       new Set(subscriptions.map(({sessionName}) => sessionName)).values()
     )

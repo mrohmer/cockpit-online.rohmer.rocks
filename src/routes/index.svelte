@@ -25,10 +25,7 @@
     return goto(`/${sessionName.trim().replace(/^\/*/, '')}`);
   }
 
-  onMount(() => {
-    mounted = true;
-
-  });
+  onMount(() => (mounted = true));
 
   $: {
     if (mounted) {
