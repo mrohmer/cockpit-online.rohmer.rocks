@@ -4,7 +4,8 @@
   import Content from "$lib/components/Content.svelte";
   import {onMount, setContext} from 'svelte';
   import {writable} from 'svelte/store';
-  import {liveQuery, Observable} from 'dexie';
+  import {liveQuery} from 'dexie';
+  import type {Observable} from 'dexie';
   import {db} from '../lib/db';
   import {PeriodicSync, registerPeriodicSync, unregisterPeriodicSync} from '../lib/utils/register-periodic-sync';
   import ms from 'ms';
@@ -21,6 +22,7 @@
       registration.set(await navigator.serviceWorker.register('/service-worker.js'));
     }
   }
+
   onMount(async () => {
     await registerServiceWorker();
 
@@ -33,9 +35,9 @@
   $: {
     if (hasNotifications && $registration) {
       if ($hasNotifications) {
-        await registerPeriodicSync($registration, PeriodicSync.UPDATE_SESSIONS, ms('3 sec'));
+        registerPeriodicSync($registration, PeriodicSync.UPDATE_SESSIONS, ms('3 sec'));
       } else {
-        await unregisterPeriodicSync($registration, PeriodicSync.UPDATE_SESSIONS);
+        unregisterPeriodicSync($registration, PeriodicSync.UPDATE_SESSIONS);
       }
     }
   }

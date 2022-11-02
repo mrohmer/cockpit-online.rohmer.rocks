@@ -2,11 +2,16 @@ import Dexie from 'dexie';
 import type { Session } from '$lib/models/session';
 import type {RemainingGasSubscription} from '../models/remaining-gas-subscription';
 import ms from 'ms';
+import {remainingGasSubscription} from './remaining-gas-subscription';
 
 export class ProjectDb extends Dexie {
 	sessions!: Dexie.Table<Session>;
 
 	remainingGasSubscriptions!: Dexie.Table<RemainingGasSubscription>;
+
+	readonly utils = {
+		remainingGasSubscription,
+	}
 
 	constructor() {
 		super('sessions');

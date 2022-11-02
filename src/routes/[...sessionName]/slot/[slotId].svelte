@@ -7,7 +7,13 @@
   import {Loader} from '../_load';
   import {cleanSessionName} from "$lib/utils/clean-session-name";
   import Loading from "../../../lib/components/Loading.svelte";
+  import RemainingGas from "../../../lib/components/standings/common/RemainingGas.svelte";
+  import {liveQuery} from 'dexie';
+  import type {Observable} from 'dexie';
+  import {db} from '../../../lib/db';
+  import type {RemainingGasSubscription} from '../../../lib/models/remaining-gas-subscription';
 
+  let remainingGasSubscription: Observable<RemainingGasSubscription>
   let timeout: number;
   let data: Race;
   let mounted = false;
@@ -43,6 +49,10 @@
       return false;
     }
   }
+  const handleSubscribe = () =>
+    db.utils.remainingGasSubscription.subscribe({sessionName, slotId: slot.id, driverName: slot.name});
+  const handleUnsubscribe = () =>
+    db.utils.remainingGasSubscription.unsubscribe({sessionName, slotId: slot.id});
 
   $: {
     if (mounted && $page?.params?.sessionName?.trim()) {
@@ -50,6 +60,16 @@
       loader.load($page.params.sessionName);
     }
   }
+  $: {
+    if (mounted && $page?.params?.sessionName?.trim() && $page?.params?.slotId?.trim()) {
+      remainingGasSubscription = liveQuery(
+        () => db.remainingGasSubscriptions
+          .where({sessionName: $page.params.sessionName.trim(), slotId: $page.params.slotId.trim()})
+          .first()
+      )
+    }
+  }
+
   $: slot = data?.slots.find(slot => slot.id === $page?.params?.slotId);
   $: position = (data?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
   $: sessionName = $page.params?.sessionName ?? '';
@@ -148,23 +168,10 @@
                 Tankstand
             </div>
             <div class="flex-1 h-full font-normal text-xl">
-                {#if slot?.inPit || slot?.remainingGas}
-                    <div class="absolute left-0 top-0 h-full bg-green-700"
-                         style="width: {((slot.remainingGas ?? +slot.inPit) * 100).toFixed(0)}%"
-                         class:bg-secondary={slot.inPit}
-                         class:animate-pulse={slot.inPit}
-                         class:opacity-50={!slot.inPit}
-                         class:bg-green-700={!slot.inPit && slot.remainingGas >= 0.2}
-                         class:bg-red-700={!slot.inPit && slot.remainingGas < 0.2}
-                    ></div>
-                    <div class="py-1 leading-10 text-center">
-                        {#if slot.inPit}
-                            in Pit
-                        {:else if slot.remainingGas}
-                            {(slot.remainingGas * 100).toFixed(0)}%
-                        {/if}
-                    </div>
-                {/if}
+                <RemainingGas {...slot}
+                              subscribed={!!$remainingGasSubscription}
+                              on:subscribe={handleSubscribe}
+                              on:unsubscribe={handleUnsubscribe} />
             </div>
         </div>
     </Content>
