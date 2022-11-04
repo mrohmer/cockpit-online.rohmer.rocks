@@ -17,7 +17,7 @@
 
 <slot />
 
-<Content class="mt-2">
+<Content class="mt-10">
 	<div class="text-center text-xs opacity-70">
 		Daten bereitgestellt von <a href="https://online.cockpit-xp.de" target="_blank" rel="noreferrer noopener" class="text-primary">online.cockpit-xp.de</a>.<br>
 		Dies ist eine Überarbeitung des UIs für private Zwecke.
