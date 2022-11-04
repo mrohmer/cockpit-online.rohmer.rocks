@@ -2,7 +2,8 @@
 	import '../app.css';
 	import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
 	import Content from "$lib/components/Content.svelte";
-	import WakeLock from "../lib/components/WakeLock.svelte";
+	import WakeLock from "$lib/components/WakeLock.svelte";
+	import ThemeSwitch from "../lib/components/ThemeSwitch.svelte";
 </script>
 
 <svelte:head>
@@ -17,6 +18,11 @@
 </svelte:head>
 
 <slot />
+
+<div class="flex flex-col justify-center items-center mt-32 gap-y-8 px-4">
+	<WakeLock />
+	<ThemeSwitch />
+</div>
 
 <Content class="mt-10">
 	<div class="text-center text-xs opacity-70">

@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-neutral-50 dark:bg-black dark:text-white">
+<html lang="de" >
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<script>
+			if (!('theme' in localStorage)) {
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					document.documentElement.classList.add('dark');
+				} else {
+					document.documentElement.classList.remove('dark');
+				}
+			} else {
+				var data = localStorage.getItem('theme');
+				if (data) {
+					data = JSON.parse(data);
+					document.documentElement.classList.add(data.mode);
+				}
+			}
+		</script>
+
 		%sveltekit.head%
 	</head>
-	<body class="font-thin w-screen overflow-x-hidden">
+	<body class="font-thin w-screen overflow-x-hidden bg-neutral-50 dark:bg-black dark:text-white transition-colors">
 		<div>%sveltekit.body%</div>
 	</body>
 </html>
