@@ -4,6 +4,7 @@
   import SlotCardImage from "./SlotCardImage.svelte";
   import SlotCardTopRow from "./SlotCardTopRow.svelte";
   import SlotCardLowerRow from "./SlotCardLowerRow.svelte";
+  import Card from "../../Card.svelte";
 
   export let slot: Slot;
 
@@ -15,7 +16,7 @@
 </script>
 
 {#if slot}
-    <div class="shadow transition-all cursor-pointer rounded-xl overflow-hidden hover:shadow-md dark:shadow-none dark:border dark:border-neutral-800 dark:hover:shadow-neutral-800" bind:clientWidth={width}>
+    <Card bind:clientWidth={width} hasHover={true}>
         <div class="bg-neutral-50 dark:bg-neutral-900 overflow-hidden">
             <SlotCardBackground {...slot} hasImage={!!slot.image} />
             <div class="flex gap-x-4 px-4 py-1.5"
@@ -32,5 +33,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </Card>
 {/if}

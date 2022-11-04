@@ -4,9 +4,9 @@
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
   import Standings from "$lib/components/standings/Standings.svelte";
-  import IoIosArrowBack from 'svelte-icons/io/IoIosArrowBack.svelte';
   import {Loader} from './_load';
   import Loading from "../../lib/components/Loading.svelte";
+  import SessionHeader from "../../lib/components/SessionHeader.svelte";
   import {slide} from 'svelte/transition';
 
   let data: Race;
@@ -59,53 +59,24 @@
 </svelte:head>
 {#if data}
     <Content class="py-2 px-0">
-        <div class="mt-4 mb-10">
-            <div class="flex items-center">
-                <a href="/" class="w-10 h-6 px-2" on:click={handleBackLinkClick}>
-                    <IoIosArrowBack/>
-                </a>
-                <div class="flex-1 min-w-0">
-                    <h1 class="text-3xl text-center pr-10 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {data.name}
-                    </h1>
-                </div>
-            </div>
+        <SessionHeader {...data} on:clickBackLink={handleBackLinkClick} />
 
-            {#if data.mode}
-                <div class="flex justify-center items-center gap-x-2" transition:slide|local>
-                    <div class="flex h-2 w-2">
-                        <div class="animate-ping absolute h-full w-full rounded-full opacity-75"
-                             class:bg-green-400={data.status === 'running'}
-                             class:bg-red-500={data.status === 'stopped'}
-                             class:bg-yellow-200={data.status === 'starting'}
-                             class:animate-ping={data.status === 'starting'}
-                        ></div>
-                        <div class="rounded-full h-full w-full"
-                             class:bg-green-400={data.status === 'running'}
-                             class:bg-red-500={data.status === 'stopped'}
-                             class:bg-yellow-200={data.status === 'starting'}></div>
+        {#if data.time || data.lapsToGo}
+            <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6" transition:slide|local>
+                {#if data.time}
+                    <div class="text-center flex-1">
+                        <div class="text-xs">Zeit</div>
+                        <div class="font-normal">{data.time || '00:00:00'}</div>
                     </div>
-                    <div class="pr-2">{data.mode}</div>
-                </div>
-            {/if}
-
-            {#if data.time || data.lapsToGo}
-                <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto" transition:slide|local>
-                    {#if data.time}
-                        <div class="text-center flex-1">
-                            <div class="text-xs">Zeit</div>
-                            <div class="font-normal">{data.time || '00:00:00'}</div>
-                        </div>
-                    {/if}
-                    {#if data.lapsToGo}
-                        <div class="text-center flex-1">
-                            <div class="text-xs">Runden</div>
-                            <div class="font-normal">{data.lapsToGo || 225}</div>
-                        </div>
-                    {/if}
-                </div>
-            {/if}
-        </div>
+                {/if}
+                {#if data.lapsToGo}
+                    <div class="text-center flex-1">
+                        <div class="text-xs">Runden</div>
+                        <div class="font-normal">{data.lapsToGo || 225}</div>
+                    </div>
+                {/if}
+            </div>
+        {/if}
 
         <Standings sessionName={$page.params.sessionName} slots={data.slots}/>
     </Content>
