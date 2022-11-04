@@ -4,7 +4,7 @@
     export let id: Slot['id'];
     export let hasImage: boolean;
 </script>
-<div class="absolute border-r-[14px] w-20 h-96 -left-10 -mt-1 -top-10 rotate-12 origin-center bg-gray-200 shadow-xl dark:bg-gray-800"
+<div class="absolute border-r-[14px] w-20 h-96 -left-10 -mt-1 -top-10 rotate-12 origin-center bg-gray-200 shadow-xl dark:bg-gray-800 dark:shadow-neutral-800"
      class:-left-16={!hasImage}
      class:border-slot-1={id === '1'}
      class:border-slot-2={id === '2'}
