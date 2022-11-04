@@ -43,8 +43,8 @@
 
 {#if isSupported}
     <Switch checked={!!wakeLock} on:change={toggleWakeLock}>
-        <span class="text-neutral-400">
-            Bildschirm immer anlassen
+        <span class="text-neutral-700 dark:text-neutral-300">
+            Display nicht deaktivieren
         </span>
     </Switch>
 {/if}
