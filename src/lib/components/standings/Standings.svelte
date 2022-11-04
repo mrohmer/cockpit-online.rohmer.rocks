@@ -1,6 +1,7 @@
 <script lang="ts">
   import type {Slot} from '$lib/models/slot';
   import SlotCard from "./slot-card/SlotCard.svelte";
+  import {cleanSessionName} from "../../utils/clean-session-name.js";
 
   export let slots: Slot[] = [];
   export let sessionName: string;
@@ -17,7 +18,7 @@
          class:flex-wrap={twoCols}
     >
         {#each slots as slot}
-            <a href="/{sessionName}/slot/{slot.id}" class="block" class:w-[48%]={twoCols} class:mr-[2%]={twoCols}>
+            <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block" class:w-[48%]={twoCols} class:mr-[2%]={twoCols}>
                 <SlotCard {slot} {leaderLap} />
             </a>
         {/each}
