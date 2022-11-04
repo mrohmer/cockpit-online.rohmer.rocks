@@ -28,7 +28,7 @@
             {#if lap}
                 {position === 1 || !leaderLap ? lap : -Math.abs(lap - leaderLap)}
             {:else}
-                <div class="text-neutral-300 text-sm">---</div>
+                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
             {/if}
         </div>
     </div>

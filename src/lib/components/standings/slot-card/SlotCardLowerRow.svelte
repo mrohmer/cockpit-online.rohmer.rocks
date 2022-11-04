@@ -34,7 +34,7 @@
             {#if lastLap?.time}
                 {lastLap.time}s
             {:else}
-                <div class="text-neutral-300 text-sm">---</div>
+                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
             {/if}
         </SlotCardLowerRowFact>
     </div>
@@ -46,7 +46,7 @@
             {#if fastestLap?.time}
                 {fastestLap.time}s
             {:else}
-                <div class="text-neutral-300 text-sm">---</div>
+                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
             {/if}
         </SlotCardLowerRowFact>
     </div>

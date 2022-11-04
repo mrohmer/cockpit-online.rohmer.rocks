@@ -15,7 +15,7 @@
 </script>
 
 {#if slot}
-    <div class="mb-4 shadow transition-all cursor-pointer rounded-xl overflow-hidden hover:shadow-md dark:shadow-none dark:border dark:border-neutral-800 dark:hover:shadow-neutral-800" bind:clientWidth={width}>
+    <div class="shadow transition-all cursor-pointer rounded-xl overflow-hidden hover:shadow-md dark:shadow-none dark:border dark:border-neutral-800 dark:hover:shadow-neutral-800" bind:clientWidth={width}>
         <div class="bg-neutral-50 dark:bg-neutral-900 overflow-hidden">
             <SlotCardBackground {...slot} hasImage={!!slot.image} />
             <div class="flex gap-x-4 px-4 py-1.5"
