@@ -4,11 +4,11 @@
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
   import Standings from "$lib/components/standings/Standings.svelte";
-  import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {Loader} from './_load';
   import Loading from "../../lib/components/Loading.svelte";
+  import SessionHeader from "../../lib/components/SessionHeader.svelte";
+  import {slide} from 'svelte/transition';
 
-  let timeout: number;
   let data: Race;
   let mounted = false;
 
@@ -58,9 +58,27 @@
     {/if}
 </svelte:head>
 {#if data}
-    <SessionHeader {...data} on:clickBackLink={handleBackLinkClick} />
     <Content class="py-2 px-0">
-        <Standings sessionName={$page.params.sessionName} slots={data.slots} />
+        <SessionHeader {...data} on:clickBackLink={handleBackLinkClick} />
+
+        {#if data.time || data.lapsToGo}
+            <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6" transition:slide|local>
+                {#if data.time}
+                    <div class="text-center flex-1">
+                        <div class="text-xs">Zeit</div>
+                        <div class="font-normal">{data.time || '00:00:00'}</div>
+                    </div>
+                {/if}
+                {#if data.lapsToGo}
+                    <div class="text-center flex-1">
+                        <div class="text-xs">Runden</div>
+                        <div class="font-normal">{data.lapsToGo || 225}</div>
+                    </div>
+                {/if}
+            </div>
+        {/if}
+
+        <Standings sessionName={$page.params.sessionName} slots={data.slots}/>
     </Content>
 {:else if notFound }
     <div class="text-center p-5">
@@ -81,5 +99,5 @@
         </a>
     </div>
 {:else }
-    <Loading />
+    <Loading/>
 {/if}

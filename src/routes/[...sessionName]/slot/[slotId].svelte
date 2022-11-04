@@ -6,9 +6,13 @@
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {Loader} from '../_load';
   import {cleanSessionName} from "$lib/utils/clean-session-name";
-  import Loading from "../../../lib/components/Loading.svelte";
+  import Loading from "$lib/components/Loading.svelte";
+  import SlotTopCard from "$lib/components/slot/slot-top-card/SlotTopCard.svelte";
+  import SlotFact from "$lib/components/slot/SlotFact.svelte";
+  import IoIosAlert from 'svelte-icons/io/IoIosAlert.svelte'
+  import IoMdStopwatch from 'svelte-icons/io/IoMdStopwatch.svelte';
+  import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
 
-  let timeout: number;
   let data: Race;
   let mounted = false;
 
@@ -53,6 +57,11 @@
   $: slot = data?.slots.find(slot => slot.id === $page?.params?.slotId);
   $: position = (data?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
   $: sessionName = $page.params?.sessionName ?? '';
+
+  $: gasGreen = slot?.remainingGas > 0.8;
+  $: gasRed = slot?.remainingGas < 0.3;
+  $: gasYellow = !gasGreen && !gasRed;
+  $: gasPulsing = slot?.remainingGas < 0.2;
 </script>
 
 <svelte:head>
@@ -61,110 +70,81 @@
     {/if}
 </svelte:head>
 {#if data && slot}
-    <SessionHeader {...data} backLink="/{cleanSessionName(sessionName)}" on:clickBackLink={handleBackLinkClick}/>
-    <Content class="py-4">
-        <div class="flex mb-4 items-center">
-            {#if slot.image}
-                <div class="h-14 w-14 mr-2 bg-center bg-no-repeat bg-contain"
-                     style="background-image: url('{slot.image}')">
-                </div>
-            {/if}
-            <div class="flex-1">
-                <div class="text-3xl font-normal truncate">{slot.name}</div>
-                <div class="truncate">{slot.car?.name}</div>
-            </div>
-            {#if slot.penalty}
-                <div class="text-5xl font-bold text-red-700 dark:text-red-500">
-                    !
-                </div>
-            {/if}
-        </div>
+    <Content>
+        <SessionHeader {...data} backLink="/{cleanSessionName(sessionName)}" on:clickBackLink={handleBackLinkClick}/>
 
-        <div class="flex h-12">
-            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
-                Position
+        <div class="flex gap-4 flex-wrap">
+            <div class="w-full">
+                <SlotTopCard {...slot} totalLaps={data.lapsToGo} />
             </div>
-            <div class="flex-1 h-full font-normal leading-10 py-1 text-xl">
-                {#if position}
-                    {position}
-                {:else}
-                    🤷
-                {/if}
-            </div>
-        </div>
-        <div class="flex h-12">
-            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
-                Runde
-            </div>
-            <div class="flex-1 h-full font-normal leading-10 py-1 text-xl">
-                {slot.lap ?? '---'}
-            </div>
-        </div>
-        <div class="flex h-12">
-            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
-                Strafe
-            </div>
-            <div class="flex-1 h-full font-normal leading-10 py-1 text-xl"
-                 class:text-red-700={slot.penalty}
-                 class:dark:text-red-500={slot.penalty}>
-                {#if slot.penalty === 'pit'}
-                    Boxenstrafe aktiv
-                {:else if slot.penalty === 'unknown'}
-                    Strafe aktiv
-                {:else}
-                    Keine
-                {/if}
-            </div>
-        </div>
-        <div class="flex h-12">
-            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
-                letzte Runde
-            </div>
-            <div class="flex-1 h-full font-normal leading-10 py-1 text-xl">
-                {#if slot.lastLap?.time}
-                    {slot.lastLap?.time}s
-                {:else }
-                    ---
-                {/if}
-            </div>
-        </div>
-        <div class="flex h-12">
-            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-5 text-right">
-                schnellste<br/>Runde
-            </div>
-            <div class="flex-1 h-full font-normal leading-10 py-1 text-xl">
-                {#if slot.fastestLap?.time}
-                    {slot.fastestLap?.time}s
-                    {#if slot.fastestLap.lap}
-                        <span class="font-thin">in Runde {slot.fastestLap.lap}</span>
+
+            <div class="flex-1 min-w-[175px]">
+                <SlotFact>
+                    <IoMdStopwatch slot="icon"/>
+                    <span slot="title">Letzte Runde</span>
+
+                    {#if slot.lastLap?.time}
+                        {slot.lastLap.time}s
+                    {:else}
+                        <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
                     {/if}
-                {:else }
-                    ---
-                {/if}
+                </SlotFact>
             </div>
-        </div>
-        <div class="flex h-12">
-            <div class="border-r border-gray-400 w-28 pr-2 mr-2 py-1 leading-10 text-right">
-                Tankstand
+            <div class="flex-1 min-w-[200px]">
+                <SlotFact>
+                    <IoMdStopwatch slot="icon"/>
+                    <span slot="title">Schnellste Runde</span>
+
+                    {#if slot.fastestLap?.time}
+                        {slot.fastestLap.time}s
+                    {:else}
+                        <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
+                    {/if}
+                </SlotFact>
             </div>
-            <div class="flex-1 h-full font-normal text-xl">
-                {#if slot?.inPit || slot?.remainingGas}
-                    <div class="absolute left-0 top-0 h-full bg-green-700"
-                         style="width: {((slot.remainingGas ?? +slot.inPit) * 100).toFixed(0)}%"
-                         class:bg-secondary={slot.inPit}
-                         class:animate-pulse={slot.inPit}
-                         class:opacity-50={!slot.inPit}
-                         class:bg-green-700={!slot.inPit && slot.remainingGas >= 0.2}
-                         class:bg-red-700={!slot.inPit && slot.remainingGas < 0.2}
-                    ></div>
-                    <div class="py-1 leading-10 text-center">
-                        {#if slot.inPit}
-                            in Pit
-                        {:else if slot.remainingGas}
-                            {(slot.remainingGas * 100).toFixed(0)}%
-                        {/if}
+            <div class="flex-1 min-w-[160px]">
+                <SlotFact>
+                    <IoIosSpeedometer slot="icon"/>
+                    <span slot="title">Tankstand</span>
+                    <div slot="indicator" class="w-full h-full">
+                        <div class="w-full h-full shadow-sm transition-colors"
+                             class:bg-green-600={gasGreen}
+                             class:shadow-green-600={gasGreen}
+                             class:bg-yellow-400={gasYellow}
+                             class:shadow-yellow-400={gasYellow}
+                             class:bg-red-600={gasRed}
+                             class:shadow-red-600={gasRed}
+                             class:animate-pulse={gasPulsing}
+                        ></div>
                     </div>
-                {/if}
+                    {(slot.remainingGas * 100).toFixed(0)}%
+                </SlotFact>
+            </div>
+            <div class="flex-1 min-w-[250px]">
+                <SlotFact>
+                    <IoIosAlert slot="icon"/>
+                    <div slot="indicator" class="w-full h-full">
+                        <div class="w-full h-full shadow-sm transition-colors"
+                             class:bg-green-600={!slot.penalty}
+                             class:shadow-green-600={!slot.penalty}
+                             class:bg-red-600={!!slot.penalty}
+                             class:shadow-red-600={!!slot.penalty}
+                             class:animate-pulse={!!slot.penalty}
+                        ></div>
+                    </div>
+                    <div class="transition-colors font-normal h-11 flex justify-center items-center"
+                    >
+                        <div>
+                            {#if slot.penalty === 'pit'}
+                                Boxenstrafe aktiv
+                            {:else if slot.penalty === 'unknown'}
+                                Strafe aktiv
+                            {:else}
+                                Keine Strafen aktiv
+                            {/if}
+                        </div>
+                    </div>
+                </SlotFact>
             </div>
         </div>
     </Content>
@@ -196,5 +176,5 @@
         </a>
     </div>
 {:else }
-    <Loading />
+    <Loading/>
 {/if}
