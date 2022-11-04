@@ -4,6 +4,7 @@
 	import Content from "$lib/components/Content.svelte";
 	import WakeLock from "$lib/components/WakeLock.svelte";
 	import ThemeSwitch from "../lib/components/ThemeSwitch.svelte";
+	import Share from "../lib/components/Share.svelte";
 </script>
 
 <svelte:head>
@@ -36,3 +37,7 @@
 				   sourceCodeUrl="https://github.com/mrohmer/carrera-live.rohmer.rocks" />
 	</div>
 </Content>
+
+<div class="my-10">
+	<Share />
+</div>
