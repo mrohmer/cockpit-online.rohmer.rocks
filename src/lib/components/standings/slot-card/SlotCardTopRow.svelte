@@ -26,7 +26,11 @@
         </div>
         <div class="font-bold">
             {#if lap}
-                {position === 1 || !leaderLap ? lap : -Math.abs(lap - leaderLap)}
+                {#if position === 1 || !leaderLap}
+                    {lap}
+                {:else}
+                    {Math.sign(lap - leaderLap) < 0 ? '-' : '+'}{Math.abs(lap - leaderLap)}
+                {/if}
             {:else}
                 <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
             {/if}
