@@ -78,10 +78,10 @@
                 <SlotTopCard {...slot} totalLaps={data.lapsToGo} />
             </div>
 
-            <div class="flex-1 min-w-[175px]">
+            <div class="flex-1 min-w-[150px]">
                 <SlotFact>
                     <IoMdStopwatch slot="icon"/>
-                    <span slot="title">Letzte Runde</span>
+                    <span slot="title">Letzte <span class="hidden sm:inline-block">Runde</span></span>
 
                     {#if slot.lastLap?.time}
                         {slot.lastLap.time}s
@@ -90,10 +90,10 @@
                     {/if}
                 </SlotFact>
             </div>
-            <div class="flex-1 min-w-[200px]">
+            <div class="flex-1 min-w-[150px]">
                 <SlotFact>
                     <IoMdStopwatch slot="icon"/>
-                    <span slot="title">Schnellste Runde</span>
+                    <span slot="title">Schnellste <span class="hidden sm:inline-block">Runde</span></span>
 
                     {#if slot.fastestLap?.time}
                         {slot.fastestLap.time}s
