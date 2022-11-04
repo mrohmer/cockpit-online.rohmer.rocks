@@ -2,6 +2,7 @@
 	import '../app.css';
 	import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
 	import Content from "$lib/components/Content.svelte";
+	import WakeLock from "../lib/components/WakeLock.svelte";
 </script>
 
 <svelte:head>
