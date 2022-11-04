@@ -11,7 +11,7 @@
     export let car: Slot['car'];
     export let lap: Slot['lap'];
 
-    export let lapToLeader: number;
+    export let totalLaps: number;
 </script>
 
 <Card>
@@ -31,14 +31,13 @@
                 Runde
             </div>
             <div class="font-bold text-xl">
-                {#if lap}
-                    {#if position === 1 || !leaderLap}
-                        {lap}
-                    {:else}
-                        {Math.sign(lap - leaderLap) < 0 ? '-' : '+'}{Math.abs(lap - leaderLap)}
+                {#if lap || totalLaps}
+                    {lap ?? 0}
+                    {#if totalLaps}
+                        <span class="text-neutral-300 dark:text-neutral-600 font-normal">/ {totalLaps}</span>
                     {/if}
                 {:else}
-                    <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
+                    <span class="text-neutral-300 text-sm dark:text-neutral-600">---</span>
                 {/if}
             </div>
         </div>

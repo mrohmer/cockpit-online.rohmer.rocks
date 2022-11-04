@@ -75,10 +75,10 @@
 
         <div class="flex gap-4 flex-wrap">
             <div class="w-full">
-                <SlotTopCard {...slot}/>
+                <SlotTopCard {...slot} totalLaps={data.lapsToGo} />
             </div>
 
-            <div class="flex-1 min-w-[250px]">
+            <div class="flex-1 min-w-[175px]">
                 <SlotFact>
                     <IoMdStopwatch slot="icon"/>
                     <span slot="title">Letzte Runde</span>
@@ -90,7 +90,7 @@
                     {/if}
                 </SlotFact>
             </div>
-            <div class="flex-1 min-w-[250px]">
+            <div class="flex-1 min-w-[200px]">
                 <SlotFact>
                     <IoMdStopwatch slot="icon"/>
                     <span slot="title">Schnellste Runde</span>
@@ -102,7 +102,7 @@
                     {/if}
                 </SlotFact>
             </div>
-            <div class="flex-1 min-w-[250px]">
+            <div class="flex-1 min-w-[160px]">
                 <SlotFact>
                     <IoIosSpeedometer slot="icon"/>
                     <span slot="title">Tankstand</span>

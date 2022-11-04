@@ -8,9 +8,7 @@
   $: loaded = !image;
 </script>
 
-<div class="flex items-center"
-     class:pr-7={!image}
->
+<div class="flex items-center">
     <div class="h-8 w-8 z-10">
         <div class="font-normal bg-white text-black rounded-full flex justify-center items-center w-full h-full dark:bg-neutral-900 dark:text-white">
             <div>{position}</div>
