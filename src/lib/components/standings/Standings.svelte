@@ -8,7 +8,7 @@
   let width = 0;
 
   $: leaderLap = slots?.[0]?.lap;
-  $: twoCols = width > 950;
+  $: twoCols = width > 850;
 </script>
 
 <div class="overflow-x-auto" bind:clientWidth={width}>
