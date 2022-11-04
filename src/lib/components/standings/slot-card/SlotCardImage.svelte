@@ -9,14 +9,19 @@
   $: loaded = !image;
 </script>
 
-<div class="flex items-center">
-    <div class="h-6 w-6 z-10">
+<div class="flex items-center" class:pt-3={!image} class:pl-3={!image}>
+    <div class="z-10"
+         class:h-6={!!image}
+         class:w-6={!!image}
+         class:h-8={!image}
+         class:w-8={!image}
+    >
         <div class="absolute h-3/4 w-3/4 m-auto inset-0 rounded-full bg-red-400 opacity-75"
              class:animate-ping={!!penalty}
         ></div>
         <div class="bg-white text-black rounded-full flex justify-center items-center w-full h-full dark:bg-neutral-900 dark:text-white"
              class:text-red-400={!!penalty}
-             class:font-bold={!!penalty}
+             class:font-bold={!!penalty || !image}
         >
             <div>{!!penalty ? 'P' : position}</div>
         </div>
