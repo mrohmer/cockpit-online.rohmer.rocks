@@ -51,6 +51,7 @@ export const getImage: (imageNameBuilder: ImageNameBuilderFn) => RequestHandler 
       return {
         headers: {
           'Content-Type': 'image/webp',
+          'Cache-Control': 'max-age=3600, s-max-age=3600'
         },
         body,
       }
