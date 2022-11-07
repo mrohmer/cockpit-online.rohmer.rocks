@@ -33,6 +33,10 @@
   }
 </script>
 
+<svelte:head>
+    <title>Carrera-Live</title>
+</svelte:head>
+
 <style lang="postcss">
     .content {
         @apply flex flex-col text-center justify-center max-w-sm mx-auto -mb-12;
