@@ -4,65 +4,50 @@
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
   import Standings from "./components/Standings.svelte";
-  import {Loader} from '$lib/utils/load';
   import Loading from "$lib/components/Loading.svelte";
-  import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {slide} from 'svelte/transition';
+  import {invalidate} from '$app/navigation';
+  import {isDataSaveEnabled} from '../../lib/utils/is-data-save-enabled';
 
-  let data: Race;
+  export let data: Race;
   let mounted = false;
 
-  let notFound = false;
-  let unknownError = false;
-
-  const loader = new Loader(
-    d => data = d,
-    status => {
-      if (!status) {
-        notFound = undefined;
-        unknownError = undefined;
-      } else {
-        notFound = [502, 404].includes(status);
-        unknownError = !notFound && status !== 200;
-      }
-    },
-    () => mounted,
-  );
+  let timeout: number;
 
   onMount(() => {
     mounted = true;
     return () => (mounted = false)
   });
 
-  const handleBackLinkClick = ({detail: event}) => {
-    if (document.referrer?.includes('rohmer.rocks') && new URL(document.referrer).host !== window.location.host) {
-      event.preventDefault();
-
-      history.back();
-
-      return false;
+  const scheduleLoad = () => {
+    if (!mounted || timeout) {
+      return;
     }
+
+    timeout = setTimeout(
+      () => {
+        timeout = undefined;
+        invalidate(`session:${$page.params.sessionName}`)
+      },
+      (isDataSaveEnabled() ? 3 : 1) * 1000
+    ) as number;
   }
 
   $: {
-    if (mounted && $page?.params?.sessionName?.trim()) {
-      loader.cancelLoad();
-      loader.load($page.params.sessionName);
+    if (data && mounted) {
+      scheduleLoad();
     }
   }
 </script>
 
 <svelte:head>
-    {#if data}
-        <title>{data.name} | Carrera-Live</title>
-    {/if}
+    <title>{data.name} | Carrera-Live</title>
 </svelte:head>
 {#if data}
-    <Content class="py-2 px-0">
-        <SessionHeader {...data} on:clickBackLink={handleBackLinkClick} />
-
+    <Content>
         {#if data.time || data.lapsToGo}
-            <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6" transition:slide|local>
+            <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6"
+                 transition:slide|local>
                 {#if data.time}
                     <div class="text-center flex-1">
                         <div class="text-xs">Zeit</div>
@@ -80,24 +65,6 @@
 
         <Standings sessionName={$page.params.sessionName} slots={data.slots}/>
     </Content>
-{:else if notFound }
-    <div class="text-center p-5">
-        <div class="mb-1">
-            Session nicht gefunden 🤷
-        </div>
-        <a href="/" on:click={handleBackLinkClick} class="text-primary">
-            zurück
-        </a>
-    </div>
-{:else if unknownError }
-    <div class="text-center p-5">
-        <div class="mb-1">
-            Irgendetwas lief schief 🙈
-        </div>
-        <a href="/" on:click={handleBackLinkClick} class="text-primary">
-            zurück
-        </a>
-    </div>
 {:else }
     <Loading/>
 {/if}

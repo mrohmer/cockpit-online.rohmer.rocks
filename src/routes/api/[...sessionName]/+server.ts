@@ -1,21 +1,24 @@
 import type {RequestHandler} from '@sveltejs/kit';
 import {queryRaceData} from '$lib/service/race-data.service';
 import {error} from '@sveltejs/kit';
+import type {Race} from '$lib/models/race';
 
 export const GET: RequestHandler = async ({params}) => {
+  let race: Race;
   try {
-    const race = await queryRaceData(params.sessionName!);
-
-    if (!race) {
-      throw error(404);
-    }
-
-    return new Response(JSON.stringify(race));
+    race = await queryRaceData(params.sessionName!);
   } catch (e: any) {
     if (e.message === '404') {
       throw error(404);
     }
-    console.log(e.message ?? e);
+    console.error(e.message ?? e);
     throw error(500);
   }
+
+
+  if (!race) {
+    throw error(404);
+  }
+
+  return new Response(JSON.stringify(race));
 }

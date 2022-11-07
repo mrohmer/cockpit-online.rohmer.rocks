@@ -3,57 +3,44 @@
   import {onMount} from 'svelte';
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
-  import SessionHeader from "$lib/components/SessionHeader.svelte";
-  import {Loader} from '$lib/utils/load';
-  import {cleanSessionName} from "$lib/utils/clean-session-name";
   import Loading from "$lib/components/Loading.svelte";
   import SlotTopCard from "./components/slot-top-card/SlotTopCard.svelte";
   import SlotFact from "./components/SlotFact.svelte";
   import IoIosAlert from 'svelte-icons/io/IoIosAlert.svelte'
   import IoMdStopwatch from 'svelte-icons/io/IoMdStopwatch.svelte';
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
+  import {invalidate} from '$app/navigation';
+  import {isDataSaveEnabled} from '../../../../lib/utils/is-data-save-enabled';
 
-  let data: Race;
+  export let data: Race;
   let mounted = false;
-
-  let notFound = false;
-  let unknownError = false;
-
-  const loader = new Loader(
-    d => data = d,
-    status => {
-      if (!status) {
-        notFound = undefined;
-        unknownError = undefined;
-      } else {
-        notFound = status === 404;
-        unknownError = status !== 404;
-      }
-    },
-    () => mounted,
-  );
+  let timeout: number;
 
   onMount(() => {
     mounted = true;
     return () => (mounted = false)
   });
 
-  const handleBackLinkClick = ({detail: event}) => {
-    if (document.referrer?.includes('rohmer.rocks') && new URL(document.referrer).host !== window.location.host) {
-      event.preventDefault();
-
-      history.back();
-
-      return false;
+  const scheduleLoad = () => {
+    if (!mounted || timeout) {
+      return;
     }
+
+    timeout = setTimeout(
+      () => {
+        timeout = undefined;
+        invalidate(`session:${$page.params.sessionName}`)
+      },
+      (isDataSaveEnabled() ? 3 : 1) * 1000
+    ) as number;
   }
 
   $: {
-    if (mounted && $page?.params?.sessionName?.trim()) {
-      loader.cancelLoad();
-      loader.load($page.params.sessionName);
+    if (data && mounted) {
+      scheduleLoad();
     }
   }
+
   $: slot = data?.slots.find(slot => slot.id === $page?.params?.slotId);
   $: position = (data?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
   $: sessionName = $page.params?.sessionName ?? '';
@@ -71,8 +58,6 @@
 </svelte:head>
 {#if data && slot}
     <Content>
-        <SessionHeader {...data} backLink="/{cleanSessionName(sessionName)}" on:clickBackLink={handleBackLinkClick}/>
-
         <div class="flex gap-4 flex-wrap">
             <div class="w-full">
                 <SlotTopCard {...slot} totalLaps={data.lapsToGo} />
@@ -148,33 +133,6 @@
             </div>
         </div>
     </Content>
-{:else if data && !slot}
-    <div class="text-center p-5">
-        <div class="mb-1">
-            SlotID nicht gefunden 🤷
-        </div>
-        <a href="/${$page.params.sessionName ?? ''}" on:click={handleBackLinkClick} class="text-primary">
-            zurück
-        </a>
-    </div>
-{:else if notFound }
-    <div class="text-center p-5">
-        <div class="mb-1">
-            Session nicht gefunden 🤷
-        </div>
-        <a href="/" on:click={handleBackLinkClick} class="text-primary">
-            zurück
-        </a>
-    </div>
-{:else if unknownError }
-    <div class="text-center p-5">
-        <div class="mb-1">
-            Irgendetwas lief schief 🙈
-        </div>
-        <a href="/" on:click={handleBackLinkClick} class="text-primary">
-            zurück
-        </a>
-    </div>
 {:else }
     <Loading/>
 {/if}
