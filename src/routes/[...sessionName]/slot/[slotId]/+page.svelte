@@ -7,8 +7,8 @@
   import {Loader} from '../../load';
   import {cleanSessionName} from "$lib/utils/clean-session-name";
   import Loading from "$lib/components/Loading.svelte";
-  import SlotTopCard from "$lib/components/slot/slot-top-card/SlotTopCard.svelte";
-  import SlotFact from "$lib/components/slot/SlotFact.svelte";
+  import SlotTopCard from "./components/slot-top-card/SlotTopCard.svelte";
+  import SlotFact from "./components/SlotFact.svelte";
   import IoIosAlert from 'svelte-icons/io/IoIosAlert.svelte'
   import IoMdStopwatch from 'svelte-icons/io/IoMdStopwatch.svelte';
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';

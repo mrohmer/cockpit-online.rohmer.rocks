@@ -4,7 +4,7 @@
   import SlotCardImage from "./SlotCardImage.svelte";
   import SlotCardTopRow from "./SlotCardTopRow.svelte";
   import SlotCardLowerRow from "./SlotCardLowerRow.svelte";
-  import Card from "../../Card.svelte";
+  import Card from "$lib/components/Card.svelte";
 
   export let slot: Slot;
 

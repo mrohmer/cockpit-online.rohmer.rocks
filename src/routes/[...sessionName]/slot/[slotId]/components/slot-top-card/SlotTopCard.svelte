@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {Slot} from '$lib/models/slot';
-    import Card from "../../Card.svelte";
+    import Card from "$lib/components/Card.svelte";
     import SlotTopCardImage from "./SlotTopCardImage.svelte";
     import SlotTopCardBackground from "./SlotTopCardBackground.svelte";
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type {Slot} from '$lib/models/slot';
   import SlotCard from "./slot-card/SlotCard.svelte";
-  import {cleanSessionName} from "../../utils/clean-session-name.js";
+  import {cleanSessionName} from "$lib/utils/clean-session-name.js";
 
   export let slots: Slot[] = [];
   export let sessionName: string;
