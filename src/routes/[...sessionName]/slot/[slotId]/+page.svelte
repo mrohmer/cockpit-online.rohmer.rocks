@@ -4,7 +4,7 @@
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
-  import {Loader} from '../../load';
+  import {Loader} from '$lib/utils/load';
   import {cleanSessionName} from "$lib/utils/clean-session-name";
   import Loading from "$lib/components/Loading.svelte";
   import SlotTopCard from "./components/slot-top-card/SlotTopCard.svelte";

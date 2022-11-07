@@ -4,7 +4,7 @@
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
   import Standings from "./components/Standings.svelte";
-  import {Loader} from './load';
+  import {Loader} from '$lib/utils/load';
   import Loading from "$lib/components/Loading.svelte";
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {slide} from 'svelte/transition';
