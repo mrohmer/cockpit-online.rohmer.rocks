@@ -7,7 +7,9 @@
   import Content from "$lib/components/Content.svelte";
   import Input from "../lib/components/Input.svelte";
   import { goto } from '$app/navigation';
+  import type {PublicSession} from '../lib/models/public-session';
 
+  export let data: Record<'publicSessions', PublicSession[]>
 
   let mounted = false;
   let sessions: Observable<Session[]>;
@@ -39,7 +41,7 @@
 
 <style lang="postcss">
     .content {
-        @apply flex flex-col text-center justify-center max-w-sm mx-auto -mb-12;
+        @apply flex flex-col text-center justify-center max-w-sm mx-auto -mb-12 pt-10;
 
         min-height: calc(100vh - 4.5rem);
     }
@@ -56,8 +58,8 @@
                     </svg>
                 </button>
             </Input>
-            <div class="text-[10px] opacity-50 -mt-2">
-                Zu finden in der URL von Cokpit XP. Alles nach der Domain online.cockpit-xp.de.
+            <div class="text-xs opacity-50 -mt-2">
+                Zu finden in der URL von Cokpit XP.<br> Alles nach der Domain online.cockpit-xp.de.
             </div>
         </form>
         {#if $sessions?.length}
@@ -67,6 +69,22 @@
                     <a href="/{session.name}" class="block border-gray-400 py-2"
                         class:border-t={i > 0}>
                         {session.name}
+                    </a>
+                {/each}
+            </div>
+        {/if}
+        {#if data?.publicSessions?.length}
+            <div class="mt-5">
+                <div class="text-xs pt-1 opacity-70">Öffentliche Sessions</div>
+                {#each data?.publicSessions as session, i}
+                    <a href="/{session.sessionName}" class="block border-gray-400 py-2"
+                        class:border-t={i > 0}>
+                        <span class="inline-block rounded-full h-2 w-2 my-0.5 mr-0.5"
+                              class:bg-green-400={session.active}
+                              class:bg-red-500={!session.active}
+                        ></span>
+                        <span>{session.label}</span>
+                        <span class="text-xs">({session.date})</span>
                     </a>
                 {/each}
             </div>

@@ -12,7 +12,7 @@ export const load: LayoutLoad = async ({params: {sessionName}, fetch, depends}) 
 
   let response: any
   try {
-    response = await fetch(`/api/${cleanSessionName(sessionName)}`);
+    response = await fetch(`/api/sessions/${cleanSessionName(sessionName)}`);
   } catch (e: any) {
     if (e?.request?.status >= 300 && e?.request?.status < 500) {
       throw error(e?.request?.status, 'Session nicht gefunden 🤷')

@@ -26,7 +26,7 @@ const parseImage = (sessionName: string, slotId: string, type: 'car'|'driver', v
     return undefined;
   }
 
-  return `/api/${sessionName}/image/${slotId}/${result.groups.extension}/${type}.webp`;
+  return `/api/sessions/${sessionName}/image/${slotId}/${result.groups.extension}/${type}.webp`;
 };
 const parseRemainingGas = (value: string): number | undefined => {
   if (!value?.trim()) {
