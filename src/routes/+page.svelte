@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-  export const prerender = true;
-</script>
 <script lang="ts">
   import {onMount} from 'svelte';
   import type {Session} from '$lib/models/session';

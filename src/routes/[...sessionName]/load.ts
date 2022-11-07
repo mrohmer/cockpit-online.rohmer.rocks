@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type {Race} from '$lib/models/race';
-import {addSession, removeSession} from './_sessions';
+import {addSession, removeSession} from './sessions';
 import {cleanSessionName} from '$lib/utils/clean-session-name';
 
 export class Loader {
@@ -18,7 +18,7 @@ export class Loader {
   }
 
   private isDataSaveEnabled() {
-    return 'connection' in navigator && (navigator.connection as any).saveData === true;
+    return 'connection' in navigator && (navigator as any).connection.saveData === true;
   }
   private scheduleLoad(name: string, delay: number) {
     if (this.isMounted()) {
