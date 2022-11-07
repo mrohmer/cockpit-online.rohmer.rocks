@@ -1,38 +1,40 @@
-# create-svelte
+# [carrera-live.rohmer.rocks](https://carrera-live.rohmer.rocks/)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This is an alternative UI for [online.cockpit-xp.de](https://online.cockpit-xp.de/) approaching to be more modern & data saving than the original.
 
-## Creating a project
+## Motivation
 
-If you're seeing this, you've probably already done this step. Congrats!
+The original UI has many problems like an outdated tech stack, an old school styling but most importantly an absurdly high data consumption.
+In my case with images of driver and car I measured up to 100mb per minute.
+This is due to the fact that nearly everthing in it is based on images which are loaded in the original resolution & are loaded again every time the data is updated due to an actively set cache breaker on every image (!!!).
 
-```bash
-# create a new project in the current directory
-npm init svelte
+So as I was not willing to increase my already lush mobile data quota, I decided to quickly built this project.
 
-# create a new project in my-app
-npm init svelte my-app
-```
+## Improvements
 
-## Developing
+- Modern & responsive UI approach
+- Reduced data footprint
+    - Images are compromised & loaded only once while on site
+    - Visualization not based on images but simply HTML & CSS
+    - Respects data saving mode
+- Only Rerender changed UI elements
+- Fast access to previously visited sessions
+- Navigation between session and slot possible
+- Dark Mode
+- Keep screen on
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Still to come
 
-```bash
-npm run dev
+- Opt in for vibration/notifications on gas below threshold
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Usage Disclaimer
 
-## Building
+This UI & the API is built for personal usage & heavily based on the data exposed by [online.cockpit-xp.de](https://online.cockpit-xp.de/).
 
-To create a production version of your app:
+I will try to keep everything up & running but in case of breaking changes to the original API this Project may be down for a while.
 
-```bash
-npm run build
-```
+## Contribution
 
-You can preview the production build with `npm run preview`.
+Feel free to use & fork this project as you like. In case your changes may be relevant or helpful for other users i'd like to encourage you to open a pr or simply get in touch with me.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+In case of any problems feel free to open an issue & I will try to answer as quick as possible 😉
