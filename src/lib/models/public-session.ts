@@ -1,6 +1,6 @@
 export interface PublicSession {
   sessionName: string;
   label: string;
-  date: string;
+  date: Date;
   active: boolean;
 }

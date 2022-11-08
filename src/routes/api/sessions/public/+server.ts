@@ -3,7 +3,7 @@ import {parseDocument} from 'htmlparser2';
 import {selectAll, selectOne} from 'css-select';
 import {getAttributeValue, textContent} from 'domutils';
 import type { Element } from "domhandler";
-import type {PublicSession} from '../../../../lib/models/public-session';
+import type {PublicSession} from '$lib/models/public-session';
 
 export const GET: RequestHandler = async ({fetch}) => {
   try {
@@ -22,8 +22,8 @@ export const GET: RequestHandler = async ({fetch}) => {
       .filter(({link, date, activeImage}) => !!link && !!date && !!activeImage)
       .map(({link, date, activeImage}) => ({
         sessionName: getAttributeValue(link!, 'href'),
-        label: textContent(link!),
-        date: textContent(date!),
+        label: textContent(link!)?.trim(),
+        date: parseDate(textContent(date!)?.trim()),
         active: !getAttributeValue(activeImage!, 'src')?.includes('ampel-aus')
     } as PublicSession))
 
@@ -32,4 +32,24 @@ export const GET: RequestHandler = async ({fetch}) => {
     console.error(e);
     return new Response(JSON.stringify([]));
   }
+}
+const parseDate = (dateStr: string|undefined): Date|undefined => {
+  if (!dateStr || dateStr.trim().length < 10) {
+    return undefined
+  }
+
+  const {day, month, year} = /^(?<day>(0[1-9]|[12][0-9]|3[01]))\.(?<month>(0[1-9]|1[0-2]))\.(?<year>20[2-9][0-9])$/.exec(dateStr)?.groups ?? {};
+  const dayParsed = +day;
+  const monthParsed = +month;
+  const yearParsed = +year;
+
+  if (!dayParsed || !monthParsed || !yearParsed) {
+    return undefined;
+  }
+
+  const date = new Date();
+  date.setDate(dayParsed);
+  date.setMonth(monthParsed - 1);
+  date.setFullYear(yearParsed)
+  return date;
 }
