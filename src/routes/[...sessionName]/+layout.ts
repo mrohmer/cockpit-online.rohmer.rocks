@@ -27,7 +27,7 @@ export const load: LayoutLoad = async ({params: {sessionName}, fetch, depends}) 
     throw error(404, 'Session nicht gefunden 🤷');
   }
 
-  if (!data) {
+  if (!data?.slots?.length) {
     throw error(404, 'Session nicht gefunden 🤷')
   }
 
