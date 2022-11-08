@@ -1,5 +1,5 @@
 import type {RequestHandler} from '@sveltejs/kit';
-import htmlparser2 from 'htmlparser2';
+import {parseDocument} from 'htmlparser2';
 import {selectAll, selectOne} from 'css-select';
 import {getAttributeValue, textContent} from 'domutils';
 import type { Element } from "domhandler";
@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({fetch}) => {
   try {
     const response = await fetch('https://online.cockpit-xp.de/');
     const html = await response.text();
-    const dom = htmlparser2.parseDocument(html);
+    const dom = parseDocument(html);
     const rows = selectAll('.inhalt tr', dom) as any as Element[];
 
     const data = rows
