@@ -25,7 +25,7 @@
 </style>
 
 <div class="border rounded border-primary py-1 mb-3 {klass}" class:pr-8={$$slots.icon}>
-    <label for={id} class="absolute -top-2 left-3 text-xs px-1 block w-fit bg-white dark:bg-zinc-900">
+    <label for={id} class="absolute -top-2 left-3 text-xs px-1 block w-fit bg-neutral-50 dark:bg-black">
         <slot/>
     </label>
     {#if type === 'text'}
