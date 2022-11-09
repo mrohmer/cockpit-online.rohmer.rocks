@@ -11,8 +11,9 @@
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
   import {invalidate} from '$app/navigation';
   import {isDataSaveEnabled} from '../../../../lib/utils/is-data-save-enabled';
+  import type {ApiData} from '$lib/models/api-data';
 
-  export let data: Race;
+  export let data: ApiData<Race>;
   let mounted = false;
   let timeout: number;
 
@@ -35,14 +36,15 @@
     ) as number;
   }
 
+  $: race = data?.data
   $: {
-    if (data && mounted) {
+    if (race && mounted) {
       scheduleLoad();
     }
   }
 
-  $: slot = data?.slots.find(slot => slot.id === $page?.params?.slotId);
-  $: position = (data?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
+  $: slot = race?.slots.find(slot => slot.id === $page?.params?.slotId);
+  $: position = (race?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
   $: sessionName = $page.params?.sessionName ?? '';
 
   $: gasGreen = slot?.remainingGas > 0.8;
@@ -52,15 +54,15 @@
 </script>
 
 <svelte:head>
-    {#if data && slot?.name}
-        <title>{slot?.name} in {data.name} | Carrera-Live</title>
+    {#if race && slot?.name}
+        <title>{slot?.name} in {race.name} | Carrera-Live</title>
     {/if}
 </svelte:head>
-{#if data && slot}
+{#if race && slot}
     <Content>
         <div class="flex gap-4 flex-wrap">
             <div class="w-full">
-                <SlotTopCard {...slot} totalLaps={data.lapsToGo} />
+                <SlotTopCard {...slot} totalLaps={race.lapsToGo} />
             </div>
 
             <div class="flex-1 min-w-[150px]">

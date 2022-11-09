@@ -8,8 +8,9 @@
   import {slide} from 'svelte/transition';
   import {invalidate} from '$app/navigation';
   import {isDataSaveEnabled} from '../../lib/utils/is-data-save-enabled';
+  import type {ApiData} from '$lib/models/api-data';
 
-  export let data: Race;
+  export let data: ApiData<Race>;
   let mounted = false;
 
   let timeout: number;
@@ -33,37 +34,38 @@
     ) as number;
   }
 
+  $: race = data?.data
   $: {
-    if (data && mounted) {
+    if (race && mounted) {
       scheduleLoad();
     }
   }
 </script>
 
 <svelte:head>
-    <title>{data.name} | Carrera-Live</title>
+    <title>{race?.name} | Carrera-Live</title>
 </svelte:head>
-{#if data}
+{#if race}
     <Content>
-        {#if data.time || data.lapsToGo}
+        {#if race.time || race.lapsToGo}
             <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6"
                  transition:slide|local>
-                {#if data.time}
+                {#if race.time}
                     <div class="text-center flex-1">
                         <div class="text-xs">Zeit</div>
-                        <div class="font-normal">{data.time || '00:00:00'}</div>
+                        <div class="font-normal">{race.time || '00:00:00'}</div>
                     </div>
                 {/if}
-                {#if data.lapsToGo}
+                {#if race.lapsToGo}
                     <div class="text-center flex-1">
                         <div class="text-xs">Runden</div>
-                        <div class="font-normal">{data.lapsToGo || 225}</div>
+                        <div class="font-normal">{race.lapsToGo || 225}</div>
                     </div>
                 {/if}
             </div>
         {/if}
 
-        <Standings sessionName={$page.params.sessionName} slots={data.slots}/>
+        <Standings sessionName={$page.params.sessionName} slots={race.slots}/>
     </Content>
 {:else }
     <Loading/>

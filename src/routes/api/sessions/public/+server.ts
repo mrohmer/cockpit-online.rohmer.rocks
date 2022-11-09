@@ -1,4 +1,4 @@
-import type {RequestHandler} from '@sveltejs/kit';
+import type {RequestHandler, RequestEvent} from '@sveltejs/kit';
 import {parseDocument} from 'htmlparser2';
 import {selectAll, selectOne} from 'css-select';
 import {getAttributeValue, textContent} from 'domutils';
@@ -6,13 +6,18 @@ import type { Element } from "domhandler";
 import type {PublicSession} from '$lib/models/public-session';
 
 export const GET: RequestHandler = async ({fetch}) => {
+  const data = await getData(fetch);
+
+  return new Response(JSON.stringify({data, date: new Date()}))
+}
+const getData = async (fetch: RequestEvent['fetch']) => {
   try {
     const response = await fetch('https://online.cockpit-xp.de/');
     const html = await response.text();
     const dom = parseDocument(html);
     const rows = selectAll('.inhalt tr', dom) as any as Element[];
 
-    const data = rows
+    return rows
       .filter(row => !!selectOne('.beschreibung', row))
       .map(row => ({
         link: selectOne('.beschreibung a', row),
@@ -25,12 +30,10 @@ export const GET: RequestHandler = async ({fetch}) => {
         label: textContent(link!)?.trim(),
         date: parseDate(textContent(date!)?.trim()),
         active: !getAttributeValue(activeImage!, 'src')?.includes('ampel-aus')
-    } as PublicSession))
-
-    return new Response(JSON.stringify(data));
+      } as PublicSession))
   } catch (e) {
     console.error(e);
-    return new Response(JSON.stringify([]));
+    return [];
   }
 }
 const parseDate = (dateStr: string|undefined): Date|undefined => {

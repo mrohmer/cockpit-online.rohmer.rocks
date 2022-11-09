@@ -20,5 +20,5 @@ export const GET: RequestHandler = async ({params}) => {
     throw error(404);
   }
 
-  return new Response(JSON.stringify(race));
+  return new Response(JSON.stringify({date: new Date(), data: race}));
 }
