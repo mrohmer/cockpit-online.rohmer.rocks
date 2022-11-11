@@ -22,10 +22,10 @@ So as I was not willing to increase my already lush mobile data quota, I decided
 - Navigation between session and slot possible
 - Dark Mode
 - Keep screen on
+- Optional vibration on gas below or above threshold
 
 ### Still to come
 
-- Opt in for vibration/notifications on gas below threshold
 
 ## Usage Disclaimer
 

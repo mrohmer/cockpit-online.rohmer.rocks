@@ -12,8 +12,15 @@
   import {invalidate} from '$app/navigation';
   import {isDataSaveEnabled} from '../../../../lib/utils/is-data-save-enabled';
   import type {ApiData} from '$lib/models/api-data';
+  import {browser} from '$app/environment';
+  import {liveQuery} from 'dexie';
+  import {db} from '$lib/db';
+  import type {Settings} from '$lib/models/settings';
+  import {createVibrationNotifier} from '../../../../lib/utils/vibration';
 
   export let data: ApiData<Race>;
+  const settings = browser ? liveQuery(() => db.getSettingsObj()) : undefined;
+
   let mounted = false;
   let timeout: number;
 
@@ -36,6 +43,9 @@
     ) as number;
   }
 
+  const vibrationLow = createVibrationNotifier('low', 100);
+  const vibrationHigh = createVibrationNotifier('high', 100);
+
   $: race = data?.data
   $: {
     if (race && mounted) {
@@ -51,6 +61,20 @@
   $: gasRed = slot?.remainingGas < 0.3;
   $: gasYellow = !gasGreen && !gasRed;
   $: gasPulsing = slot?.remainingGas < 0.2;
+
+  $: {
+    const s: Partial<Record<Settings['key'], Settings['value']>> = $settings ?? {};
+    if (slot?.remainingGas >= 0 && s.slotDetailVibrationEmpty && slot.remainingGas <= (s.slotDetailVibrationEmptyThreshold ?? 0.2)) {
+      vibrationLow.notify();
+    } else {
+      vibrationLow.reset();
+    }
+    if (slot?.remainingGas >= 0 && s.slotDetailVibrationFull && slot.remainingGas >= (s.slotDetailVibrationFullThreshold ?? 0.9)) {
+      vibrationHigh.notify();
+    } else {
+      vibrationHigh.reset();
+    }
+  }
 </script>
 
 <svelte:head>

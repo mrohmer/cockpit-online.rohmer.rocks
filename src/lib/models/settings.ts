@@ -4,4 +4,7 @@ interface GenericSettings<K extends string, V> {
 }
 
 
-export type Settings = GenericSettings<'wakeLock', boolean>;
+export type Settings =
+  GenericSettings<'wakeLock', boolean>
+  | GenericSettings<`slotDetailVibration${'Empty' | 'Full'}`, boolean>
+  | GenericSettings<`slotDetailVibration${'Empty' | 'Full'}Threshold`, number>;
