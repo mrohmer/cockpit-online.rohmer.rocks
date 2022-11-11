@@ -171,7 +171,6 @@
                 <div class="star star--6"></div>
             </div>
         </div>
-        <div class="flex-1">Dark Mode</div>
     </div>
 {/if}
 
