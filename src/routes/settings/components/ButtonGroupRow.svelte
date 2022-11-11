@@ -4,7 +4,7 @@
   import ButtonGroup from "$lib/components/ButtonGroup.svelte";
 
   export let value: string | number;
-  export let options: Record<string | number, string> = {};
+  export let options: [string|number, string][] = [];
   export let disabled = false;
   export let isLast = false;
 </script>
