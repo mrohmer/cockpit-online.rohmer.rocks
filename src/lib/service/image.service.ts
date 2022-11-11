@@ -1,11 +1,9 @@
 import axios from 'axios';
-import type {Race} from '../models/race';
-import type {ApiResponse} from '../models/api-response';
-import type {Slot} from '../models/slot';
 import {cleanSessionName} from '../utils/clean-session-name';
+import {dev} from '$app/environment';
 
-export const queryImage = async (sessionName: string, imageName: string): Promise<Buffer> => {
-  const response = await axios.get<Buffer>(`https://online.cockpit-xp.de/${cleanSessionName(sessionName)}/${imageName}`, {
+const getImage = async (url: string): Promise<Buffer> => {
+  const response = await axios.get<Buffer>(url, {
     responseType: 'arraybuffer'
   });
 
@@ -14,4 +12,11 @@ export const queryImage = async (sessionName: string, imageName: string): Promis
   }
 
   return response.data;
+}
+export const queryImage = async (sessionName: string, imageName: string): Promise<Buffer> => {
+  if (dev && sessionName === 'fake') {
+    return getImage(`https://cataas.com/cat/says/${imageName}?width=500&height=500`);
+  }
+
+  return getImage(`https://online.cockpit-xp.de/${cleanSessionName(sessionName)}/${imageName}`)
 };

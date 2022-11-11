@@ -2,6 +2,8 @@ import axios from 'axios';
 import type {Race} from '../models/race';
 import type {ApiResponse} from '../models/api-response';
 import type {Slot} from '../models/slot';
+import {dev} from '$app/environment';
+import {getFakeRaceData} from './fake-race-data.service';
 
 const STATUS_MAP: Record<Race['status'], string> = {
   running: 'green',
@@ -98,6 +100,9 @@ const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, r
   };
 }
 export const queryRaceData = async (sessionName: string): Promise<Race> => {
+  if (dev && sessionName === 'fake') {
+    return getFakeRaceData(sessionName);
+  }
   const response = await axios.get<ApiResponse>(`https://online.cockpit-xp.de/_system/request/webrequester.php?sessionname=${sessionName}&time=${+new Date() / 1000}`)
 
   if (response.status !== 200 || Array.isArray(response.data)) {
