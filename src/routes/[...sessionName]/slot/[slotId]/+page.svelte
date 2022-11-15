@@ -9,7 +9,6 @@
   import IoIosAlert from 'svelte-icons/io/IoIosAlert.svelte'
   import IoMdStopwatch from 'svelte-icons/io/IoMdStopwatch.svelte';
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
-  import {invalidate} from '$app/navigation';
   import {isDataSaveEnabled} from '../../../../lib/utils/is-data-save-enabled';
   import type {ApiData} from '$lib/models/api-data';
   import {browser} from '$app/environment';
@@ -17,6 +16,11 @@
   import {db} from '$lib/db';
   import type {Settings} from '$lib/models/settings';
   import {createVibrationNotifier} from '../../../../lib/utils/vibration';
+  import {cleanSessionName} from '../../../../lib/utils/clean-session-name';
+  import SessionHeader from "$lib/components/SessionHeader.svelte";
+  import {digits} from "$lib/utils/digits";
+  import {addSession, removeSession} from '../../../../lib/utils/sessions';
+  import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
 
   export let data: ApiData<Race>;
   const settings = browser ? liveQuery(() => db.getSettingsObj()) : undefined;
@@ -30,14 +34,24 @@
   });
 
   const scheduleLoad = () => {
-    if (!mounted || timeout) {
+    if (!mounted || timeout || !$page?.params?.sessionName) {
       return;
     }
 
     timeout = setTimeout(
-      () => {
+      async () => {
         timeout = undefined;
-        invalidate(`session:${$page.params.sessionName}`)
+        try {
+          const response = await fetch(`/api/sessions/${cleanSessionName($page.params.sessionName)}`);
+          if (!response.ok) {
+            throw await response.json();
+          }
+
+          data = await response.json();
+        } catch (e) {
+          console.error(e);
+          data = {...data};
+        }
       },
       (isDataSaveEnabled() ? 3 : 1) * 1000
     ) as number;
@@ -48,7 +62,7 @@
 
   $: race = data?.data
   $: {
-    if (race && mounted) {
+    if (race && mounted && $page?.params?.sessionName) {
       scheduleLoad();
     }
   }
@@ -61,6 +75,8 @@
   $: gasRed = slot?.remainingGas < 0.3;
   $: gasYellow = !gasGreen && !gasRed;
   $: gasPulsing = slot?.remainingGas < 0.2;
+  $: date = typeof data?.date === 'string' ? new Date(data.date) : data?.date;
+  $: browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
 
   $: {
     const s: Partial<Record<Settings['key'], Settings['value']>> = $settings ?? {};
@@ -83,6 +99,11 @@
     {/if}
 </svelte:head>
 {#if race && slot}
+    <Content>
+        <SessionHeader {...race ?? {}}
+                       backLink={$page.route.id === "/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName($page.params.sessionName)}` : '/'}
+                       on:clickBackLink={handleBackLinkClick}/>
+    </Content>
     <Content>
         <div class="flex gap-4 flex-wrap">
             <div class="w-full">
@@ -159,6 +180,22 @@
             </div>
         </div>
     </Content>
+
+    {#if date}
+        <Content class="mt-10">
+            <div class="text-center text-sm font-normal">
+                <div class="text-neutral-400">Stand</div>
+                <div>
+                <span>
+                {digits(date.getDay())}.{digits(date.getMonth() + 1)}.{digits(date.getFullYear())}
+                </span>
+                    <span>
+                {digits(date.getHours())}:{digits(date.getMinutes())}:{digits(date.getSeconds())}
+                </span>
+                </div>
+            </div>
+        </Content>
+    {/if}
 {:else }
     <Loading/>
 {/if}

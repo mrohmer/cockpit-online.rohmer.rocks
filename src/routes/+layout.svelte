@@ -32,7 +32,7 @@
 
 <slot/>
 
-{#if $page.route.id !== '/settings'}
+{#if $page?.route?.id !== '/settings'}
     <a href="/settings" class="flex justify-center items-center mt-32 px-4">
         <div class="w-10 h-6 px-2">
             <IoIosSettings/>

@@ -1,6 +1,6 @@
 import type {RequestHandler} from '@sveltejs/kit';
-import {queryRaceData} from '$lib/service/race-data.service';
 import {error} from '@sveltejs/kit';
+import {queryRaceData} from '$lib/service/race-data.service';
 import type {Race} from '$lib/models/race';
 
 export const GET: RequestHandler = async ({params}) => {
