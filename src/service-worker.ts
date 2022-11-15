@@ -45,4 +45,6 @@ setCatchHandler(async ({request, event}) => {
   return Response.error();
 });
 
+(self as any).__WB_DISABLE_DEV_LOGS = true;
+
 skipWaiting();
