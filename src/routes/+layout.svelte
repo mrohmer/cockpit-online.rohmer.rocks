@@ -5,7 +5,8 @@
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
   import Share from "../lib/components/Share.svelte";
   import {page} from "$app/stores";
-  import {browser} from '$app/environment'
+  import {browser, dev} from '$app/environment';
+  import {PUBLIC_CLOUDFLARE_TOKEN} from '$env/static/public';
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
   import {releaseWakeLock, requestWakeLock} from '../lib/utils/wake-lock';
@@ -23,6 +24,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-title" content="Carrera-Live"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+    {#if !dev && PUBLIC_CLOUDFLARE_TOKEN}
+        <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon={JSON.stringify({"token": PUBLIC_CLOUDFLARE_TOKEN})}></script>
+    {/if}
 </svelte:head>
 
 <slot/>
@@ -54,4 +59,13 @@
 
 <div class="my-10">
     <Share/>
+</div>
+
+<div class="my-10">
+    <div class="flex justify-center items-center py-5 text-sm text-gray-400">
+        <a class="block px-2 py-1 hover:text-white transition-colors" href="https://rohmer.rocks/impressum" target="_blank">impressum</a>
+        <div class="px-1">|</div>
+        <a class="block px-2 py-1 hover:text-white transition-colors" href="https://rohmer.rocks/datenschutz" target="_blank">datenschutz</a
+        >
+    </div>
 </div>
