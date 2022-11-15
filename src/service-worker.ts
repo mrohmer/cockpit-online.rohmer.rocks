@@ -12,7 +12,9 @@ const urls = [
   FALLBACK_SESSION_DETAIL_URL,
   ...build,
   ...files,
-];
+]
+    .filter(url => !url.startsWith('/icons'))
+;
 const strategy = new NetworkFirst();
 warmStrategyCache({
   urls,
