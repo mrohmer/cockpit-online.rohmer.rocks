@@ -87,7 +87,7 @@ const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, r
 
   const status = Object
     .entries(STATUS_MAP)
-    .find(([, color]) => response['rennmodus(0)']?.includes(`ampel-${color}`))
+    .find(([, color]) => response['rennstatus(0)']?.includes(`ampel-${color}`))
     ?.[0] as Race['status'];
 
   return {
