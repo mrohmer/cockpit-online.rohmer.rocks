@@ -6,9 +6,9 @@ import {dev} from '$app/environment';
 import {getFakeRaceData} from './fake-race-data.service';
 
 const STATUS_MAP: Record<Race['status'], string> = {
-  running: 'green',
+  running: 'gruen',
   starting: 'sc',
-  stopped: 'red',
+  stopped: 'rot',
 }
 const PENALTY_MAP: Record<Required<Slot>['penalty'], string> = {
   unknown: '/strafe.png',
