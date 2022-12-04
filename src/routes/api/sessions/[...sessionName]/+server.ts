@@ -20,5 +20,17 @@ export const GET: RequestHandler = async ({params}) => {
     throw error(404);
   }
 
-  return new Response(JSON.stringify({date: new Date(), data: race}));
+  return new Response(JSON.stringify({date: new Date(), data: race}), {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Request-Headers': 'Vary',
+    }
+  });
 }
+export const OPTIONS: RequestHandler = async () => new Response('', {
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Request-Headers': 'Vary',
+    'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
+  }
+});
