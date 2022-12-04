@@ -31,6 +31,6 @@ export const OPTIONS: RequestHandler = async () => new Response('', {
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Request-Headers': 'Vary',
-    'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,',
+    'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
   }
 });
