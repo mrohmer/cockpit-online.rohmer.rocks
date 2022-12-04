@@ -8,8 +8,20 @@ import type {PublicSession} from '$lib/models/public-session';
 export const GET: RequestHandler = async ({fetch}) => {
   const data = await getData(fetch);
 
-  return new Response(JSON.stringify({data, date: new Date()}))
+  return new Response(JSON.stringify({data, date: new Date()}), {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Request-Headers': 'Vary',
+    }
+  });
 }
+export const OPTIONS: RequestHandler = async () => new Response('', {
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Request-Headers': 'Vary',
+    'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
+  }
+});
 const getData = async (fetch: RequestEvent['fetch']) => {
   try {
     const response = await fetch('https://online.cockpit-xp.de/');
