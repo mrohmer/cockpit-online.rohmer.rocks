@@ -24,6 +24,7 @@ export const GET: RequestHandler = async ({params}) => {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Request-Headers': 'Vary',
+      'Content-Type': 'application/json',
     }
   });
 }
