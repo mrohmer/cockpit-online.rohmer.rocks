@@ -38,3 +38,10 @@ I will try to keep everything up & running but in case of breaking changes to th
 Feel free to use & fork this project as you like. In case your changes may be relevant or helpful for other users i'd like to encourage you to open a pr or simply get in touch with me.
 
 In case of any problems feel free to open an issue & I will try to answer as quick as possible 😉
+
+## Other Clients
+
+There are 2 native clients available for watches using the api of this ui:
+
+- Tizen / Samsung Watches: [repo](https://github.com/mrohmer/TizenCarreraLive)
+- Garmin Watches: [repo](https://github.com/mrohmer/GarminCarreraLive)
