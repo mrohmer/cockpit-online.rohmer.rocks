@@ -1,4 +1,4 @@
-# [carrera-live.rohmer.rocks](https://carrera-live.rohmer.rocks/)
+# [cockpit-online.rohmer.rocks](https://cockpit-online.rohmer.rocks/)
 
 This is an alternative UI for [online.cockpit-xp.de](https://online.cockpit-xp.de/) approaching to be more modern & data saving than the original.
 
@@ -43,5 +43,5 @@ In case of any problems feel free to open an issue & I will try to answer as qui
 
 There are 2 native clients available for watches using the api of this ui:
 
-- Tizen / Samsung Watches: [repo](https://github.com/mrohmer/TizenCarreraLive)
-- Garmin Watches: [repo](https://github.com/mrohmer/GarminCarreraLive)
+- Tizen / Samsung Watches: [repo](https://github.com/mrohmer/TizenCockpitOnline)
+- Garmin Watches: [repo](https://github.com/mrohmer/GarminCockpitOnline)

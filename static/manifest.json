@@ -1,10 +1,10 @@
 {
   "start_url": "/",
   "display": "fullscreen",
-  "name": "Carrera-Live",
+  "name": "Cockpit Online by MRohmer",
   "scope": "/",
   "lang": "de",
-  "description": "Live Data powered by Carrera-XP",
+  "description": "Alternative UI for Live Data by Cockpit XP Online",
   "theme_color": "#ff9a5a",
   "background_color": "#fff",
   "icons": [

@@ -95,7 +95,7 @@
 
 <svelte:head>
     {#if race && slot?.name}
-        <title>{slot?.name} in {race.name} | Carrera-Live</title>
+        <title>{slot?.name} in {race.name} | Cockpit Online by MRohmer</title>
     {/if}
 </svelte:head>
 {#if race && slot}

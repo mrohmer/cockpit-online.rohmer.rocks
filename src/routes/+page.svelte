@@ -33,7 +33,7 @@
 </script>
 
 <svelte:head>
-    <title>Carrera-Live</title>
+    <title>Cockpit Online by MRohmer</title>
 </svelte:head>
 
 <style lang="postcss">

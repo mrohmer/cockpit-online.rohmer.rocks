@@ -60,7 +60,7 @@
 </script>
 
 <svelte:head>
-    <title>{race?.name} | Carrera-Live</title>
+    <title>{race?.name} | Cockpit Online by MRohmer</title>
 </svelte:head>
 {#if race}
     <Content>

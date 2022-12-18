@@ -17,12 +17,12 @@
 </script>
 
 <svelte:head>
-    <meta name="description" content="Live Data powered by Carrera-XP">
+    <meta name="description" content="Alternative UI for Live Data by Cockpit XP Online">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="theme-color" content="#ff9a5a"/>
     <link rel="manifest" href="/manifest.json"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-title" content="Carrera-Live"/>
+    <meta name="apple-mobile-web-app-title" content="Cockpit Online by MRohmer"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
     {#if !dev && PUBLIC_CLOUDFLARE_TOKEN}
@@ -53,7 +53,7 @@
         <PoweredBy name="Matthias Rohmer"
                    url="https://matthias.rohmer.rocks"
                    technologies={['Cockpit-XP Online', 'svelte', 'netlify']}
-                   sourceCodeUrl="https://github.com/mrohmer/carrera-live.rohmer.rocks"/>
+                   sourceCodeUrl="https://github.com/mrohmer/cockpit-online.rohmer.rocks"/>
     </div>
 </Content>
 
