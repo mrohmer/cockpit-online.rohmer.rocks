@@ -46,7 +46,8 @@ export const getImage: (imageNameBuilder: ImageNameBuilderFn) => RequestHandler 
       return new Response(body, {
         headers: {
           'Content-Type': 'image/webp',
-          'Cache-Control': 'max-age=3600, s-max-age=3600'
+          'Netlify-CDN-Cache-Control': 'public, durable, max-age=18000, s-maxage=18000',
+          'Cache-Control': 'public, max-age=18000, s-maxage=18000'
         },
       });
     } catch (e: any|AxiosError) {

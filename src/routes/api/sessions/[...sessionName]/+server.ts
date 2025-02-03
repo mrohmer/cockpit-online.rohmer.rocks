@@ -25,6 +25,8 @@ export const GET: RequestHandler = async ({params}) => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Request-Headers': 'Vary',
       'Content-Type': 'application/json',
+      'Netlify-CDN-Cache-Control': 'public, durable, max-age=1, s-maxage=1',
+      'Cache-Control': 'public, max-age=1, s-maxage=1'
     }
   });
 }
