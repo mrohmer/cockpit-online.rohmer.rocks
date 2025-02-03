@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import '../app.css';
   import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
   import Content from "$lib/components/Content.svelte";
@@ -10,10 +12,17 @@
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
   import {releaseWakeLock, requestWakeLock} from '../lib/utils/wake-lock';
+  interface Props {
+    children?: import('svelte').Snippet;
+  }
+
+  let { children }: Props = $props();
 
   const wakeLockEnabled = browser ? liveQuery(() => db.settings.get('wakeLock')) : undefined;
 
-  $: $wakeLockEnabled?.value ? requestWakeLock() : releaseWakeLock();
+  run(() => {
+    $wakeLockEnabled?.value ? requestWakeLock() : releaseWakeLock();
+  });
 </script>
 
 <svelte:head>
@@ -30,7 +39,7 @@
     {/if}
 </svelte:head>
 
-<slot/>
+{@render children?.()}
 
 {#if $page?.route?.id !== '/settings'}
     <a href="/settings" class="flex justify-center items-center mt-32 px-4">

@@ -1,22 +1,55 @@
 <script lang="ts">
-  export let value: any;
-  export let id = (Math.random() * 1000).toFixed(0);
-  export let name = id;
-  export let type = 'text';
-  export let min;
-  export let max;
-  export let required;
-  export let autofocus;
+  import { createBubbler } from 'svelte/legacy';
 
-  let inputEl: HTMLInputElement;
+  const bubble = createBubbler();
+
+  let inputEl: HTMLInputElement = $state();
 
   export const focus = (options?: FocusOptions) => inputEl?.focus(options);
 
-  let klass: string
-  export {klass as class};
-</script>
+  interface Props {
+    value: any;
+    id?: any;
+    name?: any;
+    type?: string;
+    min?: any;
+    max?: any;
+    required?: any;
+    autofocus: any;
+    class?: string;
+    icon?: import('svelte').Snippet;
+    children?: import('svelte').Snippet;
+    error?: import('svelte').Snippet;
+  }
 
-<svelte:options accessors={true}/>
+  let {
+    value = $bindable(),
+    id = (Math.random() * 1000).toFixed(0),
+    name = id,
+    type = 'text',
+    min,
+    max,
+    required,
+    autofocus,
+    class: klass,
+    icon,
+    children,
+    error
+  }: Props = $props();
+
+
+  export {
+  	value,
+  	id,
+  	name,
+  	type,
+  	min,
+  	max,
+  	required,
+  	autofocus,
+  	klass,
+  }
+</script>
 
 <style lang="postcss">
     .input {
@@ -24,25 +57,25 @@
     }
 </style>
 
-<div class="border rounded border-primary py-1 mb-3 {klass}" class:pr-8={$$slots.icon}>
+<div class="border rounded border-primary py-1 mb-3 {klass}" class:pr-8={icon}>
     <label for={id} class="absolute -top-2 left-3 text-xs px-1 block w-fit bg-neutral-50 dark:bg-black">
-        <slot/>
+        {@render children?.()}
     </label>
     {#if type === 'text'}
         <input bind:this={inputEl} type="text" {name} {id} {min} {max} {required} {autofocus}
-               class="input" bind:value on:change on:input/>
+               class="input" bind:value onchange={bubble('change')} oninput={bubble('input')}/>
     {:else if type === 'date'}
         <input bind:this={inputEl} type="date" {name} {id} {min} {max} {required}
-               class="input" bind:value on:change on:input/>
+               class="input" bind:value onchange={bubble('change')} oninput={bubble('input')}/>
     {:else if type === 'number'}
         <input bind:this={inputEl} type="number" {name} {id} {min} {max} {required}
-               class="input" bind:value on:change on:input/>
+               class="input" bind:value onchange={bubble('change')} oninput={bubble('input')}/>
     {/if}
 
-    {#if $$slots.icon}
+    {#if icon}
         <div class="absolute top-0 right-0 bottom-0 py-1.5">
-            <slot name="icon"></slot>
+            {@render icon?.()}
         </div>
     {/if}
 </div>
-<slot name="error"/>
+{@render error?.()}

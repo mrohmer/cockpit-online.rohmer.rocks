@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
 </script>
 
-{#if $page?.error?.message }
+{#if $page?.error?.message}
     <div class="text-center p-5">
         <div class="mb-1">
             {$page.error.message}

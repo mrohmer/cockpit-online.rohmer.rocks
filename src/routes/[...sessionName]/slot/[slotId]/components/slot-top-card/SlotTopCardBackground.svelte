@@ -1,8 +1,12 @@
 <script lang="ts">
   import type {Slot} from '$lib/models/slot';
 
-    export let id: Slot['id'];
-    export let hasImage: boolean;
+  interface Props {
+    id: Slot['id'];
+    hasImage: boolean;
+  }
+
+  let { id, hasImage }: Props = $props();
 </script>
 <div class="absolute border-r-[14px] w-20 h-96 -left-8 -top-10 rotate-12 origin-center bg-gray-200 shadow-xl dark:bg-gray-800 dark:shadow-neutral-800"
      class:-left-16={!hasImage}

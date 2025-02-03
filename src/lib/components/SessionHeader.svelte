@@ -8,8 +8,8 @@
 
   const dispatch = createEventDispatcher();
 
-  let canGoFullscreen = false;
-  let isFullscreen = false;
+  let canGoFullscreen = $state(false);
+  let isFullscreen = $state(false);
   const toggleFullscreen = () => {
     if (isFullscreen) {
         document.exitFullscreen();
@@ -31,17 +31,28 @@
     return () => window.removeEventListener('fullscreenchange', onFullscreenChange)
   })
 
-  export let status: Race['status'];
-  export let name: Race['name'];
-  export let mode: Race['mode'];
-  export let time: Race['time'];
-  export let lapsToGo: Race['lapsToGo'];
-  export let backLink = '/';
+  interface Props {
+    status: Race['status'];
+    name: Race['name'];
+    mode: Race['mode'];
+    time: Race['time'];
+    lapsToGo: Race['lapsToGo'];
+    backLink?: string;
+  }
+
+  let {
+    status,
+    name,
+    mode,
+    time,
+    lapsToGo,
+    backLink = '/'
+  }: Props = $props();
 </script>
 
 <div class="mt-4 mb-10">
     <div class="flex items-center">
-        <a href={backLink} class="w-10 h-6 px-2" on:click={(event) => dispatch('clickBackLink', event)}>
+        <a href={backLink} class="w-10 h-6 px-2" onclick={(event) => dispatch('clickBackLink', event)}>
             <IoIosArrowBack/>
         </a>
         <div class="flex-1 min-w-0">
@@ -53,7 +64,7 @@
         {#if canGoFullscreen}
             <div class="w-10 h-6 px-2 cursor-pointer"
                  title="Fullscreen"
-                 on:click={toggleFullscreen}>
+                 onclick={toggleFullscreen}>
                 {#if isFullscreen}
                     <IoIosContract/>
                 {:else}
@@ -64,7 +75,7 @@
     </div>
 
     {#if mode}
-        <div class="flex justify-center items-center gap-x-2" transition:slide|local>
+        <div class="flex justify-center items-center gap-x-2" transition:slide>
             <div class="flex h-2 w-2">
                 <div class="animate-ping absolute h-full w-full rounded-full opacity-75"
                      class:bg-green-400={status === 'running'}

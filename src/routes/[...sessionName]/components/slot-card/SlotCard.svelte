@@ -6,13 +6,17 @@
   import SlotCardLowerRow from "./SlotCardLowerRow.svelte";
   import Card from "$lib/components/Card.svelte";
 
-  export let slot: Slot;
 
-  export let leaderLap: number;
+  interface Props {
+    slot: Slot;
+    leaderLap: number;
+  }
 
-  let width: number;
+  let { slot, leaderLap }: Props = $props();
 
-  $: isDesktop = !width || width >= 500;
+  let width: number = $state();
+
+  let isDesktop = $derived(!width || width >= 500);
 </script>
 
 {#if slot}

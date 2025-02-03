@@ -14,7 +14,7 @@
   import ButtonGroupRow from "./components/ButtonGroupRow.svelte";
   import {isVibrationSupported} from "$lib/utils/vibration.js";
 
-  let previousPage: string;
+  let previousPage: string = $state();
 
   afterNavigate(({from}) => {
     previousPage = from?.url.pathname || previousPage
@@ -50,17 +50,21 @@
                 {/if}
                 <CheckboxRow isLast={true}>
                     Dark Mode
-                    <div slot="checkbox">
-                        <ThemeSwitch/>
-                    </div>
+                    {#snippet checkbox()}
+                    <div >
+                          <ThemeSwitch/>
+                      </div>
+                  {/snippet}
                 </CheckboxRow>
             </Section>
 
             {#if isVibrationSupported()}
                 <Section>
-                    <div slot="header">
-                        Slot Detail Seite
-                    </div>
+                    {#snippet header()}
+                    <div >
+                          Slot Detail Seite
+                      </div>
+                  {/snippet}
                     <CheckboxRow checked={$settings?.slotDetailVibrationEmpty}
                                  on:change={({detail}) => handleChange('slotDetailVibrationEmpty', detail)}>
                         Vibrieren bei leerem Tank

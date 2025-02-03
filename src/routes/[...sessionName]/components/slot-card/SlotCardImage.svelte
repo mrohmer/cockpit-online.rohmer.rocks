@@ -1,10 +1,19 @@
 <script lang="ts">
   import type {Slot} from '$lib/models/slot';
 
-  export let name: Slot['name'];
-  export let penalty: Slot['penalty'];
-  export let position: Slot['position'];
-  export let image: Slot['image'];
+  interface Props {
+    name: Slot['name'];
+    penalty: Slot['penalty'];
+    position: Slot['position'];
+    image: Slot['image'];
+  }
+
+  let {
+    name,
+    penalty,
+    position,
+    image
+  }: Props = $props();
 </script>
 
 <div class="flex items-center" class:pt-3={!image} class:pl-3={!image}>

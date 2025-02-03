@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import type {Race} from '$lib/models/race';
   import {onMount} from 'svelte';
   import {page} from '$app/stores';
@@ -22,10 +24,14 @@
   import {addSession, removeSession} from '../../../../lib/utils/sessions';
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
 
-  export let data: ApiData<Race>;
+  interface Props {
+    data: ApiData<Race>;
+  }
+
+  let { data = $bindable() }: Props = $props();
   const settings = browser ? liveQuery(() => db.getSettingsObj()) : undefined;
 
-  let mounted = false;
+  let mounted = $state(false);
   let timeout: number;
 
   onMount(() => {
@@ -60,25 +66,27 @@
   const vibrationLow = createVibrationNotifier('low', 100);
   const vibrationHigh = createVibrationNotifier('high', 100);
 
-  $: race = data?.data
-  $: {
+  let race = $derived(data?.data)
+  run(() => {
     if (race && mounted && $page?.params?.sessionName) {
       scheduleLoad();
     }
-  }
+  });
 
-  $: slot = race?.slots.find(slot => slot.id === $page?.params?.slotId);
-  $: position = (race?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1;
-  $: sessionName = $page.params?.sessionName ?? '';
+  let slot = $derived(race?.slots.find(slot => slot.id === $page?.params?.slotId));
+  let position = $derived((race?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1);
+  let sessionName = $derived($page.params?.sessionName ?? '');
 
-  $: gasGreen = slot?.remainingGas > 0.8;
-  $: gasRed = slot?.remainingGas < 0.3;
-  $: gasYellow = !gasGreen && !gasRed;
-  $: gasPulsing = slot?.remainingGas < 0.2;
-  $: date = typeof data?.date === 'string' ? new Date(data.date) : data?.date;
-  $: browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
+  let gasGreen = $derived(slot?.remainingGas > 0.8);
+  let gasRed = $derived(slot?.remainingGas < 0.3);
+  let gasYellow = $derived(!gasGreen && !gasRed);
+  let gasPulsing = $derived(slot?.remainingGas < 0.2);
+  let date = $derived(typeof data?.date === 'string' ? new Date(data.date) : data?.date);
+  run(() => {
+    browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
+  });
 
-  $: {
+  run(() => {
     const s: Partial<Record<Settings['key'], Settings['value']>> = $settings ?? {};
     if (slot?.remainingGas >= 0 && s.slotDetailVibrationEmpty && slot.remainingGas <= (s.slotDetailVibrationEmptyThreshold ?? 0.2)) {
       vibrationLow.notify();
@@ -90,7 +98,7 @@
     } else {
       vibrationHigh.reset();
     }
-  }
+  });
 </script>
 
 <svelte:head>
@@ -112,8 +120,12 @@
 
             <div class="flex-1 min-w-[150px]">
                 <SlotFact>
-                    <IoMdStopwatch slot="icon"/>
-                    <span slot="title">Letzte <span class="hidden sm:inline-block">Runde</span></span>
+                    {#snippet icon()}
+                    <IoMdStopwatch />
+                  {/snippet}
+                    {#snippet title()}
+                    <span >Letzte <span class="hidden sm:inline-block">Runde</span></span>
+                  {/snippet}
 
                     {#if slot.lastLap?.time}
                         {slot.lastLap.time}s
@@ -124,8 +136,12 @@
             </div>
             <div class="flex-1 min-w-[150px]">
                 <SlotFact>
-                    <IoMdStopwatch slot="icon"/>
-                    <span slot="title">Schnellste <span class="hidden sm:inline-block">Runde</span></span>
+                    {#snippet icon()}
+                    <IoMdStopwatch />
+                  {/snippet}
+                    {#snippet title()}
+                    <span >Schnellste <span class="hidden sm:inline-block">Runde</span></span>
+                  {/snippet}
 
                     {#if slot.fastestLap?.time}
                         {slot.fastestLap.time}s
@@ -136,34 +152,44 @@
             </div>
             <div class="flex-1 min-w-[160px]">
                 <SlotFact>
-                    <IoIosSpeedometer slot="icon"/>
-                    <span slot="title">Tankstand</span>
-                    <div slot="indicator" class="w-full h-full">
-                        <div class="w-full h-full shadow-sm transition-colors"
-                             class:bg-green-600={gasGreen}
-                             class:shadow-green-600={gasGreen}
-                             class:bg-yellow-400={gasYellow}
-                             class:shadow-yellow-400={gasYellow}
-                             class:bg-red-600={gasRed}
-                             class:shadow-red-600={gasRed}
-                             class:animate-pulse={gasPulsing}
-                        ></div>
-                    </div>
+                    {#snippet icon()}
+                    <IoIosSpeedometer />
+                  {/snippet}
+                    {#snippet title()}
+                    <span >Tankstand</span>
+                  {/snippet}
+                    {#snippet indicator()}
+                    <div  class="w-full h-full">
+                          <div class="w-full h-full shadow-sm transition-colors"
+                               class:bg-green-600={gasGreen}
+                               class:shadow-green-600={gasGreen}
+                               class:bg-yellow-400={gasYellow}
+                               class:shadow-yellow-400={gasYellow}
+                               class:bg-red-600={gasRed}
+                               class:shadow-red-600={gasRed}
+                               class:animate-pulse={gasPulsing}
+                          ></div>
+                      </div>
+                  {/snippet}
                     {(slot.remainingGas * 100).toFixed(0)}%
                 </SlotFact>
             </div>
             <div class="flex-1 min-w-[250px]">
                 <SlotFact>
-                    <IoIosAlert slot="icon"/>
-                    <div slot="indicator" class="w-full h-full">
-                        <div class="w-full h-full shadow-sm transition-colors"
-                             class:bg-green-600={!slot.penalty}
-                             class:shadow-green-600={!slot.penalty}
-                             class:bg-red-600={!!slot.penalty}
-                             class:shadow-red-600={!!slot.penalty}
-                             class:animate-pulse={!!slot.penalty}
-                        ></div>
-                    </div>
+                    {#snippet icon()}
+                    <IoIosAlert />
+                  {/snippet}
+                    {#snippet indicator()}
+                    <div  class="w-full h-full">
+                          <div class="w-full h-full shadow-sm transition-colors"
+                               class:bg-green-600={!slot.penalty}
+                               class:shadow-green-600={!slot.penalty}
+                               class:bg-red-600={!!slot.penalty}
+                               class:shadow-red-600={!!slot.penalty}
+                               class:animate-pulse={!!slot.penalty}
+                          ></div>
+                      </div>
+                  {/snippet}
                     <div class="transition-colors font-normal h-11 flex justify-center items-center"
                     >
                         <div>

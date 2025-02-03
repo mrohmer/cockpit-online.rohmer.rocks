@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import QRCode from 'qrcode';
   import {onMount} from 'svelte';
   import { page } from '$app/stores';
 
-  let dataUrl: string;
-  let canShare = false;
+  let dataUrl: string = $state();
+  let canShare = $state(false);
 
   const generateQrCode = () => QRCode.toDataURL(
     url,
@@ -33,14 +35,16 @@
     canShare = 'share' in navigator;
   })
 
-  $: url = $page.url.href;
-  $: url && generateQrCode();
+  let url = $derived($page.url.href);
+  run(() => {
+    url && generateQrCode();
+  });
 </script>
 
 {#if url && dataUrl}
     <div class="flex flex-col items-center justify-center gap-y-0.5 px-2"
          class:cursor-pointer={canShare}
-         on:click={() => share()}
+         onclick={() => share()}
     >
         <div class="text-xl">Teile diese Seite</div>
         <img class="block dark:invert max-w-full" src={dataUrl} alt="QR Code"/>

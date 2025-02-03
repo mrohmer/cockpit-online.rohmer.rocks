@@ -3,20 +3,37 @@
   import Switch from "$lib/components/Switch.svelte";
   import ButtonGroup from "$lib/components/ButtonGroup.svelte";
 
-  export let value: string | number;
-  export let options: [string|number, string][] = [];
-  export let disabled = false;
-  export let isLast = false;
+  interface Props {
+    value: string | number;
+    options?: [string|number, string][];
+    disabled?: boolean;
+    isLast?: boolean;
+    children?: import('svelte').Snippet;
+    hint?: import('svelte').Snippet;
+  }
+
+  let {
+    value,
+    options = [],
+    disabled = false,
+    isLast = false,
+    children,
+    hint
+  }: Props = $props();
+
+  const hint_render = $derived(hint);
 </script>
 
 <Row {disabled} {isLast}>
     <div class="flex flex-col gap-y-4">
         <div>
-            <slot />
+            {@render children?.()}
         </div>
         <div class="flex justify-end">
             <ButtonGroup {value} {options} on:change />
         </div>
     </div>
-    <slot slot="hint" name="hint" />
+    {#snippet hint()}
+    {@render hint_render?.()}
+  {/snippet}
 </Row>

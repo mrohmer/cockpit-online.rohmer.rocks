@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run, preventDefault } from 'svelte/legacy';
+
   import {onMount} from 'svelte';
   import type {Session} from '$lib/models/session';
   import type {Observable} from 'dexie';
@@ -8,10 +10,10 @@
   import Input from "../lib/components/Input.svelte";
   import { goto } from '$app/navigation';
 
-  let mounted = false;
-  let sessions: Observable<Session[]>;
+  let mounted = $state(false);
+  let sessions: Observable<Session[]> = $state();
 
-  let sessionName: string;
+  let sessionName: string = $state();
 
   const handleSubmit = () => {
     if ((sessionName?.trim().length ?? 0) < 3) {
@@ -23,13 +25,13 @@
 
   onMount(() => mounted = true);
 
-  $: {
+  run(() => {
     if (mounted) {
       sessions = liveQuery(
         () => db.sessions.toArray()
       )
     }
-  }
+  });
 </script>
 
 <svelte:head>
@@ -46,14 +48,16 @@
 
 <Content>
     <div class="content">
-        <form on:submit|preventDefault={handleSubmit}>
+        <form onsubmit={preventDefault(handleSubmit)}>
             <Input bind:value={sessionName} autofocus>
                 Session Name
-                <button type="submit" slot="icon" class:opacity-20={(sessionName?.trim().length ?? 0) < 3}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="-rotate-90">
-                        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" class="fill-primary"/>
-                    </svg>
-                </button>
+                {#snippet icon()}
+                <button type="submit"  class:opacity-20={(sessionName?.trim().length ?? 0) < 3}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="-rotate-90">
+                          <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" class="fill-primary"/>
+                      </svg>
+                  </button>
+              {/snippet}
             </Input>
             <div class="text-xs opacity-50 -mt-2">
                 Zu finden in der URL von Cokpit XP.<br> Alles nach der Domain online.cockpit-xp.de.

@@ -3,8 +3,12 @@
 
   const dispatch = createEventDispatcher();
 
-  export let value: string|number;
-  export let options: [string|number, string][] = [];
+  interface Props {
+    value: string|number;
+    options?: [string|number, string][];
+  }
+
+  let { value, options = [] }: Props = $props();
 </script>
 
 <div class="flex rounded-xl overflow-hidden border-primary border">
@@ -13,7 +17,7 @@
              class:border-l={index > 0}
              class:border-primary={String(value) === String(v)}
              class:bg-primary={String(value) === String(v)}
-             on:click={() => dispatch('change', typeof value === 'number' ? +v : v)}
+             onclick={() => dispatch('change', typeof value === 'number' ? +v : v)}
         >
             {label}
         </div>

@@ -3,13 +3,17 @@
   import SlotCard from "./slot-card/SlotCard.svelte";
   import {cleanSessionName} from "$lib/utils/clean-session-name.js";
 
-  export let slots: Slot[] = [];
-  export let sessionName: string;
+  interface Props {
+    slots?: Slot[];
+    sessionName: string;
+  }
 
-  let width = 0;
+  let { slots = [], sessionName }: Props = $props();
 
-  $: leaderLap = slots?.[0]?.lap;
-  $: twoCols = width && width > 850;
+  let width = $state(0);
+
+  let leaderLap = $derived(slots?.[0]?.lap);
+  let twoCols = $derived(width && width > 850);
 </script>
 
 <div class="overflow-x-auto" bind:clientWidth={width}>

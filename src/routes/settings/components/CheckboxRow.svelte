@@ -2,23 +2,41 @@
   import Row from "./Row.svelte";
   import Switch from "$lib/components/Switch.svelte";
 
-  export let checked = false;
-  export let disabled = false;
-  export let isLast = false;
+  interface Props {
+    checked?: boolean;
+    disabled?: boolean;
+    isLast?: boolean;
+    children?: import('svelte').Snippet;
+    checkbox?: import('svelte').Snippet;
+    hint?: import('svelte').Snippet;
+  }
+
+  let {
+    checked = false,
+    disabled = false,
+    isLast = false,
+    children,
+    checkbox,
+    hint
+  }: Props = $props();
+
+  const hint_render = $derived(hint);
 </script>
 
 <Row {disabled} {isLast}>
     <div class="flex items-center">
         <div class="flex-1">
-            <slot />
+            {@render children?.()}
         </div>
         <div class="w-10">
-            {#if $$slots.checkbox}
-                <slot name="checkbox" />
+            {#if checkbox}
+                {@render checkbox?.()}
             {:else}
                 <Switch {checked} on:change />
             {/if}
         </div>
     </div>
-    <slot slot="hint" name="hint" />
+    {#snippet hint()}
+    {@render hint_render?.()}
+  {/snippet}
 </Row>

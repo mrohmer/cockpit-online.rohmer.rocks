@@ -3,10 +3,15 @@
 
   const dispatch = createEventDispatcher();
 
-    export let checked = false;
+  interface Props {
+    checked?: boolean;
+    children?: import('svelte').Snippet;
+  }
+
+  let { checked = false, children }: Props = $props();
 </script>
 
-<div class="flex flex-col items-center justify-center gap-y-1 cursor-pointer w-full" on:click={() => dispatch('change', !checked)}>
+<div class="flex flex-col items-center justify-center gap-y-1 cursor-pointer w-full" onclick={() => dispatch('change', !checked)}>
     <div class="block bg-neutral-200 dark:bg-neutral-600 rounded-full cursor-pointer w-14 h-7 transition-all"
          class:bg-primary={checked}
          class:dark:bg-primary={checked}
@@ -16,6 +21,6 @@
         ></div>
     </div>
     <div>
-        <slot />
+        {@render children?.()}
     </div>
 </div>

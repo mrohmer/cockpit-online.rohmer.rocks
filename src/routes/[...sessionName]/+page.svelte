@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import type {Race} from '$lib/models/race';
   import {onMount} from 'svelte';
   import {page} from '$app/stores';
@@ -15,8 +17,12 @@
   import {browser} from '$app/environment';
   import {addSession, removeSession} from '../../lib/utils/sessions';
 
-  export let data: ApiData<Race>;
-  let mounted = false;
+  interface Props {
+    data: ApiData<Race>;
+  }
+
+  let { data = $bindable() }: Props = $props();
+  let mounted = $state(false);
 
   let timeout: number;
 
@@ -49,14 +55,16 @@
     ) as number;
   }
 
-  $: race = data?.data
-  $: {
+  let race = $derived(data?.data)
+  run(() => {
     if (race && mounted && $page?.params?.sessionName) {
       scheduleLoad();
     }
-  }
-  $: date = typeof data?.date === 'string' ? new Date(data.date) : data?.date;
-  $: browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
+  });
+  let date = $derived(typeof data?.date === 'string' ? new Date(data.date) : data?.date);
+  run(() => {
+    browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
+  });
 </script>
 
 <svelte:head>
@@ -72,7 +80,7 @@
     <Content>
         {#if race.time || race.lapsToGo}
             <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6"
-                 transition:slide|local>
+                 transition:slide>
                 {#if race.time}
                     <div class="text-center flex-1">
                         <div class="text-xs">Zeit</div>

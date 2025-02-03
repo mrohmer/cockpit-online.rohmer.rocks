@@ -2,11 +2,21 @@
   import type {Slot} from '$lib/models/slot';
   import IoIosArrowForward from 'svelte-icons/io/IoIosArrowForward.svelte';
 
-  export let name: Slot['name'];
-  export let car: Slot['car'];
-  export let lap: Slot['lap'];
-  export let position: Slot['position'];
-  export let leaderLap: number;
+  interface Props {
+    name: Slot['name'];
+    car: Slot['car'];
+    lap: Slot['lap'];
+    position: Slot['position'];
+    leaderLap: number;
+  }
+
+  let {
+    name,
+    car,
+    lap,
+    position,
+    leaderLap
+  }: Props = $props();
 </script>
 
 <div class="flex items-center gap-x-4 h-14">

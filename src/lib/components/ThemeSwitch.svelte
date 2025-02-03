@@ -1,7 +1,7 @@
 <script lang="ts">
   import {onMount} from 'svelte';
 
-  let dark;
+  let dark = $state();
 
   const getThemeFromLocalStorage = (): boolean | undefined => {
     if (!('theme' in localStorage)) {
@@ -154,7 +154,7 @@
 
 {#if typeof dark === 'boolean'}
     <div class="flex flex-col justify-center items-center gap-y-1 cursor-pointer w-full">
-        <div on:click={() => changeTheme()} class="flex justify-center">
+        <div onclick={() => changeTheme()} class="flex justify-center">
             <div class="transition-colors duration-200 cursor-pointer w-14 h-7 rounded-3xl bg-[#83D8FF]"
                  class:dark
                  class:bg-[#749DD6]={dark}>

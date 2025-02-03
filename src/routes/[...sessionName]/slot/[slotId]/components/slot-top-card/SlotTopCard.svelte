@@ -4,14 +4,26 @@
     import SlotTopCardImage from "./SlotTopCardImage.svelte";
     import SlotTopCardBackground from "./SlotTopCardBackground.svelte";
 
-    export let id: Slot['id'];
-    export let name: Slot['name'];
-    export let position: Slot['position'];
-    export let image: Slot['image'];
-    export let car: Slot['car'];
-    export let lap: Slot['lap'];
 
-    export let totalLaps: number;
+    interface Props {
+        id: Slot['id'];
+        name: Slot['name'];
+        position: Slot['position'];
+        image: Slot['image'];
+        car: Slot['car'];
+        lap: Slot['lap'];
+        totalLaps: number;
+    }
+
+    let {
+        id,
+        name,
+        position,
+        image,
+        car,
+        lap,
+        totalLaps
+    }: Props = $props();
 </script>
 
 <Card>

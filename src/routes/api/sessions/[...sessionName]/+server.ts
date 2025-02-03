@@ -9,15 +9,15 @@ export const GET: RequestHandler = async ({params}) => {
     race = await queryRaceData(params.sessionName!);
   } catch (e: any) {
     if (e.message === '404') {
-      throw error(404);
+      error(404);
     }
     console.error(e.message ?? e);
-    throw error(500);
+    error(500);
   }
 
 
   if (!race) {
-    throw error(404);
+    error(404);
   }
 
   return new Response(JSON.stringify({date: new Date(), data: race}), {

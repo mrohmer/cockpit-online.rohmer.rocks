@@ -20,13 +20,13 @@ export const getImage: (imageNameBuilder: ImageNameBuilderFn) => RequestHandler 
     const {sessionName, slotId, extension} = params as Record<string, any>;
 
     if (!SUPPORTED_EXTENSIONS.includes(extension)) {
-      throw error(404);
+      error(404);
     }
     if (sessionName?.trim().length <= 3) {
-      throw error(404);
+      error(404);
     }
     if (!/^[1-8]$/.test(slotId)) {
-      throw error(404);
+      error(404);
     }
 
     try {
@@ -51,10 +51,10 @@ export const getImage: (imageNameBuilder: ImageNameBuilderFn) => RequestHandler 
       });
     } catch (e: any|AxiosError) {
       if (e.response?.status && e.response?.status >= 400) {
-        throw error(e.response.status);
+        error(e.response.status);
       }
 
-      throw error(500);
+      error(500);
     }
   }
 }
