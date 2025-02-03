@@ -1,4 +1,3 @@
-import axios from 'axios';
 import type {Race} from '../models/race';
 import type {ApiResponse} from '../models/api-response';
 import type {Slot} from '../models/slot';
@@ -17,7 +16,7 @@ const PENALTY_MAP: Record<Required<Slot>['penalty'], string> = {
 
 const parseInteger = (value: string | undefined): number | undefined => value?.trim() ? parseInt(value) : undefined;
 const parseFloatingPoint = (value: string | undefined): number | undefined => value?.trim() ? parseFloat(value.replace(',', '.')) : undefined;
-const parseImage = (sessionName: string, slotId: string, type: 'car'|'driver', value: string) => {
+const parseImage = (sessionName: string, slotId: string, type: 'car' | 'driver', value: string) => {
   if (!value?.trim()) {
     return undefined;
   }
@@ -99,14 +98,28 @@ const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, r
     time: response['rennzeit(0)'],
   };
 }
+const tryParseJson = <T>(data: string): T|undefined => {
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return undefined;
+  }
+}
 export const queryRaceData = async (sessionName: string): Promise<Race> => {
   if (dev && sessionName === 'fake') {
     return getFakeRaceData(sessionName);
   }
-  const response = await axios.get<ApiResponse>(`https://online.cockpit-xp.de/_system/request/webrequester.php?sessionname=${sessionName}&time=${+new Date() / 1000}`)
+  const response = await fetch(
+    `https://online.cockpit-xp.de/_system/request/webrequester.php?sessionname=${sessionName}&time=${+new Date() / 1000}`
+  );
 
-  if (response.status !== 200 || Array.isArray(response.data)) {
-    throw new Error(String(Array.isArray(response.data) ? 404 : response.status));
+  const data = await response.text();
+  const json = tryParseJson<ApiResponse>(data);
+
+  const isValidData = json && !Array.isArray(json);
+  if (response.status !== 200 || !isValidData) {
+    throw new Error(String(!isValidData ? 404 : response.status));
   }
-  return mapThatBullshitResponseToASanesPeopleDataVersion(sessionName, response.data);
+
+  return mapThatBullshitResponseToASanesPeopleDataVersion(sessionName, json);
 };
