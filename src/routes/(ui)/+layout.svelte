@@ -1,17 +1,17 @@
 <script lang="ts">
   import { run } from 'svelte/legacy';
 
-  import '../app.css';
+  import '../../app.css';
   import PoweredBy from '@rohmer/svelte-base/PoweredBy.svelte';
   import Content from "$lib/components/Content.svelte";
   import IoIosSettings from 'svelte-icons/io/IoIosSettings.svelte';
-  import Share from "../lib/components/Share.svelte";
+  import Share from "$lib/components/Share.svelte";
   import {page} from "$app/stores";
   import {browser, dev} from '$app/environment';
   import {PUBLIC_CLOUDFLARE_TOKEN} from '$env/static/public';
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
-  import {releaseWakeLock, requestWakeLock} from '../lib/utils/wake-lock';
+  import {releaseWakeLock, requestWakeLock} from '$lib/utils/wake-lock';
   interface Props {
     children?: import('svelte').Snippet;
   }

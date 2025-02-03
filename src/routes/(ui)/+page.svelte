@@ -7,7 +7,7 @@
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
   import Content from "$lib/components/Content.svelte";
-  import Input from "../lib/components/Input.svelte";
+  import Input from "$lib/components/Input.svelte";
   import { goto } from '$app/navigation';
 
   let mounted = $state(false);

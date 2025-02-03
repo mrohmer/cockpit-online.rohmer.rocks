@@ -1,6 +1,6 @@
 <script lang="ts">
   import IoIosArrowBack from 'svelte-icons/io/IoIosArrowBack.svelte';
-  import CheckboxRow from "./components/CheckboxRow.svelte";
+  import CheckboxRow from "./_/components/CheckboxRow.svelte";
   import Content from "$lib/components/Content.svelte";
   import {isWakeLockSupported} from "$lib/utils/wake-lock.js";
   import ThemeSwitch from "$lib/components/ThemeSwitch.svelte";
@@ -8,10 +8,10 @@
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
   import {afterNavigate} from '$app/navigation';
-  import Section from "./components/Section.svelte";
+  import Section from "./_/components/Section.svelte";
   import type {Settings} from '$lib/models/settings';
   import Loading from "$lib/components/Loading.svelte";
-  import ButtonGroupRow from "./components/ButtonGroupRow.svelte";
+  import ButtonGroupRow from "./_/components/ButtonGroupRow.svelte";
   import {isVibrationSupported} from "$lib/utils/vibration.js";
 
   let previousPage: string = $state();

@@ -6,22 +6,22 @@
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
   import Loading from "$lib/components/Loading.svelte";
-  import SlotTopCard from "./components/slot-top-card/SlotTopCard.svelte";
-  import SlotFact from "./components/SlotFact.svelte";
+  import SlotTopCard from "./_/components/slot-top-card/SlotTopCard.svelte";
+  import SlotFact from "./_/components/SlotFact.svelte";
   import IoIosAlert from 'svelte-icons/io/IoIosAlert.svelte'
   import IoMdStopwatch from 'svelte-icons/io/IoMdStopwatch.svelte';
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
-  import {isDataSaveEnabled} from '../../../../lib/utils/is-data-save-enabled';
+  import {isDataSaveEnabled} from '$lib/utils/is-data-save-enabled';
   import type {ApiData} from '$lib/models/api-data';
   import {browser} from '$app/environment';
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
   import type {Settings} from '$lib/models/settings';
-  import {createVibrationNotifier} from '../../../../lib/utils/vibration';
-  import {cleanSessionName} from '../../../../lib/utils/clean-session-name';
+  import {createVibrationNotifier} from '$lib/utils/vibration';
+  import {cleanSessionName} from '$lib/utils/clean-session-name';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {digits} from "$lib/utils/digits";
-  import {addSession, removeSession} from '../../../../lib/utils/sessions';
+  import {addSession, removeSession} from '$lib/utils/sessions';
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
 
   interface Props {

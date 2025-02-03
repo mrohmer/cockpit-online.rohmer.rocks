@@ -1,6 +1,5 @@
 <script lang="ts">
   import Row from "./Row.svelte";
-  import Switch from "$lib/components/Switch.svelte";
   import ButtonGroup from "$lib/components/ButtonGroup.svelte";
 
   interface Props {

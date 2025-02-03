@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
+  import {run} from 'svelte/legacy';
 
   import type {Race} from '$lib/models/race';
   import {onMount} from 'svelte';
   import {page} from '$app/stores';
   import Content from '$lib/components/Content.svelte';
-  import Standings from "./components/Standings.svelte";
+  import Standings from "./_/components/Standings.svelte";
   import Loading from "$lib/components/Loading.svelte";
   import {slide} from 'svelte/transition';
-  import {isDataSaveEnabled} from '../../lib/utils/is-data-save-enabled';
+  import {isDataSaveEnabled} from '$lib/utils/is-data-save-enabled';
   import type {ApiData} from '$lib/models/api-data';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
   import {cleanSessionName} from "$lib/utils/clean-session-name.js";
   import {digits} from "$lib/utils/digits.js";
   import {browser} from '$app/environment';
-  import {addSession, removeSession} from '../../lib/utils/sessions';
+  import {addSession, removeSession} from '$lib/utils/sessions';
 
   interface Props {
     data: ApiData<Race>;
