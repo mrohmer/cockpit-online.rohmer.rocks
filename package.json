@@ -37,6 +37,7 @@
 		"sharp": "^0.30.6",
 		"svelte-icons": "^2.1.0",
 		"workbox-precaching": "^7.3.0",
+		"workbox-routing": "^7.3.0",
 		"workbox-recipes": "^7.3.0"
 	},
 	"volta": {

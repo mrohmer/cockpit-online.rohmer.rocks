@@ -38,6 +38,9 @@ importers:
       workbox-recipes:
         specifier: ^7.3.0
         version: 7.3.0
+      workbox-routing:
+        specifier: ^7.3.0
+        version: 7.3.0
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
