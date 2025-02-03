@@ -12,8 +12,8 @@
 </script>
 
 <div class="flex items-center">
-    <div class="h-8 w-8 z-10">
-        <div class="font-normal bg-white text-black rounded-full flex justify-center items-center w-full h-full dark:bg-neutral-900 dark:text-white">
+    <div class="h-12 w-12 z-10">
+        <div class="font-normal bg-white text-black rounded-full flex justify-center items-center w-full h-full dark:bg-neutral-900 dark:text-white text-2xl">
             <div>{position}</div>
         </div>
     </div>

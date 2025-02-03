@@ -18,7 +18,6 @@
   import {createVibrationNotifier} from '$lib/utils/vibration';
   import {cleanSessionName} from '$lib/utils/clean-session-name';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
-  import {digits} from "$lib/utils/digits";
   import {addSession, removeSession} from '$lib/utils/sessions';
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
   import {createRaceStore} from '$lib/utils/race-store';
@@ -45,6 +44,10 @@
   let gasYellow = $derived(!gasGreen && !gasRed);
   let gasPulsing = $derived(slot?.remainingGas < 0.2);
   let date = $derived($race?.date);
+
+
+  let leaderLap = $derived($race?.data?.slots?.[0]?.lap);
+
   run(() => {
     browser && $race?.data && page.params.sessionName && ($race?.data?.slots?.length ? addSession(page.params.sessionName) : removeSession(page.params.sessionName));
   });
@@ -78,7 +81,7 @@
     <Content>
         <div class="flex gap-4 flex-wrap">
             <div class="w-full">
-                <SlotTopCard {...slot} totalLaps={$race.data.lapsToGo} />
+                <SlotTopCard {...slot} totalLaps={$race.data.lapsToGo} {leaderLap} />
             </div>
 
             <div class="flex-1 min-w-[150px]">

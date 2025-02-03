@@ -17,6 +17,8 @@
     position,
     leaderLap
   }: Props = $props();
+
+  let isDistance = $derived(position !== 1 && !!leaderLap);
 </script>
 
 <div class="flex items-center gap-x-4 h-16 my-1">
@@ -33,7 +35,7 @@
     <div class="text-center min-w-[3rem]">
         <div class="font-bold text-xl">
             {#if lap}
-                {#if position === 1 || !leaderLap}
+                {#if !isDistance}
                     {lap}
                 {:else}
                     {Math.sign(lap - leaderLap) < 0 ? '-' : '+'}{Math.abs(lap - leaderLap)}
@@ -43,7 +45,7 @@
             {/if}
         </div>
         <div class="font-normal text-neutral-400 text-xs">
-            Runde
+            {isDistance ? 'Abstand' : 'Runde'}
         </div>
     </div>
     <div class="h-4 text-neutral-400">
