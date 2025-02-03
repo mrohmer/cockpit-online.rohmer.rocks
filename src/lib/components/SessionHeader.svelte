@@ -1,6 +1,6 @@
 <script lang="ts">
   import type {Race} from '../models/race';
-  import {createEventDispatcher, onMount} from 'svelte';
+  import {createEventDispatcher} from 'svelte';
   import IoIosArrowBack from 'svelte-icons/io/IoIosArrowBack.svelte';
   import IoIosExpand from 'svelte-icons/io/IoIosExpand.svelte';
   import IoIosContract from 'svelte-icons/io/IoIosContract.svelte';
@@ -8,40 +8,17 @@
   import {browser} from '$app/environment';
   import {liveQuery} from 'dexie';
   import {db} from '$lib/db';
-  import {run} from 'svelte/legacy';
-  import {releaseWakeLock, requestWakeLock} from '$lib/utils/wake-lock';
+  import {fullscreen} from '$lib/utils/fullscreen';
 
   const dispatch = createEventDispatcher();
 
-  let canGoFullscreen = $state(false);
-  let isFullscreen = $state(false);
+  let canGoFullscreen = $state(fullscreen.canGoFullscreen());
+  let isFullscreen = $derived($fullscreen);
   const wakeLockEnabled = browser ? liveQuery(() => db.settings.get('wakeLock')) : undefined;
 
   const toggleFullscreen = () => {
-    if (isFullscreen) {
-      document.exitFullscreen();
-
-      releaseWakeLock();
-    } else {
-      document.body.requestFullscreen();
-
-      $wakeLockEnabled?.value && requestWakeLock();
-    }
+    fullscreen.toggle();
   }
-
-
-  const onFullscreenChange = () => {
-    isFullscreen = !!document.fullscreenElement;
-  }
-
-  onMount(() => {
-    canGoFullscreen = document.fullscreenEnabled;
-    onFullscreenChange();
-
-    window.addEventListener('fullscreenchange', onFullscreenChange);
-
-    return () => window.removeEventListener('fullscreenchange', onFullscreenChange)
-  })
 
   interface Props {
     status: Race['status'];
