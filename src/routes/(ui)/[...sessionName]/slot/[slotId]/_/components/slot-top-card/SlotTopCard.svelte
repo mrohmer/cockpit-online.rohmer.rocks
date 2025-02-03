@@ -34,7 +34,7 @@
 
         <SlotTopCardImage {image} {position} {name}/>
 
-        <div class="flex-1 min-w-0" class:pl-6={!image}>
+        <div class="flex-1 min-w-0" class:pl-3={!image}>
             <div class="font-normal text-2xl overflow-hidden text-ellipsis whitespace-nowrap">{name}</div>
             {#if car?.name}
                 <div class="font-normal text-neutral-400 overflow-hidden text-ellipsis whitespace-nowrap text-xs">{car.name}</div>
