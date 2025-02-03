@@ -13,16 +13,13 @@
   let width = $state(0);
 
   let leaderLap = $derived(slots?.[0]?.lap);
-  let twoCols = $derived(width && width > 850);
 </script>
 
 <div class="overflow-x-auto" bind:clientWidth={width}>
-    <div class="px-2 flex gap-y-4"
-         class:flex-col={!twoCols}
-         class:flex-wrap={twoCols}
+    <div class="px-2 flex gap-4 flex-col lg:flex-row lg:flex-wrap"
     >
         {#each slots as slot}
-            <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block" class:w-[48%]={twoCols} class:mr-[2%]={twoCols}>
+            <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block flex-1">
                 <SlotCard {slot} {leaderLap} />
             </a>
         {/each}

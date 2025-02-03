@@ -18,10 +18,6 @@
     inPit
   }: Props = $props();
 
-  let width: number = $state();
-
-  let isDesktop = $derived(!width || width >= 390);
-
   let gasGreen = $derived(remainingGas > 0.8);
   let gasRed = $derived(remainingGas < 0.3);
   let gasYellow = $derived(!gasGreen && !gasRed);
@@ -29,19 +25,15 @@
 </script>
 
 
-<div class="flex"
-     class:gap-x-6={isDesktop}
-     class:gap-x-3={!isDesktop}
-     class:flex-wrap={!isDesktop}
-     bind:clientWidth={width}
+<div class="flex gap-x-3 min-[510px]:gap-x-6 max-[510px]:flex-wrap"
 >
-    <div class="w-[6.4rem]" class:w-[5rem]={!isDesktop}>
+    <div class="w-[5rem] min-[510px]:w-[6.4rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoMdStopwatch />
           {/snippet}
             {#snippet title()}
-            <span >Letzte {isDesktop ? 'Runde' : ''}</span>
+            <span >Letzte <span class="hidden min-[510px]:inline">Runde</span></span>
           {/snippet}
 
             {#if lastLap?.time}
@@ -51,13 +43,13 @@
             {/if}
         </SlotCardLowerRowFact>
     </div>
-    <div class="w-[7.9rem]" class:w-[5.5rem]={!isDesktop}>
+    <div class="w-[5.5rem] min-[510px]:w-[7.9rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoMdStopwatch />
           {/snippet}
             {#snippet title()}
-            <span >Schnellste {isDesktop ? 'Runde' : ''}</span>
+            <span >Schnellste <span class="hidden min-[510px]:inline">Runde</span></span>
           {/snippet}
 
             {#if fastestLap?.time}

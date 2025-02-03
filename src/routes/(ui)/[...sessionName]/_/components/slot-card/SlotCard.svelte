@@ -13,19 +13,13 @@
   }
 
   let { slot, leaderLap }: Props = $props();
-
-  let width: number = $state();
-
-  let isDesktop = $derived(!width || width >= 500);
 </script>
 
 {#if slot}
-    <Card bind:clientWidth={width} hasHover={true}>
+    <Card hasHover={true}>
         <div class="bg-neutral-50 dark:bg-neutral-900 overflow-hidden">
             <SlotCardBackground {...slot} hasImage={!!slot.image} />
-            <div class="flex gap-x-4 px-4 py-1.5"
-                 class:px-4={isDesktop}
-                 class:px-2={!isDesktop}
+            <div class="flex gap-x-4 px-2 sm:px-4 py-1.5"
             >
                 <div>
                     <SlotCardImage {...slot} />
