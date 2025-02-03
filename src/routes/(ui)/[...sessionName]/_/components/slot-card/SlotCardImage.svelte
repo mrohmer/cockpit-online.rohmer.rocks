@@ -26,7 +26,7 @@
         <div class="absolute h-3/4 w-3/4 m-auto inset-0 rounded-full bg-red-400 opacity-75"
              class:animate-ping={!!penalty}
         ></div>
-        <div class="bg-white text-black rounded-full flex justify-center items-center w-full h-full dark:bg-neutral-900 dark:text-white"
+        <div class="bg-white text-black text-xl rounded-full flex justify-center items-center w-full h-full dark:bg-neutral-900 dark:text-white"
              class:text-red-400={!!penalty}
              class:font-bold={!!penalty || !image}
         >

@@ -21,19 +21,19 @@
   let gasGreen = $derived(remainingGas > 0.8);
   let gasRed = $derived(remainingGas < 0.3);
   let gasYellow = $derived(!gasGreen && !gasRed);
-  let gasPulsing = $derived(remainingGas < 0.2);
+  let gasPulsing = $derived(inPit);
 </script>
 
 
-<div class="flex gap-x-3 min-[510px]:gap-x-6 max-[510px]:flex-wrap"
+<div class="flex gap-x-3 min-[550px]:gap-x-6 max-[550px]:flex-wrap"
 >
-    <div class="w-[5rem] min-[510px]:w-[6.4rem]">
+    <div class="w-[5rem] min-[550px]:w-[6.4rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoMdStopwatch />
           {/snippet}
             {#snippet title()}
-            <span >Letzte <span class="hidden min-[510px]:inline">Runde</span></span>
+            <span >Letzte <span class="hidden min-[550px]:inline">Runde</span></span>
           {/snippet}
 
             {#if lastLap?.time}
@@ -43,13 +43,13 @@
             {/if}
         </SlotCardLowerRowFact>
     </div>
-    <div class="w-[5.5rem] min-[510px]:w-[7.9rem]">
+    <div class="w-[5.5rem] min-[550px]:w-[7.9rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoMdStopwatch />
           {/snippet}
             {#snippet title()}
-            <span >Schnellste <span class="hidden min-[510px]:inline">Runde</span></span>
+            <span >Schnellste <span class="hidden min-[550px]:inline">Runde</span></span>
           {/snippet}
 
             {#if fastestLap?.time}
@@ -59,7 +59,7 @@
             {/if}
         </SlotCardLowerRowFact>
     </div>
-    <div class="w-[6.2rem]">
+    <div class="w-[8.2rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoIosSpeedometer />
@@ -80,7 +80,7 @@
                   ></div>
               </div>
           {/snippet}
-            {(remainingGas * 100).toFixed(0)}%
+            {(remainingGas * 100).toFixed(0)}% {inPit ? '(in Box)' : ''}
         </SlotCardLowerRowFact>
     </div>
 </div>

@@ -16,7 +16,7 @@
 </script>
 
 <div class="overflow-x-auto" bind:clientWidth={width}>
-    <div class="px-2 flex gap-4 flex-col lg:flex-row lg:flex-wrap"
+    <div class="px-2 flex gap-4 flex-col"
     >
         {#each slots as slot}
             <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block flex-1">

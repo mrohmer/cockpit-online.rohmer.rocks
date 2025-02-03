@@ -19,22 +19,19 @@
   }: Props = $props();
 </script>
 
-<div class="flex items-center gap-x-4 h-14">
-    <div class="flex-1 font-bold min-w-0">
-        <div class="overflow-hidden text-ellipsis whitespace-nowrap">
+<div class="flex items-center gap-x-4 h-16 my-1">
+    <div class="flex-1 min-w-0">
+        <div class="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold">
             {name}
         </div>
         {#if car?.name}
-            <div class="text-neutral-400 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+            <div class="text-neutral-400 text-xs overflow-hidden text-ellipsis whitespace-nowrap font-normal">
                 {car.name}
             </div>
         {/if}
     </div>
     <div class="text-center min-w-[3rem]">
-        <div class="font-normal text-neutral-400 text-xs">
-            Runde
-        </div>
-        <div class="font-bold">
+        <div class="font-bold text-xl">
             {#if lap}
                 {#if position === 1 || !leaderLap}
                     {lap}
@@ -44,6 +41,9 @@
             {:else}
                 <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
             {/if}
+        </div>
+        <div class="font-normal text-neutral-400 text-xs">
+            Runde
         </div>
     </div>
     <div class="h-4 text-neutral-400">
