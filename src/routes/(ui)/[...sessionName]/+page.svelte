@@ -73,7 +73,7 @@
 {#if race}
     <Content>
         <SessionHeader {...race ?? {}}
-                       backLink={$page.route.id === "/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName($page.params.sessionName)}` : '/'}
+                       backLink={$page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName($page.params.sessionName)}` : '/'}
                        on:clickBackLink={handleBackLinkClick}/>
     </Content>
 
