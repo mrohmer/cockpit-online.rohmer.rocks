@@ -9,20 +9,12 @@
   import {page} from "$app/stores";
   import {browser, dev} from '$app/environment';
   import {PUBLIC_CLOUDFLARE_TOKEN} from '$env/static/public';
-  import {liveQuery} from 'dexie';
-  import {db} from '$lib/db';
-  import {releaseWakeLock, requestWakeLock} from '$lib/utils/wake-lock';
+
   interface Props {
     children?: import('svelte').Snippet;
   }
 
   let { children }: Props = $props();
-
-  const wakeLockEnabled = browser ? liveQuery(() => db.settings.get('wakeLock')) : undefined;
-
-  run(() => {
-    $wakeLockEnabled?.value ? requestWakeLock() : releaseWakeLock();
-  });
 </script>
 
 <svelte:head>

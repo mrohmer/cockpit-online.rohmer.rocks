@@ -45,7 +45,7 @@
                 {#if isWakeLockSupported()}
                     <CheckboxRow checked={$settings?.wakeLock}
                                  on:change={({detail}) => handleChange('wakeLock', detail)}>
-                        Display nicht deaktivieren
+                        Display nicht deaktivieren in Fullscreen
                     </CheckboxRow>
                 {/if}
                 <CheckboxRow isLast={true}>

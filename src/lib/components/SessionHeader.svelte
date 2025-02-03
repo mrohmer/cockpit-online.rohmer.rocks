@@ -5,18 +5,30 @@
   import IoIosExpand from 'svelte-icons/io/IoIosExpand.svelte';
   import IoIosContract from 'svelte-icons/io/IoIosContract.svelte';
   import {slide} from 'svelte/transition';
+  import {browser} from '$app/environment';
+  import {liveQuery} from 'dexie';
+  import {db} from '$lib/db';
+  import {run} from 'svelte/legacy';
+  import {releaseWakeLock, requestWakeLock} from '$lib/utils/wake-lock';
 
   const dispatch = createEventDispatcher();
 
   let canGoFullscreen = $state(false);
   let isFullscreen = $state(false);
+  const wakeLockEnabled = browser ? liveQuery(() => db.settings.get('wakeLock')) : undefined;
+
   const toggleFullscreen = () => {
     if (isFullscreen) {
-        document.exitFullscreen();
+      document.exitFullscreen();
+
+      releaseWakeLock();
     } else {
       document.body.requestFullscreen();
+
+      $wakeLockEnabled?.value && requestWakeLock();
     }
   }
+
 
   const onFullscreenChange = () => {
     isFullscreen = !!document.fullscreenElement;
