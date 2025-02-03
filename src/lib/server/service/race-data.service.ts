@@ -1,6 +1,6 @@
-import type {Race} from '../models/race';
-import type {ApiResponse} from '../models/api-response';
-import type {Slot} from '../models/slot';
+import type {Race} from '../../models/race';
+import type {ApiResponse} from '../../models/api-response';
+import type {Slot} from '../../models/slot';
 import {dev} from '$app/environment';
 import {getFakeRaceData} from './fake-race-data.service';
 

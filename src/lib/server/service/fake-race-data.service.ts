@@ -1,5 +1,5 @@
-import type {Race} from '../models/race';
-import type {Slot} from '../models/slot';
+import type {Race} from '../../models/race';
+import type {Slot} from '../../models/slot';
 
 const getSlot = (sessionName: string, slotId: number): Slot => {
   const lastLap: Slot['lastLap'] = {

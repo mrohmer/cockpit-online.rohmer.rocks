@@ -1,4 +1,4 @@
-import {cleanSessionName} from '../utils/clean-session-name';
+import {cleanSessionName} from '../../utils/clean-session-name';
 import {dev} from '$app/environment';
 
 const getImage = async (url: string): Promise<Buffer> => {

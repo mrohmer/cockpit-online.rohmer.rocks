@@ -1,6 +1,5 @@
 import type {RequestHandler} from '@sveltejs/kit';
-import {queryImage} from '$lib/service/image.service';
-import type {AxiosError} from 'axios';
+import {queryImage} from '$lib/server/service/image.service';
 import sharp from 'sharp';
 import {error} from '@sveltejs/kit';
 
@@ -50,7 +49,7 @@ export const getImage: (imageNameBuilder: ImageNameBuilderFn) => RequestHandler 
           'Cache-Control': 'public, max-age=18000, s-maxage=18000'
         },
       });
-    } catch (e: any|AxiosError) {
+    } catch (e: any) {
       if (e.response?.status && e.response?.status >= 400) {
         error(e.response.status);
       }
