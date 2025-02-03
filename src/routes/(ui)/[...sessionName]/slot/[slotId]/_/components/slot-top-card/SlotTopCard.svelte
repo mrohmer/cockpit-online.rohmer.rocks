@@ -6,13 +6,13 @@
 
 
     interface Props {
-        id: Slot['id'];
-        name: Slot['name'];
-        position: Slot['position'];
-        image: Slot['image'];
-        car: Slot['car'];
-        lap: Slot['lap'];
-        totalLaps: number;
+        id?: Slot['id'];
+        name?: Slot['name'];
+        position?: Slot['position'];
+        image?: Slot['image'];
+        car?: Slot['car'];
+        lap?: Slot['lap'];
+        totalLaps?: number;
     }
 
     let {

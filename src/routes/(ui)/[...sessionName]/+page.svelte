@@ -2,13 +2,11 @@
   import {run} from 'svelte/legacy';
 
   import type {Race} from '$lib/models/race';
-  import {onMount} from 'svelte';
-  import {page} from '$app/stores';
+  import {page} from '$app/state';
   import Content from '$lib/components/Content.svelte';
   import Standings from "./_/components/Standings.svelte";
   import Loading from "$lib/components/Loading.svelte";
   import {slide} from 'svelte/transition';
-  import {isDataSaveEnabled} from '$lib/utils/is-data-save-enabled';
   import type {ApiData} from '$lib/models/api-data';
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
@@ -16,87 +14,52 @@
   import {digits} from "$lib/utils/digits.js";
   import {browser} from '$app/environment';
   import {addSession, removeSession} from '$lib/utils/sessions';
+  import {createRaceStore} from '$lib/utils/race-store';
 
   interface Props {
     data: ApiData<Race>;
   }
 
   let { data = $bindable() }: Props = $props();
-  let mounted = $state(false);
 
-  let timeout: number;
+  const race = $derived(createRaceStore(cleanSessionName(page.params.sessionName), data));
 
-  onMount(() => {
-    mounted = true;
-    return () => (mounted = false)
-  });
-
-  const scheduleLoad = () => {
-    if (!mounted || timeout || !$page?.params?.sessionName) {
-      return;
-    }
-
-    timeout = setTimeout(
-      async () => {
-        timeout = undefined;
-        try {
-          const response = await fetch(`/api/sessions/${cleanSessionName($page.params.sessionName)}`);
-          if (!response.ok) {
-            throw await response.json();
-          }
-
-          data = await response.json();
-        } catch (e) {
-          console.error(e);
-          data = {...data};
-        }
-      },
-      (isDataSaveEnabled() ? 3 : 1) * 1000
-    ) as number;
-  }
-
-  let race = $derived(data?.data)
+  let date = $derived($race?.date);
   run(() => {
-    if (race && mounted && $page?.params?.sessionName) {
-      scheduleLoad();
-    }
-  });
-  let date = $derived(typeof data?.date === 'string' ? new Date(data.date) : data?.date);
-  run(() => {
-    browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
+    browser && race && page.params.sessionName && ($race?.data?.slots?.length ? addSession(page.params.sessionName) : removeSession(page.params.sessionName));
   });
 </script>
 
 <svelte:head>
-    <title>{race?.name} | Cockpit Online by MRohmer</title>
+    <title>{$race?.data?.name ?? page.params.sessionName} | Cockpit Online by MRohmer</title>
 </svelte:head>
-{#if race}
+{#if $race?.data}
     <Content>
-        <SessionHeader {...race ?? {}}
-                       backLink={$page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName($page.params.sessionName)}` : '/'}
+        <SessionHeader {...($race?.data ?? {})}
+                       backLink={page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName(page.params.sessionName)}` : '/'}
                        on:clickBackLink={handleBackLinkClick}/>
     </Content>
 
     <Content>
-        {#if race.time || race.lapsToGo}
+        {#if $race?.data?.time || $race?.data?.lapsToGo}
             <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6"
                  transition:slide>
-                {#if race.time}
+                {#if $race?.data?.time}
                     <div class="text-center flex-1">
                         <div class="text-xs">Zeit</div>
-                        <div class="font-normal">{race.time || '00:00:00'}</div>
+                        <div class="font-normal">{$race.data.time || '00:00:00'}</div>
                     </div>
                 {/if}
-                {#if race.lapsToGo}
+                {#if $race?.data?.lapsToGo}
                     <div class="text-center flex-1">
                         <div class="text-xs">Runden</div>
-                        <div class="font-normal">{race.lapsToGo || 225}</div>
+                        <div class="font-normal">{$race.data.lapsToGo || 225}</div>
                     </div>
                 {/if}
             </div>
         {/if}
 
-        <Standings sessionName={$page.params.sessionName} slots={race.slots}/>
+        <Standings sessionName={page.params.sessionName} slots={$race?.data?.slots}/>
     </Content>
 
     {#if date}

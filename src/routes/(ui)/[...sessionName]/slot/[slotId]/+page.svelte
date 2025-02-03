@@ -2,8 +2,7 @@
   import { run } from 'svelte/legacy';
 
   import type {Race} from '$lib/models/race';
-  import {onMount} from 'svelte';
-  import {page} from '$app/stores';
+  import {page} from '$app/state';
   import Content from '$lib/components/Content.svelte';
   import Loading from "$lib/components/Loading.svelte";
   import SlotTopCard from "./_/components/slot-top-card/SlotTopCard.svelte";
@@ -11,7 +10,6 @@
   import IoIosAlert from 'svelte-icons/io/IoIosAlert.svelte'
   import IoMdStopwatch from 'svelte-icons/io/IoMdStopwatch.svelte';
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
-  import {isDataSaveEnabled} from '$lib/utils/is-data-save-enabled';
   import type {ApiData} from '$lib/models/api-data';
   import {browser} from '$app/environment';
   import {liveQuery} from 'dexie';
@@ -23,6 +21,7 @@
   import {digits} from "$lib/utils/digits";
   import {addSession, removeSession} from '$lib/utils/sessions';
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
+  import {createRaceStore} from '$lib/utils/race-store';
 
   interface Props {
     data: ApiData<Race>;
@@ -31,59 +30,22 @@
   let { data = $bindable() }: Props = $props();
   const settings = browser ? liveQuery(() => db.getSettingsObj()) : undefined;
 
-  let mounted = $state(false);
-  let timeout: number;
-
-  onMount(() => {
-    mounted = true;
-    return () => (mounted = false)
-  });
-
-  const scheduleLoad = () => {
-    if (!mounted || timeout || !$page?.params?.sessionName) {
-      return;
-    }
-
-    timeout = setTimeout(
-      async () => {
-        timeout = undefined;
-        try {
-          const response = await fetch(`/api/sessions/${cleanSessionName($page.params.sessionName)}`);
-          if (!response.ok) {
-            throw await response.json();
-          }
-
-          data = await response.json();
-        } catch (e) {
-          console.error(e);
-          data = {...data};
-        }
-      },
-      (isDataSaveEnabled() ? 3 : 1) * 1000
-    ) as number;
-  }
+  const race = $derived(createRaceStore(cleanSessionName(page.params.sessionName), data));
 
   const vibrationLow = createVibrationNotifier('low', 100);
   const vibrationHigh = createVibrationNotifier('high', 100);
 
-  let race = $derived(data?.data)
-  run(() => {
-    if (race && mounted && $page?.params?.sessionName) {
-      scheduleLoad();
-    }
-  });
-
-  let slot = $derived(race?.slots.find(slot => slot.id === $page?.params?.slotId));
-  let position = $derived((race?.slots.findIndex(slot => slot.id === $page?.params?.slotId) ?? -1) + 1);
-  let sessionName = $derived($page.params?.sessionName ?? '');
+  let slot = $derived($race?.data?.slots.find(slot => slot.id === page?.params?.slotId));
+  let position = $derived(($race?.data?.slots.findIndex(slot => slot.id === page?.params?.slotId) ?? -1) + 1);
+  let sessionName = $derived(page.params?.sessionName ?? '');
 
   let gasGreen = $derived(slot?.remainingGas > 0.8);
   let gasRed = $derived(slot?.remainingGas < 0.3);
   let gasYellow = $derived(!gasGreen && !gasRed);
   let gasPulsing = $derived(slot?.remainingGas < 0.2);
-  let date = $derived(typeof data?.date === 'string' ? new Date(data.date) : data?.date);
+  let date = $derived($race?.date);
   run(() => {
-    browser && race && $page.params.sessionName && (race?.slots?.length ? addSession($page.params.sessionName) : removeSession($page.params.sessionName));
+    browser && $race?.data && page.params.sessionName && ($race?.data?.slots?.length ? addSession(page.params.sessionName) : removeSession(page.params.sessionName));
   });
 
   run(() => {
@@ -102,20 +64,20 @@
 </script>
 
 <svelte:head>
-    {#if race && slot?.name}
-        <title>{slot?.name} in {race.name} | Cockpit Online by MRohmer</title>
+    {#if $race?.data && slot?.name}
+        <title>{slot.name} in {$race.data.name} | Cockpit Online by MRohmer</title>
     {/if}
 </svelte:head>
-{#if race && slot}
+{#if $race?.data && slot}
     <Content>
-        <SessionHeader {...race ?? {}}
-                       backLink={$page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName($page.params.sessionName)}` : '/'}
+        <SessionHeader {...($race?.data ?? {})}
+                       backLink={page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName(page.params.sessionName)}` : '/'}
                        on:clickBackLink={handleBackLinkClick}/>
     </Content>
     <Content>
         <div class="flex gap-4 flex-wrap">
             <div class="w-full">
-                <SlotTopCard {...slot} totalLaps={race.lapsToGo} />
+                <SlotTopCard {...slot} totalLaps={$race.data.lapsToGo} />
             </div>
 
             <div class="flex-1 min-w-[150px]">
@@ -171,7 +133,7 @@
                           ></div>
                       </div>
                   {/snippet}
-                    {(slot.remainingGas * 100).toFixed(0)}%
+                    {((slot.remainingGas ?? 0) * 100).toFixed(0)}%
                 </SlotFact>
             </div>
             <div class="flex-1 min-w-[250px]">
