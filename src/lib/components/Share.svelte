@@ -42,11 +42,11 @@
 </script>
 
 {#if url && dataUrl}
-    <div class="flex flex-col items-center justify-center gap-y-0.5 px-2"
+    <button type="button" class="flex flex-col items-center justify-center gap-y-0.5 px-2 mx-auto"
          class:cursor-pointer={canShare}
          onclick={() => share()}
     >
         <div class="text-xl">Teile diese Seite</div>
         <img class="block dark:invert max-w-full" src={dataUrl} alt="QR Code"/>
-    </div>
+    </button>
 {/if}

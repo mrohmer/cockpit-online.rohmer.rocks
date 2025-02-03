@@ -51,7 +51,7 @@
             </h1>
         </div>
         {#if canGoFullscreen}
-            <div class="w-10 h-6 px-2 cursor-pointer"
+            <button type="button" class="w-10 h-6 px-2 cursor-pointer"
                  title="Fullscreen"
                  onclick={toggleFullscreen}>
                 {#if isFullscreen}
@@ -59,7 +59,7 @@
                 {:else}
                     <IoIosExpand/>
                 {/if}
-            </div>
+            </button>
         {/if}
     </div>
 
