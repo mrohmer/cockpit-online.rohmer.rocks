@@ -36,8 +36,8 @@
 		"qrcode": "^1.5.1",
 		"sharp": "^0.30.6",
 		"svelte-icons": "^2.1.0",
-		"workbox-precaching": "^6.2.4",
-		"workbox-recipes": "^6.5.3"
+		"workbox-precaching": "^7.3.0",
+		"workbox-recipes": "^7.3.0"
 	},
 	"volta": {
 		"node": "22.13.1",
