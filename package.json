@@ -38,5 +38,9 @@
 		"svelte-icons": "^2.1.0",
 		"workbox-precaching": "^6.2.4",
 		"workbox-recipes": "^6.5.3"
+	},
+	"volta": {
+		"node": "22.13.1",
+		"pnpm": "9.15.5"
 	}
 }
