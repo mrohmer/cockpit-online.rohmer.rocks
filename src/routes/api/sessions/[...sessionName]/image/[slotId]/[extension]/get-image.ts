@@ -2,6 +2,7 @@ import type {RequestHandler} from '@sveltejs/kit';
 import {queryImage} from '$lib/server/service/image.service';
 import sharp from 'sharp';
 import {error} from '@sveltejs/kit';
+import {INCLUDE_IMAGES} from '$env/static/private';
 
 type ImageNameBuilderFn = (data: Record<'slotId'|'extension', string>) => string
 
@@ -16,6 +17,10 @@ const SUPPORTED_EXTENSIONS = [
 
 export const getImage: (imageNameBuilder: ImageNameBuilderFn) => RequestHandler = (imageNameBuilder: ImageNameBuilderFn) => {
   return async ({params}) => {
+    if (INCLUDE_IMAGES !== 'true') {
+      error(404);
+    }
+
     const {sessionName, slotId, extension} = params as Record<string, any>;
 
     if (!SUPPORTED_EXTENSIONS.includes(extension)) {

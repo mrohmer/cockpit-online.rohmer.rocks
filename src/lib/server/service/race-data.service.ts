@@ -44,7 +44,7 @@ const parseRemainingGas = (value: string): number | undefined => {
   return float / 100;
 };
 
-const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot => {
+const mapSlot = (sessionName: string, id: string, response: ApiResponse, includeImages: boolean): Slot => {
   const slotId = response[`id(${Number(id)})`]
 
   const lastLap: Slot['lastLap'] = {
@@ -56,7 +56,7 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
   };
   const car: Slot['car'] = {
     name: response[`fahrzeug(${Number(id)})`],
-    image: parseImage(sessionName, slotId, 'car', response[`fahrzeugbild(${Number(id)})`])
+    image: includeImages ? parseImage(sessionName, slotId, 'car', response[`fahrzeugbild(${Number(id)})`]) : undefined
   }
 
   return {
@@ -65,7 +65,7 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
     car: car.image || car.name ? car : undefined,
     lastLap: lastLap.time ? lastLap : undefined,
     fastestLap: fastestLap.lap || fastestLap.time ? fastestLap : undefined,
-    image: parseImage(sessionName, slotId, 'driver', response[`fahrerbild(${Number(id)})`]),
+    image: includeImages ? parseImage(sessionName, slotId, 'driver', response[`fahrerbild(${Number(id)})`]) : undefined,
     inPit: !response[`pitin(${Number(id)})`]?.includes('blank.png'),
     lap: parseInteger(response[`runde(${Number(id)})`]),
     lapsToGo: parseInteger(response[`restrunden(${Number(id)})`]),
@@ -75,12 +75,12 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse): Slot =
       .find(([, image]) => response[`bestrafung(${Number(id)})`]?.includes(image))?.[0] as Slot['penalty'],
   }
 }
-const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, response: ApiResponse): Race => {
+const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, response: ApiResponse, includeImages: boolean): Race => {
   const slots = Object.keys(response)
     .filter(key => key.startsWith('id'))
     .map(key => /id\((?<id>\d*)\)/.exec(key)?.groups?.id!)
     .filter(key => !!key)
-    .map(id => mapSlot(sessionName, id, response))
+    .map(id => mapSlot(sessionName, id, response, includeImages))
     .sort(({position: a}, {position: b}) => Math.sign((a ?? 0) - (b ?? 0)))
   ;
 
@@ -105,7 +105,7 @@ const tryParseJson = <T>(data: string): T|undefined => {
     return undefined;
   }
 }
-export const queryRaceData = async (sessionName: string): Promise<Race> => {
+export const queryRaceData = async (sessionName: string, includeImages: boolean): Promise<Race> => {
   if (dev && sessionName === 'fake') {
     return getFakeRaceData(sessionName);
   }
@@ -121,5 +121,5 @@ export const queryRaceData = async (sessionName: string): Promise<Race> => {
     throw new Error(String(!isValidData ? 404 : response.status));
   }
 
-  return mapThatBullshitResponseToASanesPeopleDataVersion(sessionName, json);
+  return mapThatBullshitResponseToASanesPeopleDataVersion(sessionName, json, includeImages);
 };

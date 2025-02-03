@@ -2,11 +2,13 @@ import type {RequestHandler} from '@sveltejs/kit';
 import {error} from '@sveltejs/kit';
 import {queryRaceData} from '$lib/server/service/race-data.service';
 import type {Race} from '$lib/models/race';
+import {INCLUDE_IMAGES} from '$env/static/private';
+
 
 export const GET: RequestHandler = async ({params}) => {
   let race: Race;
   try {
-    race = await queryRaceData(params.sessionName!);
+    race = await queryRaceData(params.sessionName!, INCLUDE_IMAGES === 'true');
   } catch (e: any) {
     if (e.message === '404') {
       error(404);
