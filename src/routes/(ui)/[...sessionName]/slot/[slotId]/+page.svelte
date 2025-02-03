@@ -22,6 +22,7 @@
   import {addSession, removeSession} from '$lib/utils/sessions';
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
   import {createRaceStore} from '$lib/utils/race-store';
+  import LastUpdate from '$lib/components/LastUpdate.svelte';
 
   interface Props {
     data: ApiData<Race>;
@@ -171,17 +172,7 @@
 
     {#if date}
         <Content class="mt-10">
-            <div class="text-center text-sm font-normal">
-                <div class="text-neutral-400">Stand</div>
-                <div>
-                <span>
-                {digits(date.getDay())}.{digits(date.getMonth() + 1)}.{digits(date.getFullYear())}
-                </span>
-                    <span>
-                {digits(date.getHours())}:{digits(date.getMinutes())}:{digits(date.getSeconds())}
-                </span>
-                </div>
-            </div>
+            <LastUpdate {date} />
         </Content>
     {/if}
 {:else }

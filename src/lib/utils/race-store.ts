@@ -5,9 +5,8 @@ import {browser} from '$app/environment';
 import {isDataSaveEnabled} from '$lib/utils/is-data-save-enabled';
 
 export const createRaceStore =  (sessionName: string, initial: ApiData<Race>): Readable<ApiData<Race>> => {
-  const cleanedInitial = initial ? {data: initial?.data, date: typeof initial?.date === 'string' ? new Date(initial.date) : initial.date} : undefined;
   if (!browser) {
-    return readonly(readable(cleanedInitial));
+    return readonly(readable(initial));
   }
 
   return {
@@ -35,7 +34,7 @@ export const createRaceStore =  (sessionName: string, initial: ApiData<Race>): R
         }
       }
 
-      cleanedInitial && run(cleanedInitial);
+      initial && run(initial);
       handler();
 
       return () => {
