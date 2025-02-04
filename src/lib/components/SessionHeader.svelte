@@ -35,6 +35,7 @@
     time: Race['time'];
     lapsToGo: Race['lapsToGo'];
     backLink?: string;
+    compact?: boolean;
   }
 
   let {
@@ -43,11 +44,12 @@
     mode,
     time,
     lapsToGo,
-    backLink = '/'
+    backLink = '/',
+    compact,
   }: Props = $props();
 </script>
 
-<div class="mt-4 mb-10">
+<div class="mt-4" class:mb-10={!compact} class:mb-4={compact}>
     <div class="flex items-center">
         <a href={backLink} class="w-10 h-6 px-2" onclick={(event) => dispatch('clickBackLink', event)}>
             <IoIosArrowBack/>

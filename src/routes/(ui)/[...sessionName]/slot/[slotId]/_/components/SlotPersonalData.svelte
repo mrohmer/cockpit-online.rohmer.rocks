@@ -19,44 +19,13 @@
   let gasPulsing = $derived(!!slot?.inPit);
 </script>
 <div class="flex gap-4 flex-wrap">
-    <SlotPenalty {...slot} />
 
     <div class="w-full">
         <SlotTopCard {...slot} totalLaps={race.lapsToGo} {leaderLap}/>
     </div>
 
-    <div class="flex-1 min-w-[150px]">
-        <SlotFact>
-            {#snippet icon()}
-                <IoMdStopwatch/>
-            {/snippet}
-            {#snippet title()}
-                <span>Letzte <span class="hidden sm:inline-block">Runde</span></span>
-            {/snippet}
+    <SlotPenalty {...slot} />
 
-            {#if slot.lastLap?.time}
-                {slot.lastLap.time}s
-            {:else}
-                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
-            {/if}
-        </SlotFact>
-    </div>
-    <div class="flex-1 min-w-[150px]">
-        <SlotFact>
-            {#snippet icon()}
-                <IoMdStopwatch/>
-            {/snippet}
-            {#snippet title()}
-                <span>Schnellste <span class="hidden sm:inline-block">Runde</span></span>
-            {/snippet}
-
-            {#if slot.fastestLap?.time}
-                {slot.fastestLap.time}s
-            {:else}
-                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
-            {/if}
-        </SlotFact>
-    </div>
     <div class="w-full lg:flex-1 lg:min-w-[160px]">
         <SlotFact>
             {#snippet icon()}
@@ -90,6 +59,38 @@
                      class:animate-pulse={gasPulsing}></div>
             {/snippet}
             {((slot.remainingGas ?? 0) * 100).toFixed(0)}%
+        </SlotFact>
+    </div>
+    <div class="flex-1 min-w-[150px]">
+        <SlotFact>
+            {#snippet icon()}
+                <IoMdStopwatch/>
+            {/snippet}
+            {#snippet title()}
+                <span>Letzte <span class="hidden sm:inline-block">Runde</span></span>
+            {/snippet}
+
+            {#if slot.lastLap?.time}
+                {slot.lastLap.time}s
+            {:else}
+                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
+            {/if}
+        </SlotFact>
+    </div>
+    <div class="flex-1 min-w-[150px]">
+        <SlotFact>
+            {#snippet icon()}
+                <IoMdStopwatch/>
+            {/snippet}
+            {#snippet title()}
+                <span>Schnellste <span class="hidden sm:inline-block">Runde</span></span>
+            {/snippet}
+
+            {#if slot.fastestLap?.time}
+                {slot.fastestLap.time}s
+            {:else}
+                <div class="text-neutral-300 text-sm dark:text-neutral-600">---</div>
+            {/if}
         </SlotFact>
     </div>
 </div>

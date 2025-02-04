@@ -19,6 +19,7 @@
   import LastUpdate from '$lib/components/LastUpdate.svelte';
   import SlotPersonalData from './_/components/SlotPersonalData.svelte';
   import Standings from './_/components/Standings.svelte';
+  import {fullscreen} from '$lib/utils/fullscreen';
 
   interface Props {
     data: ApiData<Race>;
@@ -69,7 +70,9 @@
     <Content>
         <SessionHeader {...($race?.data ?? {})}
                        backLink={page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName(page.params.sessionName)}` : '/'}
-                       on:clickBackLink={handleBackLinkClick}/>
+                       on:clickBackLink={handleBackLinkClick}
+                       compact={$fullscreen}
+        />
     </Content>
     <Content>
         <div class="flex gap-y-16 sm:gap-x-4 flex-col sm:flex-row ">
@@ -83,8 +86,10 @@
     </Content>
 
     {#if date}
-        <Content class="mt-10">
-            <LastUpdate {date} />
+        <Content>
+            <div class:mt-10={!$fullscreen} class:mt-4={$fullscreen}>
+                <LastUpdate {date} compact={$fullscreen} />
+            </div>
         </Content>
     {/if}
 {:else }
