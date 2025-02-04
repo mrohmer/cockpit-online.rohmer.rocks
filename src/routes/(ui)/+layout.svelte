@@ -46,12 +46,19 @@
     {/if}
 
     <Content class="mt-10">
-        <div class="text-center text-xs opacity-70">
-            Daten bereitgestellt von <a href="https://online.cockpit-xp.de" target="_blank" rel="noreferrer noopener"
-                                        class="text-primary">online.cockpit-xp.de</a>.<br>
-            Dies ist eine Überarbeitung des UIs für private Zwecke.
+        <div class="text-center text-xs opacity-70 space-y-4">
+            <div>
+                Daten bereitgestellt über <a href="https://online.cockpit-xp.de" target="_blank" rel="noreferrer noopener"
+                                             class="text-primary">online.cockpit-xp.de</a>.<br>
+                Darüber hinaus besteht keine Verbindung zu Cockpit XP & Cockpit XP Online.
+            </div>
+            <div>
+                Dies ist ein alternatives UI mit Performance- & Usability-Optimierungen.<br/>
+                Die Verwendung ist auf eigene Gefahr und ohne jegliche Gewähr, da es rein für meine eigene private Verwendung konzipiert ist.<br/>
+                Für Stabilität und Sicherheit wird empfohlen, das offizielle UI zu verwenden.
+            </div>
         </div>
-        <div class="-mt-12">
+        <div class="-mt-4">
             <PoweredBy name="Matthias Rohmer"
                        url="https://matthias.rohmer.rocks"
                        technologies={['Cockpit-XP Online', 'svelte', 'netlify']}

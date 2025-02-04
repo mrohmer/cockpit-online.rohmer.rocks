@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="text-xs text-lighter text-center opacity-75">
-            UI by MRohmer
+            Alternatives UI by MRohmer
         </div>
     </Navbar>
     <div class="content">
@@ -75,7 +75,7 @@
                 {/snippet}
             </Input>
             <div class="text-xs opacity-50 -mt-2">
-                Zu finden in der URL von Cokpit XP.<br> Alles nach der Domain online.cockpit-xp.de.
+                Zu finden in der URL von Cokpit XP.<br> Der gesmmte Pfad nach der Domain online.cockpit-xp.de.
             </div>
         </form>
         {#if $sessions?.length}
