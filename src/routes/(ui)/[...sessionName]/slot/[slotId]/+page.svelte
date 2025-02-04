@@ -18,6 +18,7 @@
   import {createRaceStore} from '$lib/utils/race-store';
   import LastUpdate from '$lib/components/LastUpdate.svelte';
   import SlotPersonalData from './_/components/SlotPersonalData.svelte';
+  import Standings from './_/components/Standings.svelte';
 
   interface Props {
     data: ApiData<Race>;
@@ -71,7 +72,14 @@
                        on:clickBackLink={handleBackLinkClick}/>
     </Content>
     <Content>
-        <SlotPersonalData race={$race.data} slotData={slot} {leaderLap} />
+        <div class="flex gap-y-16 sm:gap-x-4 flex-col sm:flex-row ">
+            <div class="flex-1">
+                <SlotPersonalData race={$race.data} slotData={slot} {leaderLap} />
+            </div>
+            <div class="w-full sm:w-52">
+                <Standings race={$race.data} slotData={slot} {leaderLap} />
+            </div>
+        </div>
     </Content>
 
     {#if date}

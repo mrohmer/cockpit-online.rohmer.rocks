@@ -57,7 +57,7 @@
             {/if}
         </SlotFact>
     </div>
-    <div class="flex-1 min-w-[160px]">
+    <div class="w-full lg:flex-1 lg:min-w-[160px]">
         <SlotFact>
             {#snippet icon()}
                 <IoIosSpeedometer/>
