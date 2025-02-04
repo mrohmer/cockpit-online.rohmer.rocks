@@ -16,6 +16,7 @@
   import {addSession, removeSession} from '$lib/utils/sessions';
   import {createRaceStore} from '$lib/utils/race-store';
   import LastUpdate from '$lib/components/LastUpdate.svelte';
+  import {fullscreen} from '$lib/utils/fullscreen';
 
   interface Props {
     data: ApiData<Race>;
@@ -38,7 +39,9 @@
     <Content>
         <SessionHeader {...($race?.data ?? {})}
                        backLink={page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName(page.params.sessionName)}` : '/'}
-                       on:clickBackLink={handleBackLinkClick}/>
+                       onBackLinkClick={handleBackLinkClick}
+                       compact={$fullscreen}
+        />
     </Content>
 
     <Content>
@@ -65,7 +68,7 @@
 
     {#if date}
         <Content class="mt-10">
-            <LastUpdate {date} />
+            <LastUpdate {date} compact={$fullscreen} />
         </Content>
     {/if}
 {:else }

@@ -13,6 +13,7 @@
   import Loading from "$lib/components/Loading.svelte";
   import ButtonGroupRow from "./_/components/ButtonGroupRow.svelte";
   import {isVibrationSupported} from "$lib/utils/vibration.js";
+  import Navbar from '$lib/components/Navbar.svelte';
 
   let previousPage: string = $state();
 
@@ -27,19 +28,11 @@
 
 {#if $settings}
     <Content>
-        <div class="mt-4 mb-10">
-            <div class="flex items-center">
-                <a href={previousPage ?? '/'} class="w-10 h-6 px-2">
-                    <IoIosArrowBack/>
-                </a>
-                <div class="flex-1 min-w-0">
-                    <h1 class="text-3xl text-center overflow-hidden text-ellipsis whitespace-nowrap pr-10">
-                        Settings
-                    </h1>
-                </div>
-            </div>
-        </div>
-
+        <Navbar backLink={previousPage ?? '/'}>
+            <h1 class="text-3xl text-center overflow-hidden text-ellipsis whitespace-nowrap pr-10">
+                Settings
+            </h1>
+        </Navbar>
         <div>
             <Section>
                 {#if isWakeLockSupported()}
