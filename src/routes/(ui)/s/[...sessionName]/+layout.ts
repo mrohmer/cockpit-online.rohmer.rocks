@@ -1,12 +1,12 @@
 import type { LayoutLoad } from "./$types";
-import {error} from '@sveltejs/kit';
+import {error, redirect} from '@sveltejs/kit';
 import {cleanSessionName} from '$lib/utils/clean-session-name';
 import type {Race} from '$lib/models/race';
 import type {ApiData} from '$lib/models/api-data';
 
 export const load: LayoutLoad = async ({params: {sessionName}, fetch, depends}) => {
   if (!sessionName) {
-    error(400, 'Session nicht gefunden 🤷');
+    redirect(301, '/');
   }
 
   depends(`session:${sessionName}`);

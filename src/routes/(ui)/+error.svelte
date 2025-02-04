@@ -7,7 +7,7 @@
         <div class="mb-1">
             {$page.error.message}
         </div>
-        <a href="/{$page.route?.id === '/[...sessionName]' ? '' : $page.params.sessionName ?? ''}"  class="text-primary">
+        <a href="/{$page.route?.id === '/s/[...sessionName]' ? '' : $page.params.sessionName ?? ''}"  class="text-primary">
             zurück
         </a>
     </div>

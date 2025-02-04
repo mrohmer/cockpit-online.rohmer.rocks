@@ -21,7 +21,7 @@
       return;
     }
 
-    return goto(`/${sessionName.trim().replace(/^\/*/, '')}`);
+    return goto(`/s/${sessionName.trim().replace(/^\/*/, '')}`);
   }
 
   onMount(() => mounted = true);
@@ -82,7 +82,7 @@
             <div class="mt-5">
                 <div class="text-xs pt-1 opacity-70">Letzte Sessions</div>
                 {#each $sessions as session, i}
-                    <a href="/{session.name}" class="block border-gray-400 py-2"
+                    <a href="/s/{session.name}" class="block border-gray-400 py-2"
                        class:border-t={i > 0}>
                         {session.name}
                     </a>

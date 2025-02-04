@@ -38,7 +38,7 @@
 {#if $race?.data}
     <Content>
         <SessionHeader {...($race?.data ?? {})}
-                       backLink={page.route.id === "/(ui)/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName(page.params.sessionName)}` : '/'}
+                       backLink={page.route.id === "/(ui)/s/[...sessionName]/slot/[slotId]" ? `/${cleanSessionName(page.params.sessionName)}` : '/'}
                        onBackLinkClick={handleBackLinkClick}
                        compact={$fullscreen}
         />
