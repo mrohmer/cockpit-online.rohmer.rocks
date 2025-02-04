@@ -40,7 +40,7 @@
                 <IoIosSettings/>
             </div>
             <div class="pr-10">
-                Settings
+                Einstellungen
             </div>
         </a>
     {/if}

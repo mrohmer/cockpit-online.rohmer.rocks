@@ -30,7 +30,7 @@
     <Content>
         <Navbar backLink={previousPage ?? '/'}>
             <h1 class="text-3xl text-center overflow-hidden text-ellipsis whitespace-nowrap pr-10">
-                Settings
+                Einstellungen
             </h1>
         </Navbar>
         <div>
