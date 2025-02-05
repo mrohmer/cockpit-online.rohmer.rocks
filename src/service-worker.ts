@@ -4,8 +4,8 @@ import {NetworkFirst, CacheFirst} from 'workbox-strategies';
 import {warmStrategyCache} from 'workbox-recipes';
 
 const INDEX_URL = '/';
-const FALLBACK_SESSION_URL = '/session';
-const FALLBACK_SESSION_DETAIL_URL = '/session/slot/0';
+const FALLBACK_SESSION_URL = '/s/session';
+const FALLBACK_SESSION_DETAIL_URL = '/s/session/slot/0';
 const urls = [
   INDEX_URL,
   FALLBACK_SESSION_URL,
