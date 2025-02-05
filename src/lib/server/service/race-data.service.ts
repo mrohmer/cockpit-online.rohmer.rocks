@@ -75,7 +75,7 @@ const mapSlot = (sessionName: string, id: string, response: ApiResponse, include
       .find(([, image]) => response[`bestrafung(${Number(id)})`]?.includes(image))?.[0] as Slot['penalty'],
   }
 }
-const mapThatBullshitResponseToASanesPeopleDataVersion = (sessionName: string, response: ApiResponse, includeImages: boolean): Race => {
+const mapCockpitXpResponseForOutput = (sessionName: string, response: ApiResponse, includeImages: boolean): Race => {
   const slots = Object.keys(response)
     .filter(key => key.startsWith('id'))
     .map(key => /id\((?<id>\d*)\)/.exec(key)?.groups?.id!)
@@ -121,5 +121,5 @@ export const queryRaceData = async (sessionName: string, includeImages: boolean)
     throw new Error(String(!isValidData ? 404 : response.status));
   }
 
-  return mapThatBullshitResponseToASanesPeopleDataVersion(sessionName, json, includeImages);
+  return mapCockpitXpResponseForOutput(sessionName, json, includeImages);
 };
