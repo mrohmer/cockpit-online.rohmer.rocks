@@ -22,7 +22,7 @@
 
 <div class="flex gap-x-3 min-[550px]:gap-x-6 max-[550px]:flex-wrap"
 >
-    <div class="w-[5rem] min-[550px]:w-[6.4rem]">
+    <div class="min-[450px]:w-[5rem] min-[550px]:w-[6.4rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoMdStopwatch />
@@ -38,7 +38,7 @@
             {/if}
         </SlotCardLowerRowFact>
     </div>
-    <div class="w-[5.5rem] min-[550px]:w-[7.9rem]">
+    <div class="min-[450px]:w-[5.5rem] min-[550px]:w-[7.9rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoMdStopwatch />
@@ -54,7 +54,7 @@
             {/if}
         </SlotCardLowerRowFact>
     </div>
-    <div class="w-[8.2rem]">
+    <div class="min-[450px]:w-[8.2rem]">
         <SlotCardLowerRowFact>
             {#snippet icon()}
             <IoIosSpeedometer />

@@ -16,7 +16,7 @@
 
 <div class="flex items-center gap-x-1.5">
     {#if icon}
-        <div class="w-5 h-5 text-neutral-400">
+        <div class="w-5 h-5 text-neutral-400 max-[450px]:hidden">
             {@render icon?.()}
         </div>
     {/if}

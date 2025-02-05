@@ -17,14 +17,14 @@
 
 {#if slot}
     <Card hasHover={true} viewTransitionName="slot-card-{slot.id}">
-        <div class="bg-neutral-50 dark:bg-neutral-900 overflow-hidden">
+        <div class="overflow-hidden">
             <SlotCardBackground {...slot} hasImage={!!slot.image} />
             <div class="flex gap-x-4 px-2 sm:px-4 py-1.5"
             >
                 <div>
                     <SlotCardImage {...slot} />
                 </div>
-                <div class="flex-1 flex flex-col">
+                <div class="flex-1 flex flex-col pl-2">
                     <SlotCardTopRow {...slot} {leaderLap} />
                     <hr class="block -ml-2 mt-1 mb-2 border-neutral-200 dark:border-neutral-700"/>
                     <SlotCardLowerRow {...slot} />
