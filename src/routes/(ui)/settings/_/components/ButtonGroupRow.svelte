@@ -9,6 +9,7 @@
     isLast?: boolean;
     children?: import('svelte').Snippet;
     hint?: import('svelte').Snippet;
+    onchange?: (value: string|number) => void;
   }
 
   let {
@@ -17,7 +18,8 @@
     disabled = false,
     isLast = false,
     children,
-    hint
+    hint,
+    onchange
   }: Props = $props();
 
   const hint_render = $derived(hint);
@@ -29,7 +31,7 @@
             {@render children?.()}
         </div>
         <div class="flex justify-end">
-            <ButtonGroup {value} {options} on:change />
+            <ButtonGroup {value} {options} {onchange} />
         </div>
     </div>
     {#snippet hint()}

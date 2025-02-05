@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import QRCode from 'qrcode';
   import {onMount} from 'svelte';
-  import { page } from '$app/stores';
+  import {page} from '$app/state';
 
-  let dataUrl: string = $state();
+  let dataUrl: string|undefined = $state();
   let canShare = $state(false);
 
   const generateQrCode = () => QRCode.toDataURL(
@@ -35,8 +33,8 @@
     canShare = 'share' in navigator;
   })
 
-  let url = $derived($page.url.href);
-  run(() => {
+  let url = $derived(page.url.href);
+  $effect(() => {
     url && generateQrCode();
   });
 </script>

@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
 </script>
 
-{#if $page?.error?.message}
+{#if page?.error?.message}
     <div class="text-center p-5">
         <div class="mb-1">
-            {$page.error.message}
+            {page.error.message}
         </div>
-        <a href="/{$page.route?.id === '/s/[...sessionName]' ? '' : $page.params.sessionName ?? ''}"  class="text-primary">
+        <a href="/{page.route?.id === '/s/[...sessionName]' ? '' : page.params.sessionName ?? ''}"  class="text-primary">
             zurück
         </a>
     </div>

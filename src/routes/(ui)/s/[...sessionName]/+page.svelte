@@ -1,6 +1,4 @@
 <script lang="ts">
-  import {run} from 'svelte/legacy';
-
   import type {Race} from '$lib/models/race';
   import {page} from '$app/state';
   import Content from '$lib/components/Content.svelte';
@@ -11,12 +9,11 @@
   import SessionHeader from "$lib/components/SessionHeader.svelte";
   import {handleBackLinkClick} from "$lib/utils/handle-back-link-click.js";
   import {cleanSessionName} from "$lib/utils/clean-session-name.js";
-  import {digits} from "$lib/utils/digits.js";
-  import {browser} from '$app/environment';
   import {addSession, removeSession} from '$lib/utils/sessions';
   import {createRaceStore} from '$lib/utils/race-store';
   import LastUpdate from '$lib/components/LastUpdate.svelte';
   import {fullscreen} from '$lib/utils/fullscreen';
+  import {onMount} from 'svelte';
 
   interface Props {
     data: ApiData<Race>;
@@ -27,8 +24,13 @@
   const race = $derived(createRaceStore(cleanSessionName(page.params.sessionName), data));
 
   let date = $derived($race?.date);
-  run(() => {
-    browser && race && page.params.sessionName && ($race?.data?.slots?.length ? addSession(page.params.sessionName) : removeSession(page.params.sessionName));
+
+  onMount(() => {
+    if (page.params.sessionName && $race?.data?.slots?.length) {
+      addSession(page.params.sessionName);
+    } else {
+      removeSession(page.params.sessionName);
+    }
   });
 </script>
 
@@ -45,7 +47,7 @@
 
     <Content>
         {#if $race?.data?.time || $race?.data?.lapsToGo}
-            <div class="flex justify-center items-center gap-x-3 mt-6 max-w-[200px] mx-auto mb-10 -mt-6"
+            <div class="flex justify-center items-center gap-x-3 max-w-[200px] mx-auto mb-10 -mt-6"
                  transition:slide>
                 {#if $race?.data?.time}
                     <div class="text-center flex-1">
