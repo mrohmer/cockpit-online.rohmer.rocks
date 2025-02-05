@@ -1,17 +1,14 @@
 <script lang="ts">
-  import {createEventDispatcher} from 'svelte';
-
-  const dispatch = createEventDispatcher();
-
   interface Props {
     checked?: boolean;
     children?: import('svelte').Snippet;
+    onchange?: (value: boolean) => void;
   }
 
-  let { checked = false, children }: Props = $props();
+  let { checked = false, children, onchange }: Props = $props();
 </script>
 
-<div class="flex flex-col items-center justify-center gap-y-1 cursor-pointer w-full" onclick={() => dispatch('change', !checked)}>
+<button type="button" class="flex flex-col items-center justify-center gap-y-1 cursor-pointer w-full" onclick={() => onchange?.(!checked)}>
     <div class="block bg-neutral-200 dark:bg-neutral-600 rounded-full cursor-pointer w-14 h-7 transition-all"
          class:bg-primary={checked}
          class:dark:bg-primary={checked}
@@ -23,4 +20,4 @@
     <div>
         {@render children?.()}
     </div>
-</div>
+</button>

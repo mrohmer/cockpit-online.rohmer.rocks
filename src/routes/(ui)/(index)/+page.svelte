@@ -1,7 +1,4 @@
 <script lang="ts">
-  import {run, preventDefault} from 'svelte/legacy';
-
-  import {onMount} from 'svelte';
   import type {Session} from '$lib/models/session';
   import type {Observable} from 'dexie';
   import {liveQuery} from 'dexie';
@@ -10,29 +7,20 @@
   import Input from "$lib/components/Input.svelte";
   import {goto} from '$app/navigation';
   import Navbar from '$lib/components/Navbar.svelte';
+  import {browser} from '$app/environment';
 
-  let mounted = $state(false);
-  let sessions: Observable<Session[]> = $state();
+  let sessions: Observable<Session[]> | undefined = browser ? liveQuery(() => db.sessions.toArray()) : undefined;
 
-  let sessionName: string = $state();
+  let sessionName: string | undefined = $state();
 
-  const handleSubmit = () => {
+  const handleSubmit = (event: Event) => {
+    event.preventDefault();
     if ((sessionName?.trim().length ?? 0) < 3) {
       return;
     }
 
     return goto(`/s/${sessionName.trim().replace(/^\/*/, '')}`);
   }
-
-  onMount(() => mounted = true);
-
-  run(() => {
-    if (mounted) {
-      sessions = liveQuery(
-        () => db.sessions.toArray()
-      )
-    }
-  });
 </script>
 
 <svelte:head>
@@ -62,11 +50,12 @@
         </div>
     </Navbar>
     <div class="content">
-        <form onsubmit={preventDefault(handleSubmit)}>
+        <form onsubmit={handleSubmit}>
             <Input bind:value={sessionName} autofocus>
                 Session Name
                 {#snippet icon()}
-                    <button type="submit" class:opacity-20={(sessionName?.trim().length ?? 0) < 3} aria-label="Abschicken">
+                    <button type="submit" class:opacity-20={(sessionName?.trim().length ?? 0) < 3}
+                            aria-label="Abschicken">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"
                              class="-rotate-90">
                             <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" class="fill-primary"/>

@@ -1,14 +1,12 @@
 <script lang="ts">
-  import {createEventDispatcher} from 'svelte';
-
-  const dispatch = createEventDispatcher();
 
   interface Props {
     value: string|number;
     options?: [string|number, string][];
+    onchange?: (value: string|number) => void;
   }
 
-  let { value, options = [] }: Props = $props();
+  let { value, onchange, options = [] }: Props = $props();
 </script>
 
 <div class="flex rounded-xl overflow-hidden border-primary border">
@@ -17,7 +15,7 @@
              class:border-l={index > 0}
              class:border-primary={String(value) === String(v)}
              class:bg-primary={String(value) === String(v)}
-             onclick={() => dispatch('change', typeof value === 'number' ? +v : v)}
+             onclick={() => onchange?.(typeof value === 'number' ? +v : v)}
         >
             {label}
         </div>

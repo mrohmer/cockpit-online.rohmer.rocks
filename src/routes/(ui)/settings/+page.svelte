@@ -37,7 +37,7 @@
             <Section>
                 {#if isWakeLockSupported()}
                     <CheckboxRow checked={$settings?.wakeLock}
-                                 on:change={({detail}) => handleChange('wakeLock', detail)}>
+                                 onchange={(detail) => handleChange('wakeLock', detail)}>
                         Display nicht deaktivieren in Fullscreen
                     </CheckboxRow>
                 {/if}
@@ -59,23 +59,23 @@
                       </div>
                   {/snippet}
                     <CheckboxRow checked={$settings?.slotDetailVibrationEmpty}
-                                 on:change={({detail}) => handleChange('slotDetailVibrationEmpty', detail)}>
+                                 onchange={(detail) => handleChange('slotDetailVibrationEmpty', detail)}>
                         Vibrieren bei leerem Tank
                     </CheckboxRow>
                     <ButtonGroupRow value={$settings?.slotDetailVibrationEmptyThreshold ?? 0.2}
                                     options={[[0, '0%'], [0.05, '5%'], [0.1, '10%'], [0.15, '15%'], [0.2, '20%']]}
                                     disabled={!$settings?.slotDetailVibrationEmpty}
-                                    on:change={({detail}) => handleChange('slotDetailVibrationEmptyThreshold', +detail)}>
+                                    onchange={(detail) => handleChange('slotDetailVibrationEmptyThreshold', +detail)}>
                         Schwellwert für Vibration bei leerem Tank
                     </ButtonGroupRow>
                     <CheckboxRow checked={$settings?.slotDetailVibrationFull}
-                                 on:change={({detail}) => handleChange('slotDetailVibrationFull', detail)}>
+                                 onchange={(detail) => handleChange('slotDetailVibrationFull', detail)}>
                         Vibrieren bei vollem Tank
                     </CheckboxRow>
                     <ButtonGroupRow value={$settings?.slotDetailVibrationFullThreshold ?? 0.9}
                                     options={[[0.8, '80%'], [0.85, '85%'], [0.9, '90%'], [0.95, '95%'], [1, '100%']]}
                                     disabled={!$settings?.slotDetailVibrationFull}
-                                    on:change={({detail}) => handleChange('slotDetailVibrationFullThreshold', +detail)}
+                                    onchange={(detail) => handleChange('slotDetailVibrationFullThreshold', +detail)}
                                     isLast={true}>
                         Schwellwert für Vibration bei vollem Tank
                     </ButtonGroupRow>

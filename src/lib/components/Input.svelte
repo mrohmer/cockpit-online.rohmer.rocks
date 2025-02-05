@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { createBubbler } from 'svelte/legacy';
-
-  const bubble = createBubbler();
+  import type {FormEventHandler} from 'svelte/elements';
 
   let inputEl: HTMLInputElement = $state();
 
@@ -20,6 +18,8 @@
     icon?: import('svelte').Snippet;
     children?: import('svelte').Snippet;
     error?: import('svelte').Snippet;
+    onchange?: FormEventHandler<HTMLInputElement>;
+    oninput?: FormEventHandler<HTMLInputElement>;
   }
 
   let {
@@ -34,7 +34,9 @@
     class: klass,
     icon,
     children,
-    error
+    error,
+    oninput,
+    onchange
   }: Props = $props();
 
 
@@ -63,13 +65,13 @@
     </label>
     {#if type === 'text'}
         <input bind:this={inputEl} type="text" {name} {id} {min} {max} {required} {autofocus}
-               class="input" bind:value onchange={bubble('change')} oninput={bubble('input')}/>
+               class="input" bind:value {onchange} {oninput} />
     {:else if type === 'date'}
         <input bind:this={inputEl} type="date" {name} {id} {min} {max} {required}
-               class="input" bind:value onchange={bubble('change')} oninput={bubble('input')}/>
+               class="input" bind:value {onchange} {oninput} />
     {:else if type === 'number'}
         <input bind:this={inputEl} type="number" {name} {id} {min} {max} {required}
-               class="input" bind:value onchange={bubble('change')} oninput={bubble('input')}/>
+               class="input" bind:value {onchange} {oninput} />
     {/if}
 
     {#if icon}

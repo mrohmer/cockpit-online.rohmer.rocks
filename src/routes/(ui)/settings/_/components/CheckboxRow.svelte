@@ -9,6 +9,7 @@
     children?: import('svelte').Snippet;
     checkbox?: import('svelte').Snippet;
     hint?: import('svelte').Snippet;
+    onchange?: (value: boolean) => void;
   }
 
   let {
@@ -17,7 +18,8 @@
     isLast = false,
     children,
     checkbox,
-    hint
+    hint,
+    onchange
   }: Props = $props();
 
   const hint_render = $derived(hint);
@@ -32,7 +34,7 @@
             {#if checkbox}
                 {@render checkbox?.()}
             {:else}
-                <Switch {checked} on:change />
+                <Switch {checked} {onchange} />
             {/if}
         </div>
     </div>

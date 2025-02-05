@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import type {Race} from '$lib/models/race';
   import {page} from '$app/state';
   import Content from '$lib/components/Content.svelte';
@@ -20,6 +18,7 @@
   import SlotPersonalData from './_/components/SlotPersonalData.svelte';
   import Standings from './_/components/Standings.svelte';
   import {fullscreen} from '$lib/utils/fullscreen';
+  import {onMount} from 'svelte';
 
   interface Props {
     data: ApiData<Race>;
@@ -42,18 +41,26 @@
 
   let leaderLap = $derived($race?.data?.slots?.[0]?.lap);
 
-  run(() => {
-    browser && $race?.data && page.params.sessionName && ($race?.data?.slots?.length ? addSession(page.params.sessionName) : removeSession(page.params.sessionName));
+  onMount(() => {
+    if (page.params.sessionName && $race?.data?.slots?.length) {
+      addSession(page.params.sessionName);
+    } else {
+      removeSession(page.params.sessionName);
+    }
   });
 
-  run(() => {
-    const s: Partial<Record<Settings['key'], Settings['value']>> = $settings ?? {};
-    if (slot?.remainingGas >= 0 && s.slotDetailVibrationEmpty && slot.remainingGas <= (s.slotDetailVibrationEmptyThreshold ?? 0.2)) {
+  $effect(() => {
+    const s: Partial<Record<Settings['key'], number>> = $settings ?? {};
+    if (slot?.remainingGas === undefined) {
+      return;
+    }
+
+    if (slot.remainingGas >= 0 && s.slotDetailVibrationEmpty && slot.remainingGas <= (s.slotDetailVibrationEmptyThreshold ?? 0.2)) {
       vibrationLow.notify();
     } else {
       vibrationLow.reset();
     }
-    if (slot?.remainingGas >= 0 && s.slotDetailVibrationFull && slot.remainingGas >= (s.slotDetailVibrationFullThreshold ?? 0.9)) {
+    if (slot.remainingGas >= 0 && s.slotDetailVibrationFull && slot.remainingGas >= (s.slotDetailVibrationFullThreshold ?? 0.9)) {
       vibrationHigh.notify();
     } else {
       vibrationHigh.reset();
