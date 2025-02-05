@@ -5,13 +5,7 @@
   import SlotTopCardBackground from "./SlotTopCardBackground.svelte";
 
 
-  interface Props {
-    id?: Slot['id'];
-    name?: Slot['name'];
-    position?: Slot['position'];
-    image?: Slot['image'];
-    car?: Slot['car'];
-    lap?: Slot['lap'];
+  interface Props extends Pick<Slot, 'id' | 'name' | 'position' | 'image' | 'car' | 'lap'> {
     totalLaps?: number;
     leaderLap?: number;
   }
@@ -28,20 +22,22 @@
   }: Props = $props();
 </script>
 
-<Card>
+<Card viewTransitionName="slot-card-{id}">
     <div class="flex py-3 pl-4 pr-6 items-center gap-x-4 overflow-hidden">
         <SlotTopCardBackground {id} hasImage={!!image}/>
 
-        <SlotTopCardImage {image} {position} {name}/>
+        <SlotTopCardImage {id} {image} {position} {name}/>
 
         <div class="flex-1 min-w-0" class:pl-3={!image}>
             <div class="font-normal text-2xl overflow-hidden text-ellipsis whitespace-nowrap">{name}</div>
             {#if car?.name}
-                <div class="font-normal text-neutral-400 overflow-hidden text-ellipsis whitespace-nowrap text-xs">{car.name}</div>
+                <div class="font-normal text-neutral-400 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+                    {car.name}
+                </div>
             {/if}
         </div>
         <div class="text-center min-w-[3rem]">
-            <div class="font-bold text-2xl">
+            <div class="font-normal text-2xl">
                 {#if lap || totalLaps}
                     {lap ?? 0}
                     {#if totalLaps}
@@ -57,7 +53,7 @@
         </div>
         {#if leaderLap !== undefined}
             <div class="text-center min-w-[3rem]">
-                <div class="font-bold text-2xl">
+                <div class="font-normal text-2xl">
                     {#if lap}
                         {#if position === 1 || !leaderLap}
                             0

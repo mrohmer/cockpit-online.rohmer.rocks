@@ -9,8 +9,9 @@
 input, [contenteditable="true"], textarea {
     @apply bg-transparent outline-none focus:outline-none;
 }
+
 @media (prefers-color-scheme: dark) {
-    input[type="date"]{
+    input[type="date"] {
         color-scheme: dark;
     }
 }
@@ -18,6 +19,32 @@ input, [contenteditable="true"], textarea {
 .border-primary {
     border-color: var(--color-primary);
 }
+
 .border-secondary {
     border-color: var(--color-secondary);
+}
+
+@keyframes fade-out-to-left {
+    to {
+        opacity: 0;
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes slide-in-from-right {
+    from {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :root::view-transition-old(root) {
+        pointer-events: none;
+        animation: 300ms ease-out both fade-out-to-left;
+    }
+
+    :root::view-transition-new(root) {
+        pointer-events: none;
+        animation: 300ms ease-out both slide-in-from-right;
+    }
 }

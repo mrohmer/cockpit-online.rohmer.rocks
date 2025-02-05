@@ -25,7 +25,7 @@
 </script>
 
 {#if cleaned}
-    <div class="text-center text-sm font-normal">
+    <div class="text-center text-sm font-normal vt-last-update">
         <svelte:element this={element} class="text-neutral-400">Stand</svelte:element>
         <svelte:element this={element}>
             <span>
@@ -37,3 +37,9 @@
         </svelte:element>
     </div>
 {/if}
+
+<style>
+    .vt-last-update {
+        view-transition-name: last-update;
+    }
+</style>

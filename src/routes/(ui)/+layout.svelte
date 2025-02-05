@@ -8,12 +8,30 @@
   import {browser, dev} from '$app/environment';
   import {PUBLIC_CLOUDFLARE_TOKEN} from '$env/static/public';
   import {fullscreen} from '$lib/utils/fullscreen';
+  import {onNavigate} from '$app/navigation';
 
   interface Props {
     children?: import('svelte').Snippet;
   }
 
   let {children}: Props = $props();
+
+  onNavigate((navigation) => {
+    if (
+      !document.startViewTransition ||
+      navigation.from?.url.href === navigation.to?.url.href
+    ) {
+      return;
+    }
+
+    return new Promise((resolve) => {
+      document.startViewTransition(() => {
+        resolve();
+        return navigation.complete;
+      });
+    });
+  });
+
 </script>
 
 <svelte:head>
@@ -34,50 +52,60 @@
 {@render children?.()}
 
 {#if !browser || !$fullscreen}
-    {#if page?.route?.id !== '/settings'}
-        <a href="/settings" class="flex justify-center items-center mt-32 px-4">
-            <div class="w-10 h-6 px-2">
-                <IoIosSettings/>
-            </div>
-            <div class="pr-10">
-                Einstellungen
-            </div>
-        </a>
-    {/if}
+    <footer class="footer">
+        {#if page?.route?.id !== '/settings'}
+            <a href="/settings" class="flex justify-center items-center mt-32 px-4">
+                <div class="w-10 h-6 px-2">
+                    <IoIosSettings/>
+                </div>
+                <div class="pr-10">
+                    Einstellungen
+                </div>
+            </a>
+        {/if}
 
-    <Content class="mt-10">
-        <div class="text-center text-xs opacity-70 space-y-4">
-            <div>
-                Daten bereitgestellt über <a href="https://online.cockpit-xp.de" target="_blank" rel="noreferrer noopener"
-                                             class="text-primary">online.cockpit-xp.de</a>.<br>
-                Darüber hinaus besteht keine Verbindung zu Cockpit XP & Cockpit XP Online.
+        <Content class="mt-10">
+            <div class="text-center text-xs opacity-70 space-y-4">
+                <div>
+                    Daten bereitgestellt über <a href="https://online.cockpit-xp.de" target="_blank"
+                                                 rel="noreferrer noopener"
+                                                 class="text-primary">online.cockpit-xp.de</a>.<br>
+                    Darüber hinaus besteht keine Verbindung zu Cockpit XP & Cockpit XP Online.
+                </div>
+                <div>
+                    Dies ist ein alternatives UI mit Performance- & Usability-Optimierungen.<br/>
+                    Die Verwendung ist auf eigene Gefahr und ohne jegliche Gewähr, da es rein für meine eigene private
+                    Verwendung konzipiert ist.<br/>
+                    Für Stabilität und Sicherheit wird empfohlen, das offizielle UI zu verwenden.
+                </div>
             </div>
-            <div>
-                Dies ist ein alternatives UI mit Performance- & Usability-Optimierungen.<br/>
-                Die Verwendung ist auf eigene Gefahr und ohne jegliche Gewähr, da es rein für meine eigene private Verwendung konzipiert ist.<br/>
-                Für Stabilität und Sicherheit wird empfohlen, das offizielle UI zu verwenden.
+            <div class="-mt-4">
+                <PoweredBy name="Matthias Rohmer"
+                           url="https://matthias.rohmer.rocks"
+                           technologies={['Cockpit-XP Online', 'svelte', 'netlify']}
+                           sourceCodeUrl="https://github.com/mrohmer/cockpit-online.rohmer.rocks"/>
+            </div>
+        </Content>
+
+        <div class="my-10">
+            <Share/>
+        </div>
+
+        <div class="my-10">
+            <div class="flex justify-center items-center py-5 text-sm text-gray-400">
+                <a class="block px-2 py-1 hover:text-white transition-colors" href="https://rohmer.rocks/impressum"
+                   target="_blank">impressum</a>
+                <div class="px-1">|</div>
+                <a class="block px-2 py-1 hover:text-white transition-colors" href="https://rohmer.rocks/datenschutz"
+                   target="_blank">datenschutz</a
+                >
             </div>
         </div>
-        <div class="-mt-4">
-            <PoweredBy name="Matthias Rohmer"
-                       url="https://matthias.rohmer.rocks"
-                       technologies={['Cockpit-XP Online', 'svelte', 'netlify']}
-                       sourceCodeUrl="https://github.com/mrohmer/cockpit-online.rohmer.rocks"/>
-        </div>
-    </Content>
-
-    <div class="my-10">
-        <Share/>
-    </div>
-
-    <div class="my-10">
-        <div class="flex justify-center items-center py-5 text-sm text-gray-400">
-            <a class="block px-2 py-1 hover:text-white transition-colors" href="https://rohmer.rocks/impressum"
-               target="_blank">impressum</a>
-            <div class="px-1">|</div>
-            <a class="block px-2 py-1 hover:text-white transition-colors" href="https://rohmer.rocks/datenschutz"
-               target="_blank">datenschutz</a
-            >
-        </div>
-    </div>
+    </footer>
 {/if}
+
+<style>
+    .footer {
+        view-transition-name: footer;
+    }
+</style>

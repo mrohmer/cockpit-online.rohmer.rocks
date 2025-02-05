@@ -1,13 +1,9 @@
 <script lang="ts">
   import type {Slot} from '$lib/models/slot';
 
-  interface Props {
-    name: Slot['name'];
-    position: Slot['position'];
-    image: Slot['image'];
-  }
+  type Props = Pick<Slot, 'id'|'name'|'position'|'image'>
 
-  let { name, position, image }: Props = $props();
+  let { id, name, position, image }: Props = $props();
 
 </script>
 

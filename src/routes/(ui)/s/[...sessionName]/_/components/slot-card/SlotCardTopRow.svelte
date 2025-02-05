@@ -2,15 +2,12 @@
   import type {Slot} from '$lib/models/slot';
   import IoIosArrowForward from 'svelte-icons/io/IoIosArrowForward.svelte';
 
-  interface Props {
-    name: Slot['name'];
-    car: Slot['car'];
-    lap: Slot['lap'];
-    position: Slot['position'];
+  interface Props extends Pick<Slot, 'id' | 'name' | 'car' | 'lap' | 'position'> {
     leaderLap: number;
   }
 
   let {
+    id,
     name,
     car,
     lap,
@@ -23,7 +20,7 @@
 
 <div class="flex items-center gap-x-4 h-16 my-1">
     <div class="flex-1 min-w-0">
-        <div class="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold">
+        <div class="overflow-hidden text-ellipsis whitespace-nowrap text-2xl font-normal">
             {name}
         </div>
         {#if car?.name}
@@ -33,7 +30,7 @@
         {/if}
     </div>
     <div class="text-center min-w-[3rem]">
-        <div class="font-bold text-xl">
+        <div class="font-normal text-2xl">
             {#if lap}
                 {#if !isDistance}
                     {lap}

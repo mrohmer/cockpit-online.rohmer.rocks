@@ -11,9 +11,11 @@
     actions?: import('svelte').Snippet;
     bottomBar?: import('svelte').Snippet;
     onBackLinkClick?: (event: Event) => void;
+    viewTransitionName?: string;
   }
 
   let {
+    viewTransitionName,
     backLink,
     compact,
     children,
@@ -23,7 +25,10 @@
   }: Props = $props();
 </script>
 
-<div class="mt-4" class:mb-10={!compact} class:mb-4={compact}>
+<div class="mt-4"
+     class:mb-10={!compact}
+     class:mb-4={compact}
+     style={viewTransitionName ? `view-transition-name: ${viewTransitionName}` : undefined}>
     <div class="flex items-center">
         {#if backLink}
             <a href={backLink} class="w-10 h-6 px-2" onclick={onBackLinkClick}>

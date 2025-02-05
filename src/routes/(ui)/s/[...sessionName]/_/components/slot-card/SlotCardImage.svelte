@@ -1,12 +1,7 @@
 <script lang="ts">
   import type {Slot} from '$lib/models/slot';
 
-  interface Props {
-    name: Slot['name'];
-    penalty: Slot['penalty'];
-    position: Slot['position'];
-    image: Slot['image'];
-  }
+  type Props = Pick<Slot,'name' | 'penalty' | 'position' | 'image'>;
 
   let {
     name,

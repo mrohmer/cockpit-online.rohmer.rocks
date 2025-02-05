@@ -48,7 +48,7 @@
   }: Props = $props();
 </script>
 
-<Navbar {compact} {backLink} {onBackLinkClick}>
+<Navbar {compact} {backLink} {onBackLinkClick} viewTransitionName="session-header">
     <h1 class="text-3xl text-center overflow-hidden text-ellipsis whitespace-nowrap"
         class:pr-10={!canGoFullscreen}>
         {name}

@@ -4,12 +4,7 @@
   import IoIosSpeedometer from 'svelte-icons/io/IoIosSpeedometer.svelte';
   import SlotCardLowerRowFact from "./SlotCardLowerRowFact.svelte";
 
-  interface Props {
-    lastLap: Slot['lastLap'];
-    fastestLap: Slot['fastestLap'];
-    remainingGas: Slot['remainingGas'];
-    inPit: Slot['inPit'];
-  }
+  type Props = Pick<Slot, 'lastLap' | 'fastestLap' | 'remainingGas' | 'inPit'>;
 
   let {
     lastLap,

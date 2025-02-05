@@ -16,7 +16,7 @@
 </script>
 
 {#if slot}
-    <Card hasHover={true}>
+    <Card hasHover={true} viewTransitionName="slot-card-{slot.id}">
         <div class="bg-neutral-50 dark:bg-neutral-900 overflow-hidden">
             <SlotCardBackground {...slot} hasImage={!!slot.image} />
             <div class="flex gap-x-4 px-2 sm:px-4 py-1.5"
