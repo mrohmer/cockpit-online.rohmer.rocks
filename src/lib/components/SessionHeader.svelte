@@ -32,7 +32,6 @@
     time?: Race['time'];
     lapsToGo?: Race['lapsToGo'];
     backLink?: string;
-    compact?: boolean;
     onBackLinkClick?: (event: Event) => void;
   }
 
@@ -43,12 +42,11 @@
     time,
     lapsToGo,
     backLink = '/',
-    compact,
     onBackLinkClick,
   }: Props = $props();
 </script>
 
-<Navbar {compact} {backLink} {onBackLinkClick} viewTransitionName="session-header">
+<Navbar {backLink} {onBackLinkClick} viewTransitionName="session-header">
     <h1 class="text-3xl text-center overflow-hidden text-ellipsis whitespace-nowrap"
         class:pr-10={!canGoFullscreen}>
         {name}
@@ -68,7 +66,7 @@
     {/snippet}
     {#snippet bottomBar()}
         {#if mode}
-            <div class="mt-4" class:mb-10={!compact} class:mb-4={compact}>
+            <div class="mt-4 mb-4">
                 <div class="flex justify-center items-center gap-x-2" transition:slide>
                     <div class="flex h-2 w-2">
                         <div class="animate-ping absolute h-full w-full rounded-full opacity-75"

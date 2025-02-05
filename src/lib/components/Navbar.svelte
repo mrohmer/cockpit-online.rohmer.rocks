@@ -1,12 +1,8 @@
 <script lang="ts">
   import IoIosArrowBack from 'svelte-icons/io/IoIosArrowBack.svelte';
-  import {createEventDispatcher} from 'svelte';
-
-  const dispatch = createEventDispatcher();
 
   interface Props {
     backLink?: string;
-    compact?: boolean;
     children: import('svelte').Snippet;
     actions?: import('svelte').Snippet;
     bottomBar?: import('svelte').Snippet;
@@ -17,7 +13,6 @@
   let {
     viewTransitionName,
     backLink,
-    compact,
     children,
     actions,
     bottomBar,
@@ -25,9 +20,7 @@
   }: Props = $props();
 </script>
 
-<div class="mt-4"
-     class:mb-10={!compact}
-     class:mb-4={compact}
+<div class="mt-4 mb-4"
      style={viewTransitionName ? `view-transition-name: ${viewTransitionName}` : undefined}>
     <div class="flex items-center">
         {#if backLink}
