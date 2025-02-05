@@ -23,7 +23,10 @@
 
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-prefetch class="font-thin w-screen overflow-x-hidden bg-neutral-50 dark:bg-black dark:text-white transition-colors">
+	<body data-sveltekit-prefetch
+		  data-sveltekit-preload-data="hover"
+		  data-sveltekit-preload-code="hover"
+		  class="font-thin w-screen overflow-x-hidden bg-neutral-50 dark:bg-black dark:text-white transition-colors">
 		<div>%sveltekit.body%</div>
 	</body>
 </html>
