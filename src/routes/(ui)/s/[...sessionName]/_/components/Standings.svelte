@@ -19,7 +19,7 @@
     <div class="px-2 flex gap-4 flex-col"
     >
         {#each slots as slot}
-            <a href="/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block flex-1">
+            <a href="/s/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block flex-1">
                 <SlotCard {slot} {leaderLap} />
             </a>
         {/each}
