@@ -1,10 +1,11 @@
 {
   "start_url": "/",
-  "display": "fullscreen",
-  "name": "Cockpit Online by MRohmer",
+  "display": "standalone",
+  "name": "Cockpit Online Alternative by MRohmer",
+  "short_name": "Cockpit Online",
   "scope": "/",
   "lang": "de",
-  "description": "Alternative UI for Live Data by Cockpit XP Online",
+  "description": "Alternatives UI für Live Data von Cockpit XP Online von MRohmer",
   "theme_color": "#ff9a5a",
   "background_color": "#fff",
   "icons": [
