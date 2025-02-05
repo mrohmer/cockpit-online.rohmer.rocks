@@ -51,7 +51,7 @@
     <Navbar>
         <div class="flex items-center justify-center gap-x-4">
             <div class="w-10 h-10">
-                <img src="/favicon.png" class="max-w-full max-h-full">
+                <img src="/favicon.png" class="max-w-full max-h-full" alt="Logo">
             </div>
             <div class="text-3xl font-bolder text-primary">
                 Cockpit Online
@@ -66,7 +66,7 @@
             <Input bind:value={sessionName} autofocus>
                 Session Name
                 {#snippet icon()}
-                    <button type="submit" class:opacity-20={(sessionName?.trim().length ?? 0) < 3}>
+                    <button type="submit" class:opacity-20={(sessionName?.trim().length ?? 0) < 3} aria-label="Abschicken">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"
                              class="-rotate-90">
                             <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" class="fill-primary"/>

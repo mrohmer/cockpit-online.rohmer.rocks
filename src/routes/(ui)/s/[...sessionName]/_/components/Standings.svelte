@@ -19,7 +19,10 @@
     <div class="px-2 flex gap-4 flex-col"
     >
         {#each slots as slot}
-            <a href="/s/{cleanSessionName(sessionName)}/slot/{slot.id}" class="block flex-1">
+            <a href="/s/{cleanSessionName(sessionName)}/slot/{slot.id}"
+               class="block flex-1"
+               aria-label={slot.name ?? `Fahrer ${slot.id}`}
+            >
                 <SlotCard {slot} {leaderLap} />
             </a>
         {/each}
