@@ -78,6 +78,7 @@
                 </div>
                 <div>
                     Die Verwendung ist kostenlos und ohne Registrierung möglich, jedoch auf eigene Gefahr und ohne jegliche Gewähr auf Richtigkeit der gezeigten Daten und Stabilität.<br/>
+                    Zudem sollte die Verwendung im Rahmen einer fairen Nutzung erfolgen.
                 </div>
                 <div>
                     Verbesserungsvorschläge, Feature-Requests & Bug-Reports können gerne via
