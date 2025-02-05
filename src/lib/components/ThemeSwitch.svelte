@@ -32,10 +32,6 @@
 </script>
 
 <style lang="postcss">
-    .toggle {
-        /* transition: background-color 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95); */
-    }
-
     .toggle__handler {
         @apply transition-all duration-[400ms];
         box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
@@ -154,7 +150,7 @@
 
 {#if typeof dark === 'boolean'}
     <div class="flex flex-col justify-center items-center gap-y-1 cursor-pointer w-full">
-        <div onclick={() => changeTheme()} class="flex justify-center">
+        <button type="button" aria-label="Thema" onclick={() => changeTheme()} class="flex justify-center">
             <div class="transition-colors duration-200 cursor-pointer w-14 h-7 rounded-3xl bg-[#83D8FF]"
                  class:dark
                  class:bg-[#749DD6]={dark}>
@@ -170,7 +166,7 @@
                 <div class="star star--5"></div>
                 <div class="star star--6"></div>
             </div>
-        </div>
+        </button>
     </div>
 {/if}
 
